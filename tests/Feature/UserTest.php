@@ -12,7 +12,7 @@ use App\Models\User;
 class UserTest extends TestCase
 {
     /**
-     * Crear un usuario
+     * Comprobar que se puede crear un usuario
      *
      * @return void
      */
@@ -41,7 +41,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Comprobar que el campo email sea único
+     * Comprobar que el correo ya ha sido registrado.
      *
      * @return void
      */
@@ -63,7 +63,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Comprobar que el campo nombre sea requerido
+     * Comprobar que el campo nombre es obligatorio.
      *
      * @return void
      */
@@ -84,7 +84,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Comprobar que el campo email sea requerido
+     * Comprobar que el campo correo es obligatorio.
      *
      * @return void
      */
@@ -105,7 +105,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Comprobar que el campo role_id sea requerido
+     * Comprobar que el campo role id sea obligatorio.
      *
      * @return void
      */
@@ -126,7 +126,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Comprobar que el campo role_id exista en la tabla roles
+     * Comprobar que el campo role id no exste en la tabla roles.
      *
      * @return void
      */
