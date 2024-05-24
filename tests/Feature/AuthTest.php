@@ -9,17 +9,22 @@ use Tests\TestCase;
 class AuthTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Comprobar que el usuario este logueado.
      *
      * @return void
-     */
-
+    */
     public function test_verify_that_the_user_is_logged_in()
     {
         $response = $this->post('api/check');
         $response->assertStatus(405);
     }
 
+    /**
+     * Comprobar que la ruta de inicio de sesión no requiera un usuario logueado.
+     *
+     * @return void
+    */
+    validate that the login route does not require login
     public function test_validate_that_the_login_route_does_not_require_login()
     {
         $response = $this->post('api/login',[
