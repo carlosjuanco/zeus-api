@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         return response()->json([
             'errors' => [
-                'password' => ['Usuario o contraseña incorrecta']
+                'password' => ['Contraseña incorrecta']
             ]
         ], 422);
     }

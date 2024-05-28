@@ -24,7 +24,6 @@ class AuthTest extends TestCase
      *
      * @return void
     */
-    validate that the login route does not require login
     public function test_validate_that_the_login_route_does_not_require_login()
     {
         $response = $this->post('api/login',[
@@ -33,6 +32,24 @@ class AuthTest extends TestCase
         ]);
 
         $response->assertStatus(200);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Comprobar que la contraseña es incorrecta.
+     *
+     * @return void
+    */
+    public function test_check_that_the_password_is_incorrect()
+    {
+        $response = $this->post('api/login',[
+            'email' => 'carlosjuancho328@gmail.com', 
+            'password' => '123444',
+        ]);
+
+        $response->assertStatus(422)
+        ->assertJson(['errors' => ['password' => ['Contraseña incorrecta'] ]]);
 
         $this->post('api/logout');
     }
