@@ -17,7 +17,7 @@ class PageSeeder extends Seeder
     public function run()
     {
         $page = new Page();
-        $page->name = 'systemCreatorsHome';
+        $page->name = 'home';
         $page->save();
     }
 }
