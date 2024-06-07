@@ -17,7 +17,7 @@ class AddPagesForSecretariaDeIglesiaSeeder extends Seeder
      */
     public function run()
     {
-        $page = Page::where('name', 'home')->get()->first();
+        $page = Page::where('name', 'Inicio')->get()->first();
 
         $page2 = new Page();
         $page2->name = 'Capturar informe actual';
