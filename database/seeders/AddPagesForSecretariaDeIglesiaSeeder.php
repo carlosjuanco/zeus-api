@@ -29,8 +29,13 @@ class AddPagesForSecretariaDeIglesiaSeeder extends Seeder
         $page3->name_component = 'InformePorMes';
         $page3->save();
 
+        $page4 = new Page();
+        $page4->name = 'Informe mes x';
+        $page4->name_component = 'InformeMesX';
+        $page4->save();
+
         $role = Role::where('name', 'Secretaria de iglesia')->get()->first();
 
-        $role->pages()->attach([$page->id, $page2->id, $page3->id]);
+        $role->pages()->attach([$page->id, $page2->id, $page3->id, $page4->id]);
     }
 }
