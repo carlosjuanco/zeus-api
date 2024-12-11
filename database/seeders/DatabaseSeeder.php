@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
             PageSeeder::class,
             PageRolesSeeder::class,
             AddComponentNameInformationInVueSeeder::class,
+            AddNewPageWelcomeUserSeeder::class,
+            AddComponentNameInformationInVueSeeder::class,
             AddRoleSecretariaDeIglesiaSeeder::class,
             AddUserSecretariaDeIglesiaSeeder::class,
             AddPagesForSecretariaDeIglesiaSeeder::class,
