@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             PageSeeder::class,
             PageRolesSeeder::class,
-            AddComponentNameInformationInVueSeeder::class
+            AddComponentNameInformationInVueSeeder::class,
+            AddNewPageWelcomeUserSeeder::class,
         ]);
     }
 }
