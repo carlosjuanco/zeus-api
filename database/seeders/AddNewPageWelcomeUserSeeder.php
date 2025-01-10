@@ -24,8 +24,5 @@ class AddNewPageWelcomeUserSeeder extends Seeder
 
         $role_creators_of_the_system = Role::where('name', 'Creadores del sistema')->get()->first();
         $role_creators_of_the_system->pages()->attach([$page->id]);
-
-        $role_church_secretary = Role::where('name', 'Secretaria de iglesia')->get()->first();
-        $role_church_secretary->pages()->attach([$page->id]);
     }
 }
