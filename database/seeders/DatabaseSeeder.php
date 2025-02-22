@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             AddRoleSecretariaDeIglesiaSeeder::class,
             AddUserSecretariaDeIglesiaSeeder::class,
             AddPagesForSecretariaDeIglesiaSeeder::class,
+            SetPermissionsOnPagesForChurchSecretarySeeder::class,
         ]);
     }
 }
