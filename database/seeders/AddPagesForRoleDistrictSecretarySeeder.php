@@ -36,12 +36,12 @@ class AddPagesForRoleDistrictSecretarySeeder extends Seeder
         $page5->save();
 
         $page6 = new Page();
-        $page6->name = 'Periodo de captura';
-        $page6->name_component = 'PeriodoDeCaptura';
+        $page6->name = 'Apertura de mes';
+        $page6->name_component = 'AperturaDeMeses';
         $page6->save();
 
         $role = Role::where('name', 'Secretaria de distrito')->get()->first();
 
-        $role->pages()->attach([$page->id, $page2->id, $page3->id, $page4->id, $page5->id, $page5->id]);
+        $role->pages()->attach([$page->id, $page2->id, $page3->id, $page4->id, $page5->id, $page6->id]);
     }
 }
