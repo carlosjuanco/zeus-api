@@ -37,7 +37,7 @@ class AddPagesForRoleDistrictSecretarySeeder extends Seeder
 
         $page6 = new Page();
         $page6->name = 'Apertura de mes';
-        $page6->name_component = 'AperturaDeMeses';
+        $page6->name_component = 'AperturaDeMes';
         $page6->save();
 
         $role = Role::where('name', 'Secretaria de distrito')->get()->first();
