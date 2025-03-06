@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Human;
 use Illuminate\Database\Seeder;
 
 use App\Models\Page;
@@ -17,9 +17,12 @@ class AddNewPageWelcomeUserSeeder extends Seeder
      */
     public function run()
     {
+        $human_juan_carlos = Human::find(1);
+
         $page = new Page();
         $page->name = 'Bienvenido usuario';
         $page->name_component = 'WelcomeUser';
+        $page->human_id = $human_juan_carlos->id;
         $page->save();
 
         $role_creators_of_the_system = Role::where('name', 'Creadores del sistema')->get()->first();
