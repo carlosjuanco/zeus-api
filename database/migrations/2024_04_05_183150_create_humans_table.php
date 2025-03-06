@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('page_role', function (Blueprint $table) {
+        Schema::create('humans', function (Blueprint $table) {
             $table->id();
-            $table->string('permissions', 50);
-            $table->foreignId('page_id')->constrained();
-            $table->foreignId('role_id')->constrained();
+            $table->string('paternal_surname', 50);
+            $table->string('maternal_surname', 50);
+            $table->foreignId('user_id')->nullable()->constrained('users')->cascadeOnDelete();
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('page_role');
+        Schema::dropIfExists('humans');
     }
 };

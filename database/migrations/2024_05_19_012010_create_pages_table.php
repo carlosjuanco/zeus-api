@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name', 50);
             $table->foreignId('page_id')->nullable()->constrained();
+            $table->foreignId('human_id')->constrained('humans')->cascadeOnDelete();
             $table->timestamps();
             $table->softDeletes();
         });
