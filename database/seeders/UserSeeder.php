@@ -30,5 +30,6 @@ class UserSeeder extends Seeder
 
         $human = Human::find(1);
         $human->user_id = $user->id;
+        $human->save();
     }
 }
