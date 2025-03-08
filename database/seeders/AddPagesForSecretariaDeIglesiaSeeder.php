@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 
 use App\Models\Page;
 use App\Models\Role;
+use App\Models\Human;
 
 class AddPagesForSecretariaDeIglesiaSeeder extends Seeder
 {
@@ -17,6 +18,8 @@ class AddPagesForSecretariaDeIglesiaSeeder extends Seeder
      */
     public function run()
     {
+        $human_juan_carlos = Human::find(1);
+
         $page = Page::where('name', 'Inicio')->get()->first();
 
         $page2 = Page::where('name', 'Bienvenido usuario')->get()->first();
@@ -24,16 +27,19 @@ class AddPagesForSecretariaDeIglesiaSeeder extends Seeder
         $page3 = new Page();
         $page3->name = 'Capturar informe actual';
         $page3->name_component = 'CapturarInformeActual';
+        $page3->human_id = $human_juan_carlos->id;
         $page3->save();
 
         $page4 = new Page();
         $page4->name = 'Informe por mes';
         $page4->name_component = 'InformePorMes';
+        $page4->human_id = $human_juan_carlos->id;
         $page4->save();
 
         $page5 = new Page();
         $page5->name = 'Informe mes x';
         $page5->name_component = 'InformeMesX';
+        $page5->human_id = $human_juan_carlos->id;
         $page5->save();
 
         $role = Role::where('name', 'Secretaria de iglesia')->get()->first();

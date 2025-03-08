@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Human;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -26,5 +27,9 @@ class AddUserSecretariaDeIglesiaSeeder extends Seeder
         $user->password = Hash::make('secretariaiglesia');
         $user->role_id = $role->id;
         $user->save();
+
+        $human = Human::find(1);
+        $human->user_id = $user->id;
+        $human->save();
     }
 }

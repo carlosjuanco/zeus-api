@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Human;
 use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -25,5 +26,9 @@ class AddUserDistrictSecretarySeeder extends Seeder
         $user->password = Hash::make('secretariadistrito');
         $user->role_id = $role->id;
         $user->save();
+
+        $human = Human::find(1);
+        $human->user_id = $user->id;
+        $human->save();
     }
 }
