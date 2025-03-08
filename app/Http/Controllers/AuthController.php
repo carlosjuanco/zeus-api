@@ -28,7 +28,7 @@ class AuthController extends Controller
             $api_token = $user->createToken('api_token', $pages_permissions);
             $api_token = $api_token->plainTextToken;
 
-            return response()->json(compact('api_token', 'user', 'pages'), 200);
+            return response()->json(['api_token' => $api_token, 'user' => $user], 200);
         }
 
         return response()->json([
@@ -39,9 +39,16 @@ class AuthController extends Controller
     }
 
     public function check (Request $request) {
+        $user = User::where('email', $request->user()->email)->first();
+
+        // Si no mandamos a llamar a las páginas en la línea 45, no retorna las páginas.
+        // Realice varios pruebas y la única razón, por el cual en el método login, sí
+        // se envian las páginas, es porque en la línea 22 se manda a llamar, pero se
+        // se asigna a la variable $pages
+        $user->role->pages;
+
         return response()->json([
-            'user' => $request->user(),
-            'pages' => $request->user()->role->pages
+            'user' => $user
         ], 200);
     }
 
