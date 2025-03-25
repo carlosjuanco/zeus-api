@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('page_role', function (Blueprint $table) {
             $table->id();
-            $table->string('permissions', 50);
+            $table->string('permissions', 50)->nullable();
             $table->foreignId('page_id')->constrained();
             $table->foreignId('role_id')->constrained();
         });
