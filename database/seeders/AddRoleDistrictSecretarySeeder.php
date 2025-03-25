@@ -16,7 +16,12 @@ class AddRoleDistrictSecretarySeeder extends Seeder
      */
     public function run()
     {
-        $human_juan_carlos = Human::find(1);
+        $human_district_secretary = new Human();
+        $human_district_secretary->paternal_surname = "district";
+        $human_district_secretary->maternal_surname = "district";
+        $human_district_secretary->save();
+
+        $human_juan_carlos = Human::where('paternal_surname', 'rojas')->first();
 
         $role = new Role();
         $role->name = 'Secretaria de distrito';

@@ -18,7 +18,7 @@ class AddPagesForSecretariaDeIglesiaSeeder extends Seeder
      */
     public function run()
     {
-        $human_juan_carlos = Human::find(1);
+        $human_juan_carlos = Human::where('paternal_surname', 'rojas')->first();
 
         $page = Page::where('name', 'Inicio')->get()->first();
 

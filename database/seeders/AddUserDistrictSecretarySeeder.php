@@ -27,7 +27,7 @@ class AddUserDistrictSecretarySeeder extends Seeder
         $user->role_id = $role->id;
         $user->save();
 
-        $human = Human::find(1);
+        $human = Human::where('paternal_surname', 'district')->first();
         $human->user_id = $user->id;
         $human->save();
     }

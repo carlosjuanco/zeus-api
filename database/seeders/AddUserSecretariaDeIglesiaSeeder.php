@@ -28,7 +28,7 @@ class AddUserSecretariaDeIglesiaSeeder extends Seeder
         $user->role_id = $role->id;
         $user->save();
 
-        $human = Human::find(1);
+        $human = Human::where('paternal_surname', 'church')->first();
         $human->user_id = $user->id;
         $human->save();
     }

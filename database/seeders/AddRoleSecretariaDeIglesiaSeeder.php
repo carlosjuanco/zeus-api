@@ -16,7 +16,12 @@ class AddRoleSecretariaDeIglesiaSeeder extends Seeder
      */
     public function run()
     {
-        $human_juan_carlos = Human::find(1);
+        $human_church_secretary = new Human();
+        $human_church_secretary->paternal_surname = "church";
+        $human_church_secretary->maternal_surname = "church";
+        $human_church_secretary->save();
+
+        $human_juan_carlos = Human::where('paternal_surname', 'rojas')->first();
 
         $role = new Role();
         $role->name = 'Secretaria de iglesia';
