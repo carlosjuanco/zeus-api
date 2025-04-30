@@ -26,4 +26,7 @@ Route::controller(MonthController::class)
     ->group(function () {
         Route::get('getMonthOpen', 'getMonthOpen');
         Route::get('getYears', 'getYears');
+        Route::get('getMonths', 'getMonths');
+        Route::put('closeMonth/{month}', 'closeMonth');
+        Route::put('openMonth/{month}', 'openMonth');
 });
