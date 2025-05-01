@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
+use App\Models\Month;
+
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -46,6 +49,15 @@ class AuthController extends Controller
         // se envian las páginas, es porque en la línea 22 se manda a llamar, pero se
         // se asigna a la variable $pages
         $user->role->pages;
+
+        //Consultar si hay un mes aperturado
+        $fecha = Carbon::now();
+        $open_month = Month::where('anio', $fecha->year)->where('status', 'Abierto')->first();
+        if(!$open_month){
+            $user->monthOpen = 'No hay mes aperturado';
+        } else {
+            $user->monthOpen = 'Si hay mes aperturado';
+        }
 
         return response()->json([
             'user' => $user
