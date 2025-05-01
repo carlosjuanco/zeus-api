@@ -24,7 +24,6 @@ Route::controller(UserController::class)
 Route::controller(MonthController::class)
     ->middleware(['auth:sanctum'])
     ->group(function () {
-        Route::get('getMonthOpen', 'getMonthOpen');
         Route::get('getYears', 'getYears');
         Route::get('getMonths', 'getMonths');
         Route::put('closeMonth/{month}', 'closeMonth');

@@ -5,24 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Month;
 use Illuminate\Http\Request;
 
-use Carbon\Carbon;
-
 class MonthController extends Controller
 {
-    public function getMonthOpen (Request $request) {
-        $fecha = Carbon::now();
-        $open_month = Month::where('anio', $fecha->year)->where('status', 'Abierto')->first();
-        if(!$open_month){
-            return response()->json([
-                'month' => 'No hay mes aperturado'
-            ], 200);
-        } else {
-            return response()->json([
-                'month' => $open_month->toArray()
-            ], 200);
-        }
-    }
-
     public function getYears (Request $request) {
         $years = Month::select('anio')->groupBy('anio')->get();
         return response()->json([
