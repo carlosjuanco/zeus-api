@@ -22,7 +22,7 @@ Route::controller(UserController::class)
 });
 
 Route::controller(MonthController::class)
-    ->middleware(['auth:sanctum'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Month'])
     ->group(function () {
         Route::get('getYears', 'getYears');
         Route::get('getMonths', 'getMonths');
