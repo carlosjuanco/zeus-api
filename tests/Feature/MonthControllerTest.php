@@ -22,6 +22,24 @@ class MonthControllerTest extends TestCase
     }
 
     /**
+     * Comprobar que solo el rol "secretaria de distrito" puede entrar.
+     *
+     * @return json
+     */
+    public function test_that_only_the_district_secretary_role_can_enter()
+    {
+        $system_creators = User::where('role_id', 1)->first();
+
+        $response = $this->actingAs($system_creators)->get('api/getYears');
+
+        // Efectivamente el rol "Secretaria de distrito" no esta autorizado a entrar
+        // a esa ruta.
+        $response->assertStatus(403);
+
+        $this->post('api/logout');
+    }
+
+    /**
      * Comprobar que existan años
      *
      * @return json
@@ -33,7 +51,7 @@ class MonthControllerTest extends TestCase
         $response = $this->actingAs($district_secretary)->get('api/getYears');
 
         $response->assertStatus(200)
-            ->assertJson(['years' => [2025]]);
+            ->assertJsonFragment(['years' => [2025]]);
 
         $this->post('api/logout');
     }
@@ -68,7 +86,6 @@ class MonthControllerTest extends TestCase
         $district_secretary = User::where('role_id', 3)->first();
 
         $response = $this->actingAs($district_secretary)->put('api/closeMonth/4');
-        // dd($response->original);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Mes cerrado correctamente']);
@@ -86,7 +103,6 @@ class MonthControllerTest extends TestCase
         $district_secretary = User::where('role_id', 3)->first();
 
         $response = $this->actingAs($district_secretary)->put('api/openMonth/4');
-        // dd($response->original);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Mes abierto correctamente']);
