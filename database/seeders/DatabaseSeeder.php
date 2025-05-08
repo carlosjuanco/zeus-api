@@ -23,6 +23,16 @@ class DatabaseSeeder extends Seeder
             AddComponentNameInformationInVueSeeder::class,
             AddNewPageWelcomeUserSeeder::class,
             FillInTheValuesForThePermissionsFieldSeeder::class,
+            AddRoleSecretariaDeIglesiaSeeder::class,
+            AddUserSecretariaDeIglesiaSeeder::class,
+            AddPagesForSecretariaDeIglesiaSeeder::class,
+            SetPermissionsOnPagesForChurchSecretarySeeder::class,
+            AddRoleDistrictSecretarySeeder::class,
+            AddUserDistrictSecretarySeeder::class,
+            AddPagesForRoleDistrictSecretarySeeder::class,
+            SetPermissionsOnPagesForRoleDistrictSecretarySeeder::class,
+            addAllPagesToTheSystemCreatorsRoleSeeder::class,
+            addAllPermissionsToTheSystemCreatorsRoleSeeder::class,
         ]);
     }
 }
