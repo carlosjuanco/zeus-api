@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 
 use App\Models\User;
 use App\Models\Month;
+use App\Models\Human;
 
 use Carbon\Carbon;
 
@@ -58,6 +59,10 @@ class AuthController extends Controller
         } else {
             $user->monthOpen = 'Si hay mes aperturado';
         }
+
+        // Consultar a que iglesia pertenece el usuario
+        $human = Human::where('user_id', $user->id)->first();
+        $user->church_to_which_it_belongs = $human->churche->name;
 
         return response()->json([
             'user' => $user

@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\MonthController;
+use App\Http\Controllers\ChurcheController;
+use App\Http\Controllers\ConceptController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -28,4 +30,16 @@ Route::controller(MonthController::class)
         Route::get('getMonths', 'getMonths');
         Route::put('closeMonth/{month}', 'closeMonth');
         Route::put('openMonth/{month}', 'openMonth');
+});
+
+Route::controller(ChurcheController::class)
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        Route::get('getChurches', 'getChurches');
+});
+
+Route::controller(ConceptController::class)
+    ->middleware(['auth:sanctum'])
+    ->group(function () {
+        Route::get('getConcepts', 'getConcepts');
 });

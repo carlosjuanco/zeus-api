@@ -33,6 +33,9 @@ class DatabaseSeeder extends Seeder
             SetPermissionsOnPagesForRoleDistrictSecretarySeeder::class,
             addAllPagesToTheSystemCreatorsRoleSeeder::class,
             addAllPermissionsToTheSystemCreatorsRoleSeeder::class,
+            AddRecordsForChurchesInTheChurchesTableSeeder::class,
+            LinkTheChurchUserWithTheCentenarioChurchSeeder::class,
+            AddRecordsForConceptsInTheConceptsTableSeeder::class,
         ]);
     }
 }
