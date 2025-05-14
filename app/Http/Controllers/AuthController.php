@@ -56,13 +56,16 @@ class AuthController extends Controller
         $open_month = Month::where('anio', $fecha->year)->where('status', 'Abierto')->first();
         if(!$open_month){
             $user->monthOpen = 'No hay mes aperturado';
+            $user->month_id = 0;
         } else {
             $user->monthOpen = 'Si hay mes aperturado';
+            $user->month_id = $open_month->id;
         }
 
         // Consultar a que iglesia pertenece el usuario
         $human = Human::where('user_id', $user->id)->first();
         $user->church_to_which_it_belongs = $human->churche->name;
+        $user->churche_id = $human->churche->id;
 
         return response()->json([
             'user' => $user
