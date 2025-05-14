@@ -36,6 +36,8 @@ Route::controller(ChurcheController::class)
     ->middleware(['auth:sanctum'])
     ->group(function () {
         Route::get('getChurches', 'getChurches');
+        Route::get('getChurcheWithConcepts', 'getChurcheWithConcepts');
+        Route::post('storeChurcheWithConcepts', 'storeChurcheWithConcepts');
 });
 
 Route::controller(ConceptController::class)
