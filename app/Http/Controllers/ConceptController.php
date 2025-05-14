@@ -9,10 +9,10 @@ class ConceptController extends Controller
 {
     public function getConcepts()
     {
-        $concepts = Concept::select('name')->all();
+        $concepts = Concept::select('id', 'concept')->get();
 
         return response()->json([
-            'concepts' => $concepts->pluck('concept')->toArray()
+            'concepts' => $concepts->toArray()
         ], 200);
     }
 }
