@@ -24,8 +24,8 @@ class Churche extends Model
         return $this->belongsTo(Human::class);
     }
 
-    public function concepts(): BelongsToMany
+    public function conceptMonthHumans()
     {
-        return $this->belongsToMany(Concept::class)->withPivot(['week', 'value', 'status', 'month_id', 'human_id']);
+        return $this->hasMany(ChurcheConceptMonthHuman::class);
     }
 }

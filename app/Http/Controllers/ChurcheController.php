@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Churche;
 use App\Models\Human;
 use App\Models\Month;
+use App\Models\ChurcheConceptMonthHuman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 
@@ -29,13 +30,14 @@ class ChurcheController extends Controller
             $open_month = (object) ['id' => 0];
         }
 
-        $churches = Churche::where('churche_id', $human->churche_id)
+        $churcheConceptMonthHuman = ChurcheConceptMonthHuman::select('id', 'churche_id', 'concept_id', 'month_id', 
+            'human_id', 'week', 'value', 'accumulated', 'status')
             ->where('month_id', $open_month->id)
             ->where('human_id', $human->user_id)
             ->orderBy('concept_id', 'asc')
             ->get();
         return response()->json([
-            'churches' => $churches->toArray()
+            'churcheConceptMonthHuman' => $churcheConceptMonthHuman->toArray()
         ], 200);
     }
 
@@ -46,23 +48,25 @@ class ChurcheController extends Controller
             'primeraSemana.*.churche_id' => 'required|integer|exists:churches,id',
             'primeraSemana.*.month_id' => 'required|integer|exists:months,id',
             'primeraSemana.*.week' => 'required|integer|min:1|max:4',
-            'primeraSemana.*.valor' => 'required|integer|min:0|max:1000',
+            'primeraSemana.*.value' => 'required|integer|min:0|max:1000',
             'primeraSemana.*.status' => 'required|string|in:Abierto,Cerrado',
+            'primeraSemana.*.id' => 'required|integer',
 
             'segundaSemana' => 'array',
             'segundaSemana.*.concept_id' => 'required|integer|exists:concepts,id',
             'segundaSemana.*.churche_id' => 'required|integer|exists:churches,id',
             'segundaSemana.*.month_id' => 'required|integer|exists:months,id',
             'segundaSemana.*.week' => 'required|integer|min:1|max:4',
-            'segundaSemana.*.valor' => 'required|integer|min:0|max:1000',
+            'segundaSemana.*.value' => 'required|integer|min:0|max:1000',
             'segundaSemana.*.status' => 'required|string|in:Abierto,Cerrado',
+            'segundaSemana.*.id' => 'required|integer',
 
             'terceraSemana' => 'array',
             'terceraSemana.*.concept_id' => 'required|integer|exists:concepts,id',
             'terceraSemana.*.churche_id' => 'required|integer|exists:churches,id',
             'terceraSemana.*.month_id' => 'required|integer|exists:months,id',
             'terceraSemana.*.week' => 'required|integer|min:1|max:4',
-            'terceraSemana.*.valor' => 'required|integer|min:0|max:1000',
+            'terceraSemana.*.value' => 'required|integer|min:0|max:1000',
             'terceraSemana.*.status' => 'required|string|in:Abierto,Cerrado',
 
             'cuartaSemana' => 'array',
@@ -70,25 +74,70 @@ class ChurcheController extends Controller
             'cuartaSemana.*.churche_id' => 'required|integer|exists:churches,id',
             'cuartaSemana.*.month_id' => 'required|integer|exists:months,id',
             'cuartaSemana.*.week' => 'required|integer|min:1|max:4',
-            'cuartaSemana.*.valor' => 'required|integer|min:0|max:1000',
+            'cuartaSemana.*.value' => 'required|integer|min:0|max:1000',
             'cuartaSemana.*.status' => 'required|string|in:Abierto,Cerrado',
         ]);
 
         $human = Human::where('user_id', $request->user()->id)->first();
 
         if(Arr::exists($data, 'primeraSemana')) {
-            // return $data['primeraSemana'][0]['churche_id'];
             $churche = Churche::where('id', $data['primeraSemana'][0]['churche_id'])->first();
-            // return $churche;
             foreach ($data['primeraSemana'] as $registro) {
-                $churche->concepts()->attach($registro['concept_id'], [
-                    'week' => $registro['week'],
-                    'value' => $registro['valor'],
-                    'accumulated' => 0, // o calcularlo si deseas
-                    'status' => $registro['status'],
-                    'month_id' => $registro['month_id'],
-                    'human_id' => $human->id,
-                ]);
+                $churcheConceptMonthHuman = ChurcheConceptMonthHuman::where('id', $registro['id'])
+                    ->first();
+                if ($churcheConceptMonthHuman) {
+                    $churcheConceptMonthHuman->update([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                } else {
+                    ChurcheConceptMonthHuman::create([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                }
+            }
+        }
+
+        if(Arr::exists($data, 'segundaSemana')) {
+            foreach ($data['segundaSemana'] as $registro) {
+                $churcheConceptMonthHuman = ChurcheConceptMonthHuman::where('id', $registro['id'])
+                    ->first();
+                if ($churcheConceptMonthHuman) {
+                    $churcheConceptMonthHuman->update([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                } else {
+                    ChurcheConceptMonthHuman::create([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                }
             }
         }
 

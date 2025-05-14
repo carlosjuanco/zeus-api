@@ -18,4 +18,9 @@ class Human extends Model
     public function churche () {
         return $this->belongsTo(Churche::class);
     }
+
+    public function churcheConceptMonthHumans()
+    {
+        return $this->hasMany(ChurcheConceptMonthHuman::class);
+    }
 }

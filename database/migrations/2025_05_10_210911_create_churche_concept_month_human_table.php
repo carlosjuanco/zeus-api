@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('churche_concept', function (Blueprint $table) {
+        Schema::create('churche_concept_month_human', function (Blueprint $table) {
             $table->id();
             $table->foreignId('concept_id')
                 ->constrained('concepts')
@@ -28,11 +28,11 @@ return new class extends Migration
                 ->constrained('humans')
                 ->onDelete('cascade');
             $table->unsignedTinyInteger('week'); // 1-4
-
             $table->unsignedSmallInteger('value'); // 1 - 1000
             $table->unsignedSmallInteger('accumulated'); // 1 - 1000
-
             $table->string('status', 7);
+            $table->timestamps();
+            $table->softDeletes();
         });
     }
 
