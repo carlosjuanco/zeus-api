@@ -68,6 +68,7 @@ class ChurcheController extends Controller
             'terceraSemana.*.week' => 'required|integer|min:1|max:4',
             'terceraSemana.*.value' => 'required|integer|min:0|max:1000',
             'terceraSemana.*.status' => 'required|string|in:Abierto,Cerrado',
+            'terceraSemana.*.id' => 'required|integer',
 
             'cuartaSemana' => 'array',
             'cuartaSemana.*.concept_id' => 'required|integer|exists:concepts,id',
@@ -76,12 +77,12 @@ class ChurcheController extends Controller
             'cuartaSemana.*.week' => 'required|integer|min:1|max:4',
             'cuartaSemana.*.value' => 'required|integer|min:0|max:1000',
             'cuartaSemana.*.status' => 'required|string|in:Abierto,Cerrado',
+            'cuartaSemana.*.id' => 'required|integer',
         ]);
 
         $human = Human::where('user_id', $request->user()->id)->first();
 
         if(Arr::exists($data, 'primeraSemana')) {
-            $churche = Churche::where('id', $data['primeraSemana'][0]['churche_id'])->first();
             foreach ($data['primeraSemana'] as $registro) {
                 $churcheConceptMonthHuman = ChurcheConceptMonthHuman::where('id', $registro['id'])
                     ->first();
@@ -141,13 +142,68 @@ class ChurcheController extends Controller
             }
         }
 
-        // return response()->json([
-        //     'message' => 'Datos validados correctamente.',
-        //     'data' => $data
-        // ], 200);
+        if(Arr::exists($data, 'terceraSemana')) {
+            foreach ($data['terceraSemana'] as $registro) {
+                $churcheConceptMonthHuman = ChurcheConceptMonthHuman::where('id', $registro['id'])
+                    ->first();
+                if ($churcheConceptMonthHuman) {
+                    $churcheConceptMonthHuman->update([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                } else {
+                    ChurcheConceptMonthHuman::create([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                }
+            }
+        }
 
-        // return response()->json([
-        //     'message' => ' creada correctamente'
-        // ], 200);
+        if(Arr::exists($data, 'cuartaSemana')) {
+            foreach ($data['cuartaSemana'] as $registro) {
+                $churcheConceptMonthHuman = ChurcheConceptMonthHuman::where('id', $registro['id'])
+                    ->first();
+                if ($churcheConceptMonthHuman) {
+                    $churcheConceptMonthHuman->update([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                } else {
+                    ChurcheConceptMonthHuman::create([
+                        'week' => $registro['week'],
+                        'value' => $registro['value'],
+                        'accumulated' => 0, // o calcularlo si deseas
+                        'status' => $registro['status'],
+                        'month_id' => $registro['month_id'],
+                        'concept_id' => $registro['concept_id'],
+                        'churche_id' => $registro['churche_id'],
+                        'human_id' => $human->id,
+                    ]);
+                }
+            }
+        }
+
+        return response()->json([
+            'message' => '¡Listo! Tus datos se guardaron bien.'
+        ], 200);
     }
 }
