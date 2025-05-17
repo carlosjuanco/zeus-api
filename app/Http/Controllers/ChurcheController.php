@@ -13,6 +13,11 @@ use Carbon\Carbon;
 
 class ChurcheController extends Controller
 {
+    /**
+     * Obtener todas las iglesias
+     *
+     * @return json
+     */
     public function getChurches (Request $request) {
         $churches = Churche::select('name')->get();
         return response()->json([
@@ -20,6 +25,12 @@ class ChurcheController extends Controller
         ], 200);
     }
 
+    /**
+     * Obtener todos los conceptos que le pertenecen a una iglesia en específico, esta iglesia esta vinculado
+     * a un humano
+     *
+     * @return json
+     */
     public function getChurcheWithConcepts (Request $request) {
         $human = Human::where('user_id', $request->user()->id)->first();
 
@@ -41,6 +52,31 @@ class ChurcheController extends Controller
         ], 200);
     }
 
+    /**
+     * Guardar el número de personas ingresadas por concepto y semana.
+     * 
+     * Validar el arreglo que mandamos.
+     * Validamos que la propiedad "primeraSemana" sea requerido y que sea un arreglo.
+     * Derivado de "primeraSemana", la propiedad, concept_id, que sea requerido, entero y que existe el registro
+     *  en la tabla "concepts".
+     * Derivado de "primeraSemana", la propiedad, churche_id, que sea requerido, entero y que existe el registro
+     *  en la tabla "churches".
+     * Derivado de "primeraSemana", la propiedad, month_id, que sea requerido, entero y que existe el registro
+     *  en la tabla "months".
+     * Derivado de "primeraSemana", la propiedad, week, que sea requerido, entero, tenga un valor mínimo de 1
+     *  y máximo 4.
+     * Derivado de "primeraSemana", la propiedad, value, que sea requerido, entero, tenga un valor mínimo de 0
+     *  y máximo 1000.
+     * Derivado de "primeraSemana", la propiedad, status, que sea requerido, texto, solo acepte valores
+     *  "Abierto" y "Cerrado".
+     * Derivado de "primeraSemana", la propiedad, id, que sea requerido y entero.
+     * 
+     * Validamos que la propiedad "segundaSemana" exista, si existe que sea un arreglo.
+     * Validamos que la propiedad "terceraSemana" exista, si existe que sea un arreglo.
+     * Validamos que la propiedad "cuartoSemana" exista, si existe que sea un arreglo.
+     *
+     * @return json
+     */
     public function storeChurcheWithConcepts (Request $request) {
         $data = $request->validate([
             'primeraSemana' => 'required|array',
@@ -82,10 +118,16 @@ class ChurcheController extends Controller
 
         $human = Human::where('user_id', $request->user()->id)->first();
 
+        // Ocupamos el helpers "Arr::exists", para verificar que la propiedad "primeraSemana" exista.
+        // Importamos la libreria.
+        // Enlace: https://laravel.com/docs/9.x/helpers#main-content
         if(Arr::exists($data, 'primeraSemana')) {
             foreach ($data['primeraSemana'] as $registro) {
                 $churcheConceptMonthHuman = ChurcheConceptMonthHuman::where('id', $registro['id'])
                     ->first();
+
+                // Si existe el registro en la base de datos, actualizamos
+                // de lo contrario agregamos el registro.
                 if ($churcheConceptMonthHuman) {
                     $churcheConceptMonthHuman->update([
                         'week' => $registro['week'],

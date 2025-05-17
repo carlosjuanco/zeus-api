@@ -8,7 +8,8 @@ use App\Models\Human;
 class LinkThedistricUserWithTheVolcanesChurchSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Del usuario "Secretaria de distrito" con rol "Secretaria de distrito", obtener que ID le corresponde de humano
+     * para vincularlo a una iglesia aleatoria.
      *
      * @return void
      */
