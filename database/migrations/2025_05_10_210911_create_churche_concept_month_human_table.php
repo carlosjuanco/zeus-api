@@ -43,6 +43,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('churche_concept');
+        Schema::dropIfExists('churche_concept_month_human');
     }
 };
