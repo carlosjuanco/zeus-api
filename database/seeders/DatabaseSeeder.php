@@ -37,6 +37,7 @@ class DatabaseSeeder extends Seeder
             AddRecordsForChurchesInTheChurchesTableSeeder::class,
             LinkTheChurchUserWithTheCentenarioChurchSeeder::class,
             AddRecordsForConceptsInTheConceptsTableSeeder::class,
+            LinkThedistricUserWithTheVolcanesChurchSeeder::class,
         ]);
     }
 }
