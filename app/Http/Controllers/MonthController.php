@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Month;
 use Illuminate\Http\Request;
 
+use Carbon\Carbon;
+
 class MonthController extends Controller
 {
     public function getYears (Request $request) {
@@ -15,7 +17,9 @@ class MonthController extends Controller
     }
 
     public function getMonths (Request $request) {
-        $months = Month::get();
+        $fecha = Carbon::now();
+
+        $months = Month::where('anio', $fecha->year)->get();
         return response()->json([
             'months' => $months->toArray()
         ], 200);
