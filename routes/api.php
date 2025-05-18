@@ -33,7 +33,7 @@ Route::controller(MonthController::class)
 });
 
 Route::controller(ChurcheController::class)
-    ->middleware(['auth:sanctum'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Churche'])
     ->group(function () {
         Route::get('getChurches', 'getChurches');
         Route::get('getChurcheWithConcepts', 'getChurcheWithConcepts');
