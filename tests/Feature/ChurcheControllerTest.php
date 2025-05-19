@@ -1,0 +1,1132 @@
+<?php
+
+namespace Tests\Feature;
+
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Arr;
+use Tests\TestCase;
+
+use App\Models\User;
+use App\Models\ChurcheConceptMonthHuman;
+
+class ChurcheControllerTest extends TestCase
+{
+    /**
+     * Comprobar que el usuario este logueado.
+     *
+     * @return void
+     */
+    public function test_verify_that_the_user_is_logged_in()
+    {
+        $response = $this->post('api/getChurches');
+        $response->assertStatus(405);
+    }
+
+    /**
+     * Comprobar que el rol "Secretaria de distrito" no puede entrar.
+     *
+     * @return json
+     */
+    public function test_ensure_that_the_district_secretary_role_cannot_log_in()
+    {
+        // 3 = es el rol "Secretaria de distrito" 
+        $district_secretary = User::where('role_id', 3)->first();
+
+        $response = $this->actingAs($district_secretary)->get('api/getChurches');
+
+        // Efectivamente el rol "Secretaria de distrito" no esta autorizado a entrar
+        // a esa ruta.
+        $response->assertStatus(403);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Obtener todas las iglesias
+     *
+     * @return json
+     */
+    public function test_get_all_churches()
+    {
+        // 2 = es el rol "Secretaria de iglesia" 
+        $churche_secretary = User::where('role_id', 2)->first();
+
+        $response = $this->actingAs($churche_secretary)->get('api/getChurches');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'churches',
+             ])
+             ->assertJsonCount(12, 'churches');
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Obtener todos los conceptos que le pertenecen a una iglesia en específico, del usuario "Secretaria de iglesia".
+     *
+     * @return json
+     */
+    public function test_get_all_items_belonging_to_a_specific_church_from_the_church_secretary_user()
+    {
+        // 2 = es el rol "Secretaria de iglesia" 
+        $churche_secretary = User::where('role_id', 2)->first();
+
+        $response = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+
+        // Se usa el carácter * para afirmar que dentro de la estructura de todos, existe un objeto
+        // y que tiene las propiedades, pero puede ser un arreglo que no tiene una longitud definida
+        // https://laravel.com/docs/9.x/http-tests#assert-json-structure
+        // Como lo entiendo, es decir, que tiene siempre esas propiedades.
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'churcheConceptMonthHuman' => [
+                    '*' => [
+                        'accumulated',
+                        'churche_id',
+                        'concept_id',
+                        'human_id',
+                        'id',
+                        'month_id',
+                        'status',
+                        'value',
+                        'week',
+                    ]
+                 ]
+             ]);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Guardar el número de personas ingresadas por concepto y solo mandamos una semana.
+     *
+     * @return json
+     */
+    public function test_save_the_number_of_people_entered_per_item_and_we_only_send_them_for_one_week()
+    {
+        // 2 = es el rol "Secretaria de iglesia" 
+        $churche_secretary = User::where('role_id', 2)->first();
+
+        $primeraSemana = [
+            "primeraSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ]
+        ];
+
+        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $primeraSemana);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
+
+        $this->post('api/logout');
+
+        // Eliminar los datos guardados, para hacer bien la siguiente prueba
+        $response2 = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+
+        $ids = Arr::pluck($response2->json()['churcheConceptMonthHuman'], 'id');
+        
+        $allDelete = ChurcheConceptMonthHuman::whereIn('id', $ids)->delete();
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Guardar el idro de personas ingresadas por concepto y mandamos dos semana.
+     *
+     * @return json
+     */
+    public function test_save_the_number_of_people_entered_per_item_and_send_them_for_two_weeks()
+    {
+        // 2 = es el rol "Secretaria de iglesia" 
+        $churche_secretary = User::where('role_id', 2)->first();
+
+        $segundaSemana = [
+            "primeraSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ],
+            "segundaSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ]
+        ];
+
+        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $segundaSemana);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
+
+        $this->post('api/logout');
+
+        // Eliminar los datos guardados, para hacer bien la siguiente prueba
+        $response2 = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+
+        $ids = Arr::pluck($response2->json()['churcheConceptMonthHuman'], 'id');
+        
+        $allDelete = ChurcheConceptMonthHuman::whereIn('id', $ids)->delete();
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Guardar el número de personas ingresadas por concepto y mandamos tres semana.
+     *
+     * @return json
+     */
+    public function test_save_the_number_of_people_entered_per_item_and_send_them_for_three_weeks()
+    {
+        // 2 = es el rol "Secretaria de iglesia" 
+        $churche_secretary = User::where('role_id', 2)->first();
+
+        $terceraSemana = [
+            "primeraSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ],
+            "segundaSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ],
+            "terceraSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ]
+        ];
+
+        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $terceraSemana);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
+
+        $this->post('api/logout');
+
+        // Eliminar los datos guardados, para hacer bien la siguiente prueba
+        $response2 = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+
+        $ids = Arr::pluck($response2->json()['churcheConceptMonthHuman'], 'id');
+        
+        $allDelete = ChurcheConceptMonthHuman::whereIn('id', $ids)->delete();
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Guardar el número de personas ingresadas por concepto y mandamos cuatro semana.
+     *
+     * @return json
+     */
+    public function test_save_the_number_of_people_entered_per_item_and_send_them_for_four_weeks()
+    {
+        // 2 = es el rol "Secretaria de iglesia" 
+        $churche_secretary = User::where('role_id', 2)->first();
+
+        $cuartaSemana = [
+            "primeraSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 1,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ],
+            "segundaSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 2,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ],
+            "terceraSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 3,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ],
+            "cuartaSemana" => [
+                [
+                    "concept_id" => 1,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 2,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 3,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 4,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 5,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 6,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 7,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 8,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 9,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ],
+                [
+                    "concept_id" => 10,
+                    "churche_id" => 3,
+                    "month_id" => 3,
+                    "week" => 4,
+                    "value" => 0,
+                    "status" => "Abierto",
+                    "id" => 0
+                ]
+            ]
+        ];
+
+        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $cuartaSemana);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
+
+        $this->post('api/logout');
+    }
+}
