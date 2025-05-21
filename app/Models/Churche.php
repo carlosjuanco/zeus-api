@@ -5,21 +5,26 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class Human extends Model
+class Churche extends Model
 {
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'paternal_surname',
-        'paternal_surname',
+        'name',
+        'human_id',
     ];
 
-    public function churche () {
-        return $this->belongsTo(Churche::class);
+    /**
+     * Relación: una iglesia pertenece a un humano.
+     */
+    public function human()
+    {
+        return $this->belongsTo(Human::class);
     }
 
-    public function churcheConceptMonthHumans()
+    public function conceptMonthHumans()
     {
         return $this->hasMany(ChurcheConceptMonthHuman::class);
     }
