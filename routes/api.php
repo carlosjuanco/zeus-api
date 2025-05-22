@@ -32,13 +32,18 @@ Route::controller(MonthController::class)
         Route::put('openMonth/{month}', 'openMonth');
 });
 
+// Rutas con política general (para "Creadores del sistema" y "Secretaria de iglesia")
 Route::controller(ChurcheController::class)
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Churche'])
     ->group(function () {
-        Route::get('getChurches', 'getChurches');
         Route::get('getChurcheWithConcepts', 'getChurcheWithConcepts');
         Route::post('storeChurcheWithConcepts', 'storeChurcheWithConcepts');
+        Route::get('getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened', 'getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened');
 });
+
+// Ruta exclusiva para "Secretaria de distrito"
+Route::get('getChurches', [ChurcheController::class, 'getChurches'])
+    ->middleware(['auth:sanctum', 'can:getChurches,App\Models\Churche']);
 
 Route::controller(ConceptController::class)
     ->middleware(['auth:sanctum'])
