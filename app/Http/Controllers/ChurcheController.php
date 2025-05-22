@@ -15,18 +15,6 @@ use Carbon\Carbon;
 class ChurcheController extends Controller
 {
     /**
-     * Obtener todas las iglesias
-     *
-     * @return json
-     */
-    public function getChurches (Request $request) {
-        $churches = Churche::select('name')->orderBy('id', 'asc')->get();
-        return response()->json([
-            'churches' => $churches->pluck('name')->toArray()
-        ], 200);
-    }
-
-    /**
      * Obtener todos los conceptos que le pertenecen a una iglesia en específico, esta iglesia esta vinculado
      * a un humano
      *
@@ -277,7 +265,7 @@ class ChurcheController extends Controller
             ->orderBy('concept_id', 'asc')
             ->orderBy('churche_id', 'asc')            
             ->get();
-            
+
         /*
             Ordenar el campo "concept_id" de manera ascendente, también ordenamos el campo "churche_id" 
             de forma ascendente, sumar el campo "value", lo podemos agrupar por este campo, para obtener

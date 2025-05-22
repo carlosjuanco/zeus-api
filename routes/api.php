@@ -41,8 +41,6 @@ Route::controller(ChurcheController::class)
 });
 
 // Ruta exclusiva para "Secretaria de distrito"
-Route::get('getChurches', [ChurcheController::class, 'getChurches'])
-    ->middleware(['auth:sanctum', 'can:getChurches,App\Models\Churche']);
 Route::get('getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened', [ChurcheController::class, 'getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened'])
     ->middleware(['auth:sanctum', 'can:getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened,App\Models\Churche']);
 
