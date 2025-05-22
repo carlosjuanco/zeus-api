@@ -38,12 +38,13 @@ Route::controller(ChurcheController::class)
     ->group(function () {
         Route::get('getChurcheWithConcepts', 'getChurcheWithConcepts');
         Route::post('storeChurcheWithConcepts', 'storeChurcheWithConcepts');
-        Route::get('getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened', 'getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened');
 });
 
 // Ruta exclusiva para "Secretaria de distrito"
 Route::get('getChurches', [ChurcheController::class, 'getChurches'])
     ->middleware(['auth:sanctum', 'can:getChurches,App\Models\Churche']);
+Route::get('getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened', [ChurcheController::class, 'getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened'])
+    ->middleware(['auth:sanctum', 'can:getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened,App\Models\Churche']);
 
 Route::controller(ConceptController::class)
     ->middleware(['auth:sanctum'])
