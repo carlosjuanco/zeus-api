@@ -239,8 +239,7 @@ class ChurcheController extends Controller
     }
 
     /**
-     * Obtener por cada iglesia la sumatoria de todas las semanas del mes aperturado 
-     * a un humano
+     * Obtener por cada iglesia la sumatoria de todas las semanas del mes aperturado
      *
      * @return json
      */
