@@ -19,7 +19,7 @@ class ChurcheControllerTest extends TestCase
      */
     public function test_verify_that_the_user_is_logged_in()
     {
-        $response = $this->post('api/getChurches');
+        $response = $this->post('api/getChurcheWithConcepts');
         $response->assertStatus(405);
     }
 
@@ -33,32 +33,11 @@ class ChurcheControllerTest extends TestCase
         // 3 = es el rol "Secretaria de distrito" 
         $district_secretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($district_secretary)->get('api/getChurches');
+        $response = $this->actingAs($district_secretary)->get('api/getChurcheWithConcepts');
 
         // Efectivamente el rol "Secretaria de distrito" no esta autorizado a entrar
         // a esa ruta.
         $response->assertStatus(403);
-
-        $this->post('api/logout');
-    }
-
-    /**
-     * Obtener todas las iglesias
-     *
-     * @return json
-     */
-    public function test_get_all_churches()
-    {
-        // 2 = es el rol "Secretaria de iglesia" 
-        $churche_secretary = User::where('role_id', 2)->first();
-
-        $response = $this->actingAs($churche_secretary)->get('api/getChurches');
-
-        $response->assertStatus(200)
-            ->assertJsonStructure([
-                 'churches',
-             ])
-             ->assertJsonCount(12, 'churches');
 
         $this->post('api/logout');
     }
@@ -1126,6 +1105,45 @@ class ChurcheControllerTest extends TestCase
 
         $response->assertStatus(200)
             ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Prueba obtener por cada iglesia la sumatoria de todas las semanas del mes aperturado
+     *
+     * @return json
+     */
+    public function test_to_get_the_sum_of_all_the_weeks_of_the_month_opened_for_each_church()
+    {
+        // 3 = es el rol "Secretaria de distrito" 
+        $churche_secretary = User::where('role_id', 3)->first();
+
+        $response = $this->actingAs($churche_secretary)->get('api/getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened');
+
+        // Se usa el carácter * para afirmar que dentro de la estructura de todos, existe un objeto
+        // y que tiene las propiedades, pero puede ser un arreglo que no tiene una longitud definida
+        // https://laravel.com/docs/9.x/http-tests#assert-json-structure
+        // Como lo entiendo, es decir, que tiene siempre esas propiedades.
+
+        // No agregue la propiedad "total_week" y "total_by_concept", debido a que solo una posicion 
+        // del arreglo lo cumple y de acuerdo a la descripcion del método "assertJsonStructure", 
+        // todos deben ser iguales
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'churches' => [
+                    '*' => [
+                        'id',
+                        'name',
+                        'concept' => [
+                            '*' => [
+                                'id',
+                                'concept',
+                            ]
+                        ]
+                    ]
+                ]
+             ]);
 
         $this->post('api/logout');
     }
