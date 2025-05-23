@@ -739,7 +739,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -748,7 +748,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -757,7 +757,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -766,7 +766,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -775,7 +775,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -784,7 +784,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -793,7 +793,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -802,7 +802,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -811,7 +811,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -820,7 +820,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 1,
-                    "value" => 0,
+                    "value" => 50,
                     "status" => "Abierto",
                     "id" => 0
                 ]
@@ -831,7 +831,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -840,7 +840,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -849,7 +849,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -858,7 +858,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -867,7 +867,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -876,7 +876,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -885,7 +885,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -894,7 +894,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -903,7 +903,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -912,7 +912,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 2,
-                    "value" => 0,
+                    "value" => 51,
                     "status" => "Abierto",
                     "id" => 0
                 ]
@@ -923,7 +923,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -932,7 +932,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -941,7 +941,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -950,7 +950,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -959,7 +959,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -968,7 +968,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -977,7 +977,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -986,7 +986,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -995,7 +995,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1004,7 +1004,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 3,
-                    "value" => 0,
+                    "value" => 52,
                     "status" => "Abierto",
                     "id" => 0
                 ]
@@ -1015,7 +1015,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1024,7 +1024,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1033,7 +1033,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1042,7 +1042,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1051,7 +1051,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1060,7 +1060,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1069,7 +1069,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1078,7 +1078,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1087,7 +1087,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ],
@@ -1096,7 +1096,7 @@ class ChurcheControllerTest extends TestCase
                     "churche_id" => 3,
                     "month_id" => 3,
                     "week" => 4,
-                    "value" => 0,
+                    "value" => 53,
                     "status" => "Abierto",
                     "id" => 0
                 ]
