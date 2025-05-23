@@ -4,9 +4,12 @@ namespace Tests\Feature;
 
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Arr;
 use Tests\TestCase;
 
 use App\Models\User;
+
+use Carbon\Carbon;
 
 class MonthControllerTest extends TestCase
 {
@@ -84,8 +87,20 @@ class MonthControllerTest extends TestCase
     public function test_close_one_month()
     {
         $district_secretary = User::where('role_id', 3)->first();
+        // Consultamos todos los meses
+        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        // Buscamos que mes esta bierto
+        $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
+            return $value['status'] == 'Abierto';
+        });
+        // Obtenemos el primer registro, se hace de esta manera porque el indice no comienza en cero
+        // sigue almacenando del primero arreglo ($responseMonthOpen->json()['months'])
+        $first = Arr::first($monthOpen, function ($value, $key) {
+            return $value;
+        });
 
-        $response = $this->actingAs($district_secretary)->put('api/closeMonth/4');
+        // Mandamos a cerrar el mes actualmente abierto
+        $response = $this->actingAs($district_secretary)->put('api/closeMonth/' . $first['id']);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Mes cerrado correctamente']);
@@ -100,9 +115,11 @@ class MonthControllerTest extends TestCase
      */
     public function test_open_one_month()
     {
+        $fecha = Carbon::now();
+
         $district_secretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($district_secretary)->put('api/openMonth/4');
+        $response = $this->actingAs($district_secretary)->put('api/openMonth/' . $fecha->month);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Mes abierto correctamente']);
