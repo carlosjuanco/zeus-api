@@ -90,12 +90,27 @@ class ChurcheControllerTest extends TestCase
         // 2 = es el rol "Secretaria de iglesia" 
         $churche_secretary = User::where('role_id', 2)->first();
 
+        // 3 = es el rol "Secretaria de distrito" 
+        $district_secretary = User::where('role_id', 3)->first();
+
+        // Consultamos todos los meses
+        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        // Buscamos que mes esta bierto
+        $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
+            return $value['status'] == 'Abierto';
+        });
+        // Obtenemos el primer registro, se hace de esta manera porque el indice no comienza en cero
+        // sigue almacenando del primero arreglo ($responseMonthOpen->json()['months'])
+        $first = Arr::first($monthOpen, function ($value, $key) {
+            return $value;
+        });
+
         $primeraSemana = [
             "primeraSemana" => [
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -104,7 +119,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -113,7 +128,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -122,7 +137,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -131,7 +146,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -140,7 +155,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -149,7 +164,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -158,7 +173,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -167,7 +182,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -176,7 +191,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -212,12 +227,27 @@ class ChurcheControllerTest extends TestCase
         // 2 = es el rol "Secretaria de iglesia" 
         $churche_secretary = User::where('role_id', 2)->first();
 
+        // 3 = es el rol "Secretaria de distrito" 
+        $district_secretary = User::where('role_id', 3)->first();
+
+        // Consultamos todos los meses
+        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        // Buscamos que mes esta bierto
+        $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
+            return $value['status'] == 'Abierto';
+        });
+        // Obtenemos el primer registro, se hace de esta manera porque el indice no comienza en cero
+        // sigue almacenando del primero arreglo ($responseMonthOpen->json()['months'])
+        $first = Arr::first($monthOpen, function ($value, $key) {
+            return $value;
+        });
+
         $segundaSemana = [
             "primeraSemana" => [
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -226,7 +256,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -235,7 +265,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -244,7 +274,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -253,7 +283,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -262,7 +292,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -271,7 +301,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -280,7 +310,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -289,7 +319,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -298,7 +328,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -309,7 +339,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -318,7 +348,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -327,7 +357,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -336,7 +366,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -345,7 +375,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -354,7 +384,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -363,7 +393,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -372,7 +402,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -381,7 +411,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -390,7 +420,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -426,12 +456,27 @@ class ChurcheControllerTest extends TestCase
         // 2 = es el rol "Secretaria de iglesia" 
         $churche_secretary = User::where('role_id', 2)->first();
 
+        // 3 = es el rol "Secretaria de distrito" 
+        $district_secretary = User::where('role_id', 3)->first();
+
+        // Consultamos todos los meses
+        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        // Buscamos que mes esta bierto
+        $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
+            return $value['status'] == 'Abierto';
+        });
+        // Obtenemos el primer registro, se hace de esta manera porque el indice no comienza en cero
+        // sigue almacenando del primero arreglo ($responseMonthOpen->json()['months'])
+        $first = Arr::first($monthOpen, function ($value, $key) {
+            return $value;
+        });
+
         $terceraSemana = [
             "primeraSemana" => [
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -440,7 +485,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -449,7 +494,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -458,7 +503,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -467,7 +512,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -476,7 +521,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -485,7 +530,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -494,7 +539,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -503,7 +548,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -512,7 +557,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 0,
                     "status" => "Abierto",
@@ -523,7 +568,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -532,7 +577,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -541,7 +586,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -550,7 +595,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -559,7 +604,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -568,7 +613,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -577,7 +622,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -586,7 +631,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -595,7 +640,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -604,7 +649,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 0,
                     "status" => "Abierto",
@@ -615,7 +660,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -624,7 +669,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -633,7 +678,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -642,7 +687,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -651,7 +696,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -660,7 +705,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -669,7 +714,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -678,7 +723,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -687,7 +732,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -696,7 +741,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 0,
                     "status" => "Abierto",
@@ -732,12 +777,27 @@ class ChurcheControllerTest extends TestCase
         // 2 = es el rol "Secretaria de iglesia" 
         $churche_secretary = User::where('role_id', 2)->first();
 
+        // 3 = es el rol "Secretaria de distrito" 
+        $district_secretary = User::where('role_id', 3)->first();
+
+        // Consultamos todos los meses
+        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        // Buscamos que mes esta bierto
+        $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
+            return $value['status'] == 'Abierto';
+        });
+        // Obtenemos el primer registro, se hace de esta manera porque el indice no comienza en cero
+        // sigue almacenando del primero arreglo ($responseMonthOpen->json()['months'])
+        $first = Arr::first($monthOpen, function ($value, $key) {
+            return $value;
+        });
+
         $cuartaSemana = [
             "primeraSemana" => [
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -746,7 +806,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -755,7 +815,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -764,7 +824,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -773,7 +833,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -782,7 +842,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -791,7 +851,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -800,7 +860,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -809,7 +869,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -818,7 +878,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 1,
                     "value" => 50,
                     "status" => "Abierto",
@@ -829,7 +889,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -838,7 +898,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -847,7 +907,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -856,7 +916,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -865,7 +925,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -874,7 +934,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -883,7 +943,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -892,7 +952,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -901,7 +961,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -910,7 +970,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 2,
                     "value" => 51,
                     "status" => "Abierto",
@@ -921,7 +981,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -930,7 +990,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -939,7 +999,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -948,7 +1008,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -957,7 +1017,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -966,7 +1026,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -975,7 +1035,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -984,7 +1044,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -993,7 +1053,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -1002,7 +1062,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 3,
                     "value" => 52,
                     "status" => "Abierto",
@@ -1013,7 +1073,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 1,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1022,7 +1082,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 2,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1031,7 +1091,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 3,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1040,7 +1100,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 4,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1049,7 +1109,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 5,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1058,7 +1118,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 6,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1067,7 +1127,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 7,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1076,7 +1136,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 8,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1085,7 +1145,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 9,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
@@ -1094,7 +1154,7 @@ class ChurcheControllerTest extends TestCase
                 [
                     "concept_id" => 10,
                     "churche_id" => 3,
-                    "month_id" => 3,
+                    "month_id" => $first['id'],
                     "week" => 4,
                     "value" => 53,
                     "status" => "Abierto",
