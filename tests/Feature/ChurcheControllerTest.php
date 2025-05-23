@@ -10,6 +10,8 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\ChurcheConceptMonthHuman;
 
+use Database\Seeders\CreateChurchSecretariesToTestWithSeveralChurchesSeeder;
+
 class ChurcheControllerTest extends TestCase
 {
     /**
@@ -1146,5 +1148,18 @@ class ChurcheControllerTest extends TestCase
              ]);
 
         $this->post('api/logout');
+    }
+
+    /**
+     * Create a church secretary for the 12 existing churches
+     * 
+     * La finalidad es que en las pruebas unitarias visuales, se registren datos para cada iglesia
+     * con los usuarios de secretarias que se registren aquí
+     *
+     * @return json
+     */
+    public function test_create_a_church_secretary_for_the_12_existing_churches()
+    {
+        $this->seed(CreateChurchSecretariesToTestWithSeveralChurchesSeeder::class); // Ejecuta tu seeder
     }
 }
