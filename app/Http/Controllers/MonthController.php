@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Month;
+use App\Models\Human;
+use App\Models\ChurcheConceptMonthHuman;
 use Illuminate\Http\Request;
 
 use Carbon\Carbon;
@@ -66,6 +68,43 @@ class MonthController extends Controller
 
         return response()->json([
             'message' => 'Mes abierto correctamente'
+        ], 200);
+    }
+
+    /**
+     * Obtener todos los meses que tienen informacion, en base al usuario que inicio sesión. 
+     * 
+     * @year = Recibira el parametro año.
+     * 
+     * En base al año obtenemos todos los meses, despues obtenemos solo los que tengas informacion,
+     * dentro de la primera coleccion, creamos la propiedad "have information", ponemos como valores
+     * "true" y "falso" dependiendo del caso.
+     * 
+     * @return json
+     */
+    public function getAllTheMonthsThatHaveInformation (Request $request, $year) {
+        $human = Human::where('user_id', $request->user()->id)->first();
+
+        // dd($year);
+        $months = Month::where('anio', $year)->get();
+
+        $churcheConceptMonthHumans = ChurcheConceptMonthHuman::select('month_id')
+            ->whereIn('month_id', $months->pluck('id')->toArray())
+            ->where('human_id', $human->id)
+            ->groupBy('month_id')
+            ->get();
+        // dd($churcheConceptMonthHumans);
+        // dd($churcheConceptMonthHumans->where('month_id', 2)->first() ? true : false);
+
+        $months->transform(function ($month, $key) use ($churcheConceptMonthHumans){
+            $month->haveInformation = $churcheConceptMonthHumans->where('month_id', $month->id)->first() ? true : false;
+            return $month;
+        });
+
+        // dd($months->toArray());
+
+        return response()->json([
+            'months' => $months->toArray()
         ], 200);
     }
 }
