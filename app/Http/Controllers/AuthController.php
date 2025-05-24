@@ -64,8 +64,11 @@ class AuthController extends Controller
 
         // Consultar a que iglesia pertenece el usuario
         $human = Human::where('user_id', $user->id)->first();
-        $user->church_to_which_it_belongs = $human->churche->name;
-        $user->churche_id = $human->churche->id;
+        $churche = $human->churche;
+        
+        // Solo se valida para el rol "Creadores del sistema", este no debe pertenecer a una iglesia.
+        $user->church_to_which_it_belongs = $churche ? $churche->name : "";
+        $user->churche_id = $churche ? $churche->id : 0;
 
         return response()->json([
             'user' => $user

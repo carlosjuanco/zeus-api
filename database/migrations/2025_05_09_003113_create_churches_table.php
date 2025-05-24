@@ -16,6 +16,8 @@ return new class extends Migration
         Schema::create('churches', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
+            // human_id = quien realiza el registro de una nueva iglesia o edita.
+            // No es que ese humano pertenezca a esa iglesia.
             $table->foreignId('human_id')
                   ->constrained('humans')
                   ->onDelete('cascade');
