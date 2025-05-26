@@ -1221,5 +1221,52 @@ class ChurcheControllerTest extends TestCase
     public function test_create_a_church_secretary_for_the_12_existing_churches()
     {
         $this->seed(CreateChurchSecretariesToTestWithSeveralChurchesSeeder::class); // Ejecuta tu seeder
+
+        // Verifica que los datos se hayan insertado correctamente
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 2',
+            'role_id' => 2,
+        ]);
+
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 3',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 4',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 5',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 6',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 7',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 8',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 9',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 10',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 11',
+            'role_id' => 2,
+        ]);
+        $this->assertDatabaseHas('users', [
+            'name' => 'Secretaria de iglesia 12',
+            'role_id' => 2,
+        ]);
     }
 }
