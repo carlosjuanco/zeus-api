@@ -85,23 +85,19 @@ class MonthController extends Controller
     public function getAllTheMonthsThatHaveInformation (Request $request, $year) {
         $human = Human::where('user_id', $request->user()->id)->first();
 
-        // dd($year);
-        $months = Month::where('anio', $year)->get();
+        $months = Month::select('id', 'month', 'anio')
+            ->where('anio', $year)->get();
 
         $churcheConceptMonthHumans = ChurcheConceptMonthHuman::select('month_id')
             ->whereIn('month_id', $months->pluck('id')->toArray())
             ->where('human_id', $human->id)
             ->groupBy('month_id')
             ->get();
-        // dd($churcheConceptMonthHumans);
-        // dd($churcheConceptMonthHumans->where('month_id', 2)->first() ? true : false);
 
         $months->transform(function ($month, $key) use ($churcheConceptMonthHumans){
             $month->haveInformation = $churcheConceptMonthHumans->where('month_id', $month->id)->first() ? true : false;
             return $month;
         });
-
-        // dd($months->toArray());
 
         return response()->json([
             'months' => $months->toArray()
