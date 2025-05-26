@@ -26,11 +26,17 @@ Route::controller(UserController::class)
 Route::controller(MonthController::class)
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Month'])
     ->group(function () {
-        Route::get('getYears', 'getYears');
         Route::get('getMonths', 'getMonths');
         Route::put('closeMonth/{month}', 'closeMonth');
         Route::put('openMonth/{month}', 'openMonth');
 });
+// Rutas con política general (para "Secretaria de distrito" y "Secretaria de iglesia")
+Route::get('getYears', [MonthController::class, 'getYears'])
+    ->middleware(['auth:sanctum', 'can:getYears,App\Models\Month']);
+
+// Rutas con política para "Secretaria de iglesia")
+Route::put('getAllTheMonthsThatHaveInformation/{year}', [MonthController::class, 'getAllTheMonthsThatHaveInformation'])
+    ->middleware(['auth:sanctum', 'can:getAllTheMonthsThatHaveInformation,App\Models\Month']);
 
 // Rutas con política general (para "Creadores del sistema" y "Secretaria de iglesia")
 Route::controller(ChurcheController::class)

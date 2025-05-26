@@ -22,6 +22,28 @@ class MonthPolicy
     }
 
     /**
+     * Determina que solo dos roles entran a esta función
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function getYears(User $user)
+    {
+        return $user->role->name == "Secretaria de distrito" || $user->role->name == "Secretaria de iglesia";
+    }
+
+    /**
+     * Determina que solo el rol "Secretaria de iglesia" puede acceder a esta función
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function getAllTheMonthsThatHaveInformation(User $user)
+    {
+        return $user->role->name == "Secretaria de iglesia";
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
