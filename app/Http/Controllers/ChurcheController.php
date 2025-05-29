@@ -9,8 +9,11 @@ use App\Models\Concept;
 use App\Models\ChurcheConceptMonthHuman;
 use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Storage;
 
 use Carbon\Carbon;
+use PDF;
 
 class ChurcheController extends Controller
 {
@@ -343,6 +346,125 @@ class ChurcheController extends Controller
 
         return response()->json([
             'churches' => $churches->toArray()
+        ], 200);
+    }
+
+    /**
+     * Obtener todos los conceptos que le pertenecen a una iglesia en específico, de un mes en especifico
+     *
+     * @return json
+     */
+    public function getChurcheWithConceptsWithMonth (Request $request, $month_id) {
+        $human = Human::where('user_id', $request->user()->id)->first();
+
+        $churcheConceptMonthHuman = ChurcheConceptMonthHuman::select('id', 'churche_id', 'concept_id', 'month_id', 
+            'human_id', 'week', 'value', 'accumulated', 'status')
+            ->where('month_id', $month_id)
+            ->where('human_id', $human->user_id)
+            ->orderBy('concept_id', 'asc')
+            ->get();
+        return response()->json([
+            'churcheConceptMonthHuman' => $churcheConceptMonthHuman->toArray()
+        ], 200);
+    }
+
+    /**
+     * Reporte mensual de la secretaria de iglesia
+     *
+     * @return json
+     */
+    public function monthlyReportOfTheChurchSecretary(Request $request, $month_id)
+    {
+        // Consultar todos los conceptos
+        $concepts = Concept::select('id', 'concept')->orderBy('id', 'asc')->get();
+
+        // Obtener todos los conceptos que le pertenecen a una iglesia en específico, de un mes en especifico
+        // Del método anterior.
+        
+        $human = Human::where('user_id', $request->user()->id)->first();
+
+        $churcheConceptMonthHuman = ChurcheConceptMonthHuman::select('id', 'churche_id', 'concept_id', 'month_id', 
+            'human_id', 'week', 'value', 'accumulated', 'status')
+            ->where('month_id', $month_id)
+            ->where('human_id', $human->user_id)
+            ->orderBy('concept_id', 'asc')
+            ->get();
+
+        $semanas = collect([]);
+        $itIsRepeated1 = false;
+        $itIsRepeated2 = false;
+        $itIsRepeated3 = false;
+        $itIsRepeated4 = false;
+        $churcheConceptMonthHuman->each(function ($churche) use (&$semanas, &$itIsRepeated1, &$itIsRepeated2, &$itIsRepeated3, &$itIsRepeated4) {
+            if($churche->week == 1) {
+                if($itIsRepeated1 == false) {
+                    $semanas[0] = collect([]);
+                }
+
+                $semanas[0]->push((object)[
+                    'id' => $churche->id,
+                    'value' => $churche->value,
+                ]);
+
+                $itIsRepeated1 = true;
+            }
+
+            if($churche->week == 2) {
+                if($itIsRepeated2 == false) {
+                    $semanas[1] = collect([]);
+                }
+
+                $semanas[1]->push((object)[
+                    'id' => $churche->id,
+                    'value' => $churche->value,
+                ]);
+
+                $itIsRepeated2 = true;
+            }
+
+            if($churche->week == 3) {
+                if($itIsRepeated3 == false) {
+                    $semanas[2] = collect([]);
+                }
+
+                $semanas[2]->push((object)[
+                    'id' => $churche->id,
+                    'value' => $churche->value,
+                ]);
+
+                $itIsRepeated3 = true;
+            }
+
+            if($churche->week == 4) {
+                if($itIsRepeated4 == false) {
+                    $semanas[3] = collect([]);
+                }
+
+                $semanas[3]->push((object)[
+                    'id' => $churche->id,
+                    'value' => $churche->value,
+                ]);
+
+                $itIsRepeated4 = true;
+            }
+        });
+
+        $datos = [
+            'titulo' => 'Iglesia ' . $human->churche->name,
+            'contenido' => [
+                'concepts' => $concepts,
+                'semanas' => $semanas
+            ]
+        ];
+
+        $file = 'monthly-report-of-the-church-secretary.pdf';
+
+        $pdf = PDF::loadView('monthly-report-of-the-church-secretary', $datos)->setPaper('letter', 'landscape')->output();
+
+        Storage::put('public/' . $file, $pdf);
+
+        return response()->json([
+            'file' => $file
         ], 200);
     }
 }

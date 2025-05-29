@@ -44,6 +44,8 @@ Route::controller(ChurcheController::class)
     ->group(function () {
         Route::get('getChurcheWithConcepts', 'getChurcheWithConcepts');
         Route::post('storeChurcheWithConcepts', 'storeChurcheWithConcepts');
+        Route::put('getChurcheWithConceptsWithMonth/{month}', 'getChurcheWithConceptsWithMonth');
+        Route::put('monthlyReportOfTheChurchSecretary/{month}', 'monthlyReportOfTheChurchSecretary');
 });
 
 // Ruta exclusiva para "Secretaria de distrito"
