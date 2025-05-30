@@ -34,11 +34,11 @@ Route::controller(MonthController::class)
 Route::get('getYears', [MonthController::class, 'getYears'])
     ->middleware(['auth:sanctum', 'can:getYears,App\Models\Month']);
 
-// Rutas con política para "Secretaria de iglesia")
+// Rutas con política para "Secretaria de iglesia"
 Route::put('getAllTheMonthsThatHaveInformation/{year}', [MonthController::class, 'getAllTheMonthsThatHaveInformation'])
     ->middleware(['auth:sanctum', 'can:getAllTheMonthsThatHaveInformation,App\Models\Month']);
 
-// Rutas con política general (para "Creadores del sistema" y "Secretaria de iglesia")
+// Rutas con política general para "Secretaria de iglesia"
 Route::controller(ChurcheController::class)
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Churche'])
     ->group(function () {
