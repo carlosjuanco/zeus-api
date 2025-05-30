@@ -21,6 +21,8 @@ class AddUserSecretariaDeIglesiaSeeder extends Seeder
     {
         $role = Role::where('name', 'Secretaria de iglesia')->get()->first();
 
+        // Este usuario no se eliminará, ya que quiero ocuparlo de lo nuevo que he aprendido
+        // "Cosas nuevas que he aprendido, rol creadores del sistema"
         $user = new User();
         $user->name = 'Secretaria de iglesia';
         $user->email = 'secretariadeiglesia@gmail.com';

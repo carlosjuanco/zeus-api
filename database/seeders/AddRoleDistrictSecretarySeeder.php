@@ -16,10 +16,13 @@ class AddRoleDistrictSecretarySeeder extends Seeder
      */
     public function run()
     {
-        $human_district_secretary = new Human();
-        $human_district_secretary->paternal_surname = "district";
-        $human_district_secretary->maternal_surname = "district";
-        $human_district_secretary->save();
+        // Este usuario no se eliminará, ya que quiero ocuparlo de lo nuevo que he aprendido
+        // "Cosas nuevas que he aprendido, rol creadores del sistema"
+        
+        $humanDistrictSecretary = new Human();
+        $humanDistrictSecretary->paternal_surname = "district";
+        $humanDistrictSecretary->maternal_surname = "district";
+        $humanDistrictSecretary->save();
 
         $human_juan_carlos = Human::where('paternal_surname', 'rojas')->first();
 
