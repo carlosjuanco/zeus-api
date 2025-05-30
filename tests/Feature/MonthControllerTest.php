@@ -32,9 +32,9 @@ class MonthControllerTest extends TestCase
      */
     public function test_that_the_getYears_route_can_only_be_entered_by_the_roles_Church_Secretary_and_district_Secretary()
     {
-        $system_creators = User::where('role_id', 1)->first();
+        $systemCreators = User::where('role_id', 1)->first();
 
-        $response = $this->actingAs($system_creators)->get('api/getYears');
+        $response = $this->actingAs($systemCreators)->get('api/getYears');
 
         // Efectivamente el rol "Creadores del sistema" no esta autorizado a entrar
         // a esa ruta.
@@ -78,9 +78,9 @@ class MonthControllerTest extends TestCase
      */
     public function test_years_exists()
     {
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($district_secretary)->get('api/getYears');
+        $response = $this->actingAs($districtSecretary)->get('api/getYears');
 
         $response->assertStatus(200)
             ->assertJsonFragment(['years' => [2025]]);
@@ -95,9 +95,9 @@ class MonthControllerTest extends TestCase
      */
     public function test_get_every_month()
     {
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($district_secretary)->get('api/getMonths');
+        $response = $this->actingAs($districtSecretary)->get('api/getMonths');
 
         $response->assertStatus(200)
             ->assertJsonStructure([
@@ -115,9 +115,9 @@ class MonthControllerTest extends TestCase
      */
     public function test_close_one_month()
     {
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
         // Consultamos todos los meses
-        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        $responseMonthOpen = $this->actingAs($districtSecretary)->get('api/getMonths');
         // Buscamos que mes esta bierto
         $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
             return $value['status'] == 'Abierto';
@@ -129,7 +129,7 @@ class MonthControllerTest extends TestCase
         });
 
         // Mandamos a cerrar el mes actualmente abierto
-        $response = $this->actingAs($district_secretary)->put('api/closeMonth/' . $first['id']);
+        $response = $this->actingAs($districtSecretary)->put('api/closeMonth/' . $first['id']);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Mes cerrado correctamente']);
@@ -146,9 +146,9 @@ class MonthControllerTest extends TestCase
     {
         $fecha = Carbon::now();
 
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($district_secretary)->put('api/openMonth/' . $fecha->month);
+        $response = $this->actingAs($districtSecretary)->put('api/openMonth/' . $fecha->month);
 
         $response->assertStatus(200)
             ->assertJson(['message' => 'Mes abierto correctamente']);

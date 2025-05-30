@@ -33,9 +33,9 @@ class ChurcheControllerTest extends TestCase
     public function test_ensure_that_the_district_secretary_role_cannot_log_in()
     {
         // 3 = es el rol "Secretaria de distrito" 
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($district_secretary)->get('api/getChurcheWithConcepts');
+        $response = $this->actingAs($districtSecretary)->get('api/getChurcheWithConcepts');
 
         // Efectivamente el rol "Secretaria de distrito" no esta autorizado a entrar
         // a esa ruta.
@@ -52,9 +52,9 @@ class ChurcheControllerTest extends TestCase
     public function test_get_all_items_belonging_to_a_specific_church_from_the_church_secretary_user()
     {
         // 2 = es el rol "Secretaria de iglesia" 
-        $churche_secretary = User::where('role_id', 2)->first();
+        $churcheSecretary = User::where('role_id', 2)->first();
 
-        $response = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+        $response = $this->actingAs($churcheSecretary)->get('api/getChurcheWithConcepts');
 
         // Se usa el carácter * para afirmar que dentro de la estructura de todos, existe un objeto
         // y que tiene las propiedades, pero puede ser un arreglo que no tiene una longitud definida
@@ -88,13 +88,13 @@ class ChurcheControllerTest extends TestCase
     public function test_save_the_number_of_people_entered_per_item_and_we_only_send_them_for_one_week()
     {
         // 2 = es el rol "Secretaria de iglesia" 
-        $churche_secretary = User::where('role_id', 2)->first();
+        $churcheSecretary = User::where('role_id', 2)->first();
 
         // 3 = es el rol "Secretaria de distrito" 
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
         // Consultamos todos los meses
-        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        $responseMonthOpen = $this->actingAs($districtSecretary)->get('api/getMonths');
         // Buscamos que mes esta bierto
         $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
             return $value['status'] == 'Abierto';
@@ -200,7 +200,7 @@ class ChurcheControllerTest extends TestCase
             ]
         ];
 
-        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $primeraSemana);
+        $response = $this->actingAs($churcheSecretary)->post('api/storeChurcheWithConcepts', $primeraSemana);
 
         $response->assertStatus(200)
             ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
@@ -208,7 +208,7 @@ class ChurcheControllerTest extends TestCase
         $this->post('api/logout');
 
         // Eliminar los datos guardados, para hacer bien la siguiente prueba
-        $response2 = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+        $response2 = $this->actingAs($churcheSecretary)->get('api/getChurcheWithConcepts');
 
         $ids = Arr::pluck($response2->json()['churcheConceptMonthHuman'], 'id');
         
@@ -225,13 +225,13 @@ class ChurcheControllerTest extends TestCase
     public function test_save_the_number_of_people_entered_per_item_and_send_them_for_two_weeks()
     {
         // 2 = es el rol "Secretaria de iglesia" 
-        $churche_secretary = User::where('role_id', 2)->first();
+        $churcheSecretary = User::where('role_id', 2)->first();
 
         // 3 = es el rol "Secretaria de distrito" 
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
         // Consultamos todos los meses
-        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        $responseMonthOpen = $this->actingAs($districtSecretary)->get('api/getMonths');
         // Buscamos que mes esta bierto
         $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
             return $value['status'] == 'Abierto';
@@ -429,7 +429,7 @@ class ChurcheControllerTest extends TestCase
             ]
         ];
 
-        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $segundaSemana);
+        $response = $this->actingAs($churcheSecretary)->post('api/storeChurcheWithConcepts', $segundaSemana);
 
         $response->assertStatus(200)
             ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
@@ -437,7 +437,7 @@ class ChurcheControllerTest extends TestCase
         $this->post('api/logout');
 
         // Eliminar los datos guardados, para hacer bien la siguiente prueba
-        $response2 = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+        $response2 = $this->actingAs($churcheSecretary)->get('api/getChurcheWithConcepts');
 
         $ids = Arr::pluck($response2->json()['churcheConceptMonthHuman'], 'id');
         
@@ -454,13 +454,13 @@ class ChurcheControllerTest extends TestCase
     public function test_save_the_number_of_people_entered_per_item_and_send_them_for_three_weeks()
     {
         // 2 = es el rol "Secretaria de iglesia" 
-        $churche_secretary = User::where('role_id', 2)->first();
+        $churcheSecretary = User::where('role_id', 2)->first();
 
         // 3 = es el rol "Secretaria de distrito" 
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
         // Consultamos todos los meses
-        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        $responseMonthOpen = $this->actingAs($districtSecretary)->get('api/getMonths');
         // Buscamos que mes esta bierto
         $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
             return $value['status'] == 'Abierto';
@@ -750,7 +750,7 @@ class ChurcheControllerTest extends TestCase
             ]
         ];
 
-        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $terceraSemana);
+        $response = $this->actingAs($churcheSecretary)->post('api/storeChurcheWithConcepts', $terceraSemana);
 
         $response->assertStatus(200)
             ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
@@ -758,7 +758,7 @@ class ChurcheControllerTest extends TestCase
         $this->post('api/logout');
 
         // Eliminar los datos guardados, para hacer bien la siguiente prueba
-        $response2 = $this->actingAs($churche_secretary)->get('api/getChurcheWithConcepts');
+        $response2 = $this->actingAs($churcheSecretary)->get('api/getChurcheWithConcepts');
 
         $ids = Arr::pluck($response2->json()['churcheConceptMonthHuman'], 'id');
         
@@ -775,13 +775,13 @@ class ChurcheControllerTest extends TestCase
     public function test_save_the_number_of_people_entered_per_item_and_send_them_for_four_weeks()
     {
         // 2 = es el rol "Secretaria de iglesia" 
-        $churche_secretary = User::where('role_id', 2)->first();
+        $churcheSecretary = User::where('role_id', 2)->first();
 
         // 3 = es el rol "Secretaria de distrito" 
-        $district_secretary = User::where('role_id', 3)->first();
+        $districtSecretary = User::where('role_id', 3)->first();
 
         // Consultamos todos los meses
-        $responseMonthOpen = $this->actingAs($district_secretary)->get('api/getMonths');
+        $responseMonthOpen = $this->actingAs($districtSecretary)->get('api/getMonths');
         // Buscamos que mes esta bierto
         $monthOpen = Arr::where($responseMonthOpen->json()['months'], function ($value, $key) {
             return $value['status'] == 'Abierto';
@@ -1163,7 +1163,7 @@ class ChurcheControllerTest extends TestCase
             ]
         ];
 
-        $response = $this->actingAs($churche_secretary)->post('api/storeChurcheWithConcepts', $cuartaSemana);
+        $response = $this->actingAs($churcheSecretary)->post('api/storeChurcheWithConcepts', $cuartaSemana);
 
         $response->assertStatus(200)
             ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
@@ -1179,9 +1179,9 @@ class ChurcheControllerTest extends TestCase
     public function test_to_get_the_sum_of_all_the_weeks_of_the_month_opened_for_each_church()
     {
         // 3 = es el rol "Secretaria de distrito" 
-        $churche_secretary = User::where('role_id', 3)->first();
+        $churcheSecretary = User::where('role_id', 3)->first();
 
-        $response = $this->actingAs($churche_secretary)->get('api/getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened');
+        $response = $this->actingAs($churcheSecretary)->get('api/getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened');
 
         // Se usa el carácter * para afirmar que dentro de la estructura de todos, existe un objeto
         // y que tiene las propiedades, pero puede ser un arreglo que no tiene una longitud definida
