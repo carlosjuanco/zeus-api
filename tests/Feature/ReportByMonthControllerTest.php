@@ -121,5 +121,30 @@ class ReportByMonthControllerTest extends TestCase
         $response->assertStatus(403);
 
         $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de distrito" con rol "Secretaria de distrito"
+        $districSecretary = User::where('role_id', 3)->first();
+
+        $response = $this->actingAs($districSecretary)->put('api/getAllTheMonthsThatHaveInformation/' . $fecha->year);
+
+        // Efectivamente el rol "Secretaria de distrito" no esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(403);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de iglesia" con rol "Secretaria de iglesia"
+        $churchSecretary = User::where('role_id', 2)->first();
+
+        $response = $this->actingAs($churchSecretary)->put('api/getAllTheMonthsThatHaveInformation/' . $fecha->year);
+
+        // Efectivamente el rol "Secretaria de iglesia" esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'months',
+            ]);
+
+        $this->post('api/logout');
     }
 }
