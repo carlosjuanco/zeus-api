@@ -218,7 +218,7 @@ class ChurcheControllerTest extends TestCase
     }
 
     /**
-     * Guardar el idro de personas ingresadas por concepto y mandamos dos semana.
+     * Guardar el número de personas ingresadas por concepto y mandamos dos semana.
      *
      * @return json
      */
