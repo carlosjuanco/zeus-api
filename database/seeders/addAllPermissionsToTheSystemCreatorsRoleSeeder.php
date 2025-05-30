@@ -17,10 +17,10 @@ class addAllPermissionsToTheSystemCreatorsRoleSeeder extends Seeder
     {
         $permissions = [ "Visualizar_la_pagina" => true, "Ver_la_pagina_en_el_menu" => true ];
 
-        $role_creators_of_the_system = Role::where('name', 'Creadores del sistema')->first();
+        $roleOfSystemCreators = Role::where('name', 'Creadores del sistema')->first();
 
-        $role_creators_of_the_system->pages->each(function ($page) use ($permissions) {
-            if($page->name == "Bienvenido usuario" || $page->name == "Informe mes seleccionado") {
+        $roleOfSystemCreators->pages->each(function ($page) use ($permissions) {
+            if($page->name == "Bienvenido usuario") {
                 $permissions["Ver_la_pagina_en_el_menu"] = false;
             } else {
                 $permissions["Ver_la_pagina_en_el_menu"] = true;
