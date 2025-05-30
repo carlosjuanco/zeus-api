@@ -25,10 +25,10 @@ class AuthController extends Controller
                 array_push($pages_permissions, $page->name);
             }
 
-            $api_token = $user->createToken('api_token', $pages_permissions);
-            $api_token = $api_token->plainTextToken;
+            $apiToken = $user->createToken('api_token', $pages_permissions);
+            $apiToken = $apiToken->plainTextToken;
 
-            return response()->json(['api_token' => $api_token, 'user' => $user], 200);
+            return response()->json(['apiToken' => $apiToken, 'user' => $user], 200);
         }
 
         return response()->json([
@@ -46,6 +46,7 @@ class AuthController extends Controller
         // se envian las páginas, es porque en la línea 22 se manda a llamar, pero se
         // se asigna a la variable $pages
         $user->role->pages;
+
 
         return response()->json([
             'user' => $user
