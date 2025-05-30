@@ -25,19 +25,48 @@ class MonthControllerTest extends TestCase
     }
 
     /**
-     * Comprobar que solo el rol "secretaria de distrito" puede entrar.
+     * Afirmar que la ruta "getYears", solo pueden ingresar los roles "Secretaria de iglesia" y 
+     * "Secretaria de distrito".
      *
      * @return json
      */
-    public function test_that_only_the_district_secretary_role_can_enter()
+    public function test_that_the_getYears_route_can_only_be_entered_by_the_roles_Church_Secretary_and_district_Secretary()
     {
         $system_creators = User::where('role_id', 1)->first();
 
         $response = $this->actingAs($system_creators)->get('api/getYears');
 
-        // Efectivamente el rol "Secretaria de distrito" no esta autorizado a entrar
+        // Efectivamente el rol "Creadores del sistema" no esta autorizado a entrar
         // a esa ruta.
         $response->assertStatus(403);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de iglesia" con rol "Secretaria de iglesia"
+        $churchSecretary = User::where('role_id', 2)->first();
+
+        $response = $this->actingAs($churchSecretary)->get('api/getYears');
+
+        // Efectivamente el rol "Secretaria de iglesia" esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'years',
+            ]);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de distrito" con rol "Secretaria de distrito"
+        $districtSecretary = User::where('role_id', 3)->first();
+
+        $response = $this->actingAs($districtSecretary)->get('api/getYears');
+
+        // Efectivamente el rol "Secretaria de distrito" esta autorizado a entrar
+        // a esta ruta.
+       $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'years',
+            ]);
 
         $this->post('api/logout');
     }
