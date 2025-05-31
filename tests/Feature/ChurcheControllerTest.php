@@ -202,6 +202,7 @@ class ChurcheControllerTest extends TestCase
 
         $response = $this->actingAs($churcheSecretary)->post('api/storeChurcheWithConcepts', $primeraSemana);
 
+        // https://laravel.com/docs/9.x/http-tests#assert-json
         $response->assertStatus(200)
             ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.' ]);
 
