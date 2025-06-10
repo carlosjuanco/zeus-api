@@ -29,6 +29,7 @@ Route::controller(MonthController::class)
         Route::get('getMonths', 'getMonths');
         Route::put('closeMonth/{month}', 'closeMonth');
         Route::put('openMonth/{month}', 'openMonth');
+        Route::put('getAllTheMonthsThatHaveInformationDos/{year}', 'getAllTheMonthsThatHaveInformationDos');
 });
 // Rutas con política general (para "Secretaria de distrito" y "Secretaria de iglesia")
 Route::get('getYears', [MonthController::class, 'getYears'])

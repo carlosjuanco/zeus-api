@@ -103,4 +103,39 @@ class MonthController extends Controller
             'months' => $months->toArray()
         ], 200);
     }
+
+    /**
+     * Obtener todos los meses que tienen información. 
+     * 
+     * @year = Recibira el parametro año.
+     * 
+     * En base al año obtenemos todos los meses, despues obtenemos solo los que tengas informacion,
+     * dentro de la primera coleccion, creamos la propiedad "have information", ponemos como valores
+     * "true" y "falso" dependiendo del caso.
+     * 
+     * Diferencia: Con el método anterior, es que no consultamos quien inicio sesión, ya que estamos
+     *  consultando a todas las iglesias.
+     * 
+     * @return json
+     */
+    public function getAllTheMonthsThatHaveInformationDos (Request $request, $year) {
+        // $human = Human::where('user_id', $request->user()->id)->first();
+
+        $months = Month::select('id', 'month', 'anio')
+            ->where('anio', $year)->get();
+
+        $churcheConceptMonthHumans = ChurcheConceptMonthHuman::select('month_id')
+            ->whereIn('month_id', $months->pluck('id')->toArray())
+            ->groupBy('month_id')
+            ->get();
+
+        $months->transform(function ($month, $key) use ($churcheConceptMonthHumans){
+            $month->haveInformation = $churcheConceptMonthHumans->where('month_id', $month->id)->first() ? true : false;
+            return $month;
+        });
+
+        return response()->json([
+            'months' => $months->toArray()
+        ], 200);
+    }
 }
