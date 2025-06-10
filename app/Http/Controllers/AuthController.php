@@ -29,10 +29,10 @@ class AuthController extends Controller
                 array_push($pages_permissions, $page->name);
             }
 
-            $api_token = $user->createToken('api_token', $pages_permissions);
-            $api_token = $api_token->plainTextToken;
+            $apiToken = $user->createToken('api_token', $pages_permissions);
+            $apiToken = $apiToken->plainTextToken;
 
-            return response()->json(['api_token' => $api_token, 'user' => $user], 200);
+            return response()->json(['apiToken' => $apiToken, 'user' => $user], 200);
         }
 
         return response()->json([
@@ -53,13 +53,13 @@ class AuthController extends Controller
 
         //Consultar si hay un mes aperturado
         $fecha = Carbon::now();
-        $open_month = Month::where('anio', $fecha->year)->where('status', 'Abierto')->first();
-        if(!$open_month){
+        $openMonth = Month::where('anio', $fecha->year)->where('status', 'Abierto')->first();
+        if(!$openMonth){
             $user->monthOpen = 'No hay mes aperturado';
             $user->month_id = 0;
         } else {
             $user->monthOpen = 'Si hay mes aperturado';
-            $user->month_id = $open_month->id;
+            $user->month_id = $openMonth->id;
         }
 
         // Consultar a que iglesia pertenece el usuario
@@ -67,7 +67,7 @@ class AuthController extends Controller
         $churche = $human->churche;
         
         // Solo se valida para el rol "Creadores del sistema", este no debe pertenecer a una iglesia.
-        $user->church_to_which_it_belongs = $churche ? $churche->name : "";
+        $user->churchToWhichItBelongs = $churche ? $churche->name : "";
         $user->churche_id = $churche ? $churche->id : 0;
 
         return response()->json([

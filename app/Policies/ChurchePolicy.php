@@ -18,7 +18,7 @@ class ChurchePolicy
      */
     public function viewAny(User $user)
     {
-        return $user->role->name == "Creadores del sistema" || $user->role->name == "Secretaria de iglesia";
+        return $user->role->name == "Secretaria de iglesia";
     }
 
     /**

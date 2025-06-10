@@ -31,7 +31,6 @@ class DatabaseSeeder extends Seeder
             AddUserDistrictSecretarySeeder::class,
             AddPagesForRoleDistrictSecretarySeeder::class,
             SetPermissionsOnPagesForRoleDistrictSecretarySeeder::class,
-            addAllPagesToTheSystemCreatorsRoleSeeder::class,
             addAllPermissionsToTheSystemCreatorsRoleSeeder::class,
             addRecordsForTheCurrentYearToTheMonthsTableSeeder::class,
             AddRecordsForChurchesInTheChurchesTableSeeder::class,

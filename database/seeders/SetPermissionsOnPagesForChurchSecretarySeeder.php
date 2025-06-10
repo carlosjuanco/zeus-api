@@ -17,10 +17,10 @@ class SetPermissionsOnPagesForChurchSecretarySeeder extends Seeder
     {
         $permissions = [ "Visualizar_la_pagina" => true, "Ver_la_pagina_en_el_menu" => true ];
 
-        $role_church_secretary = Role::where('name', 'Secretaria de iglesia')->get()->first();
+        $roleOfChurchSecretary = Role::where('name', 'Secretaria de iglesia')->get()->first();
 
-        $role_church_secretary->pages->each(function ($page) use ($permissions) {
-            if($page->name == "Bienvenido usuario") {
+        $roleOfChurchSecretary->pages->each(function ($page) use ($permissions) {
+            if($page->name == "Bienvenido usuario" || $page->name == "Informe mes x") {
                 $permissions["Ver_la_pagina_en_el_menu"] = false;
             } else {
                 $permissions["Ver_la_pagina_en_el_menu"] = true;
