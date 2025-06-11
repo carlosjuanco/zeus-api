@@ -34,6 +34,18 @@ class ChurchePolicy
     }
 
     /**
+     * Determina que solo un usuario con el rol "Secretaria de distrito", ingrese a la función
+     * getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected
+     *
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
+     */
+    public function getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected(User $user): bool
+    {
+        return $user->role->name === 'Secretaria de distrito';
+    }
+
+    /**
      * Determine whether the user can view the model.
      *
      * @param  \App\Models\User  $user
