@@ -272,7 +272,7 @@ class ChurcheController extends Controller
             Ordenar el campo "concept_id" de manera ascendente, también ordenamos el campo "churche_id" 
             de forma ascendente, sumar el campo "value", lo podemos agrupar por este campo, para obtener
             la suma correcta. Cuando tengamos la consulta, recorremos cada iglesia, para obtener la suma
-            total entre la interseccion de concepto e iglesia (total por semana). Enseguida le agregamos
+            total entre la intersección de concepto e iglesia (total por semana). Enseguida le agregamos
             una propiedad "Total distrital" y aquí vamos guardando ésta sumatoria.
         */
         $churches->transform(function ($churche, $key) use ($churcheConceptMonthHuman, $concepts){
@@ -288,7 +288,7 @@ class ChurcheController extends Controller
         });
         /*
             Al arreglo de modelos "$churches", agregamos un nuevo modelo, en ese el atributo
-            name sera igual a "Total distrital". Ahora en su propiedad "concept", tendra el
+            name sera igual a "Total distrital". Ahora en su propiedad "concept", tendrá el
             atributo "tota_by_concept", en ese sumanos de forma vertical
         */
         $district_total = new Churche();
@@ -312,7 +312,7 @@ class ChurcheController extends Controller
             Del mismo método anterior, realizamos la misma consulta, solo que esta vez, consultamos
             especificamente del mes anterior. A la variable donde almacena la consulta anterior,
             le agregamos una fila más, con el nombre de la propiedad "Anterior", de ésta consulta,
-            recorremos y sumamos la interseccion entre el concepto e iglesia y vamos sumando el total,
+            recorremos y sumamos la intersección entre el concepto e iglesia y vamos sumando el total,
             para ir almacenandolo, al final.
         */
 
@@ -465,6 +465,110 @@ class ChurcheController extends Controller
 
         return response()->json([
             'file' => $file
+        ], 200);
+    }
+
+    /**
+     * Obtener por cada iglesia la sumatoria de todas las semanas del mes seleccionado
+     *
+     * @return json
+     */
+    public function getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected (Request $request, $monthId) {
+        $churches = Churche::select('id', 'name')->orderBy('id', 'asc')->get();
+        $churchesIds = $churches->pluck('id')->toArray();
+
+        $concepts = Concept::select('id', 'concept')->orderBy('id', 'asc')->get();
+
+        //Consultar el mes aperturado
+        $openMonth = Month::where('id', $monthId)->first();
+
+        $churcheConceptMonthHuman = ChurcheConceptMonthHuman::select('id', 'churche_id', 'concept_id', 'month_id', 
+            'human_id', 'week', 'value', 'accumulated', 'status')
+            ->where('month_id', $openMonth->id)
+            ->whereIn('churche_id', $churchesIds)
+            ->orderBy('id', 'asc')
+            ->orderBy('concept_id', 'asc')
+            ->orderBy('churche_id', 'asc')            
+            ->get();
+
+        /*
+            Ordenar el campo "concept_id" de manera ascendente, también ordenamos el campo "churche_id" 
+            de forma ascendente, sumar el campo "value", lo podemos agrupar por este campo, para obtener
+            la suma correcta. Cuando tengamos la consulta, recorremos cada iglesia, para obtener la suma
+            total entre la intersección de concepto e iglesia (total por semana). Enseguida le agregamos
+            una propiedad "Total distrital" y aquí vamos guardando ésta sumatoria.
+        */
+        $churches->transform(function ($churche, $key) use ($churcheConceptMonthHuman, $concepts){
+            $churche->concept = $concepts->map(function ($concepto) use ($churche, $churcheConceptMonthHuman) {
+                $cloned = clone $concepto;
+                $cloned->totalWeek = $churcheConceptMonthHuman
+                    ->where('churche_id', $churche->id)
+                    ->where('concept_id', $cloned->id)
+                    ->sum('value');
+                return $cloned;
+            });
+            return $churche;
+        });
+        /*
+            Al arreglo de modelos "$churches", agregamos un nuevo modelo, en ese el atributo
+            name sera igual a "Total distrital". Ahora en su propiedad "concept", tendrá el
+            atributo "tota_by_concept", en ese sumanos de forma vertical
+        */
+        $district_total = new Churche();
+        $district_total->id = 0;
+        $district_total->name = 'Total distrital';
+        
+        $churches->push($district_total);
+
+        $churches->last(function ($churche, $key) use ($churcheConceptMonthHuman, $concepts){
+            $churche->concept = $concepts->map(function ($concepto) use ($churche, $churcheConceptMonthHuman) {
+                $cloned = clone $concepto;
+                $cloned->totalByConcept = $churcheConceptMonthHuman
+                    ->where('concept_id', $cloned->id)
+                    ->sum('value');
+                return $cloned;
+            });
+            return $churche;
+        });
+
+        /*
+            Del mismo método anterior, realizamos la misma consulta, solo que esta vez, consultamos
+            especificamente del mes anterior. A la variable donde almacena la consulta anterior,
+            le agregamos una fila más, con el nombre de la propiedad "Anterior", de ésta consulta,
+            recorremos y sumamos la intersección entre el concepto e iglesia y vamos sumando el total,
+            para ir almacenandolo, al final.
+        */
+
+        //Consultar el mes anterior aperturado
+        
+        $churcheConceptMonthHumanPrevious = ChurcheConceptMonthHuman::select('id', 'churche_id', 'concept_id', 'month_id', 
+            'human_id', 'week', 'value', 'accumulated', 'status')
+            ->where('month_id', $openMonth->month_id)
+            ->whereIn('churche_id', $churchesIds)
+            ->orderBy('id', 'asc')
+            ->orderBy('concept_id', 'asc')
+            ->orderBy('churche_id', 'asc')            
+            ->get();
+
+        $previous_total = new Churche();
+        $previous_total->id = 0;
+        $previous_total->name = 'Anterior';
+        
+        $churches->push($previous_total);
+
+        $churches->last(function ($churche, $key) use ($churcheConceptMonthHumanPrevious, $concepts){
+            $churche->concept = $concepts->map(function ($concepto) use ($churche, $churcheConceptMonthHumanPrevious) {
+                $cloned = clone $concepto;
+                $cloned->totalByConcept = $churcheConceptMonthHumanPrevious
+                    ->where('concept_id', $cloned->id)
+                    ->sum('value');
+                return $cloned;
+            });
+            return $churche;
+        });
+
+        return response()->json([
+            'churches' => $churches->toArray()
         ], 200);
     }
 }

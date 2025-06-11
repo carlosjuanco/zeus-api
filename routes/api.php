@@ -52,6 +52,8 @@ Route::controller(ChurcheController::class)
 // Ruta exclusiva para "Secretaria de distrito"
 Route::get('getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened', [ChurcheController::class, 'getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened'])
     ->middleware(['auth:sanctum', 'can:getForEachChurchTheSumOfAllTheWeeksOfTheMonthOpened,App\Models\Churche']);
+Route::put('getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected/{month}', [ChurcheController::class, 'getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected'])
+    ->middleware(['auth:sanctum', 'can:getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected,App\Models\Churche']);
 
 Route::controller(ConceptController::class)
     ->middleware(['auth:sanctum'])
