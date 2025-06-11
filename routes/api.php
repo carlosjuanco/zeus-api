@@ -56,7 +56,7 @@ Route::put('getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected/{month}', [Chu
     ->middleware(['auth:sanctum', 'can:getForEachChurchTheSumOfAllTheWeeksOfTheMonthSelected,App\Models\Churche']);
 
 Route::controller(ConceptController::class)
-    ->middleware(['auth:sanctum'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Concept'])
     ->group(function () {
         Route::get('getConcepts', 'getConcepts');
 });
