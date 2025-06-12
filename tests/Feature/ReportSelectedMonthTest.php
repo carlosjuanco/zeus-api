@@ -69,4 +69,96 @@ class ReportSelectedMonthTest extends TestCase
 
         $this->post('api/logout');
     }
+
+    /**
+     * Afirmar que la ruta "getConcepts", solo pueden ingresar el usuario con rol "Secretaria de iglesia" y 
+     * "Secretaria de distrito"
+     *
+     * @return void
+     */
+    public function test_assert_that_the_getConcepts_route_can_only_be_entered_by_users_with_the_Church_Secretary_and_District_Secretary_roles()
+    {
+        // Consultamos al usuario "Juan Carlos" con rol "Creadores del sistema"
+        $systemCreators = User::where('role_id', 1)->first();
+
+        $response = $this->actingAs($systemCreators)->get('api/getConcepts/');
+
+        // Efectivamente el rol "Creadores del sistema" no esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(403);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de iglesia" con rol "Secretaria de iglesia"
+        $churchSecretary = User::where('role_id', 2)->first();
+
+        $response = $this->actingAs($churchSecretary)->get('api/getConcepts/');
+
+        // Efectivamente el rol "Secretaria de iglesia" esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'concepts',
+            ]);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de distrito" con rol "Secretaria de distrito"
+        $districtSecretary = User::where('role_id', 3)->first();
+
+        $response = $this->actingAs($districtSecretary)->get('api/getConcepts/');
+
+        // Efectivamente el rol "Secretaria de distrito" esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'concepts',
+            ]);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Afirmar que la ruta "getMonths", solo pueden ingresar el usuario con rol "Secretaria de distrito".
+     *
+     * @return void
+     */
+    public function test_assert_that_the_getMonths_route_can_only_be_entered_by_the_user_with_the_District_Secretary_role()
+    {
+        // Consultamos al usuario "Juan Carlos" con rol "Creadores del sistema"
+        $systemCreators = User::where('role_id', 1)->first();
+
+        $response = $this->actingAs($systemCreators)->get('api/getMonths/');
+
+        // Efectivamente el rol "Creadores del sistema" no esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(403);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de iglesia" con rol "Secretaria de iglesia"
+        $churchSecretary = User::where('role_id', 2)->first();
+
+        $response = $this->actingAs($churchSecretary)->get('api/getMonths/');
+
+        // Efectivamente el rol "Secretaria de iglesia" no esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(403);
+
+        $this->post('api/logout');
+
+        // Consultamos al usuario "Secretaria de distrito" con rol "Secretaria de distrito"
+        $districtSecretary = User::where('role_id', 3)->first();
+
+        $response = $this->actingAs($districtSecretary)->get('api/getMonths/');
+
+        // Efectivamente el rol "Secretaria de distrito" esta autorizado a entrar
+        // a esta ruta.
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                 'months',
+            ]);
+
+        $this->post('api/logout');
+    }
 }
