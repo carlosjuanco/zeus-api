@@ -36,7 +36,7 @@ class ChurcheController extends Controller
         $churcheConceptMonthHuman = ChurcheConceptMonthHuman::select('id', 'churche_id', 'concept_id', 'month_id', 
             'human_id', 'week', 'value', 'accumulated', 'status')
             ->where('month_id', $openMonth->id)
-            ->where('human_id', $human->user_id)
+            ->where('human_id', $human->id)
             ->orderBy('concept_id', 'asc')
             ->get();
         return response()->json([
