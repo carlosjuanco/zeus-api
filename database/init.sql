@@ -1,2 +1,3 @@
-CREATE DATABASE sdac;
+CREATE DATABASE nombreDeLaBaseDeDatosParaElDesarrollo;
+CREATE DATABASE nombreDeLaBaseDeDatosParaLaMaqueta;
 SHOW DATABASES;
