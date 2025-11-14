@@ -13,6 +13,9 @@ class Role extends Model
 
     public function pages(): BelongsToMany
     {
-        return $this->belongsToMany(Page::class)->withPivot('permissions');
+        return $this->belongsToMany(Page::class)
+            ->select(['pages.id', 'name', 'name_component', 'pages.page_id', 'human_id'])
+            ->using(PageRole::class)
+            ->withPivot('permissions');
     }
 }
