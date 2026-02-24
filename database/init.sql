@@ -1,2 +1,3 @@
-CREATE DATABASE iasd;
+CREATE DATABASE nombreDeLaBaseDeDatosParaElDesarrollo;
+CREATE DATABASE nombreDeLaBaseDeDatosParaLaMaqueta;
 SHOW DATABASES;
