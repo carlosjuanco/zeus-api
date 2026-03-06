@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
             AddComponentNameInformationInVueSeeder::class,
             AddNewPageWelcomeUserSeeder::class,
             FillInTheValuesForThePermissionsFieldSeeder::class,
+            CreateAdministrativeRoleSeeder::class,
+            CreateAdministrativeUserSeeder::class,
+            CreateAdministrativeRolePagesSeeder::class,
+            SetPermissionsOnAdministrativeRolePagesSeeder::class
         ]);
     }
 }
