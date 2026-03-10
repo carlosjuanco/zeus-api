@@ -26,7 +26,7 @@ class CreateAdministrativeRolePagesSeeder extends Seeder
 
         $page3 = new Page();
         $page3->name = 'Comunidades';
-        $page3->name_component = 'Comunidad';
+        $page3->name_component = 'AppComunidad';
         $page3->human_id = $human_juan_carlos->id;
         $page3->save();
 
