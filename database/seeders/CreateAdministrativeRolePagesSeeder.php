@@ -32,7 +32,7 @@ class CreateAdministrativeRolePagesSeeder extends Seeder
 
         $page4 = new Page();
         $page4->name = 'Escuelas';
-        $page4->name_component = 'Escuela';
+        $page4->name_component = 'AppEscuela';
         $page4->human_id = $human_juan_carlos->id;
         $page4->save();
 
