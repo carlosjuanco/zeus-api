@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Community;
+
 class CommunityController extends Controller
 {
     /**
@@ -13,17 +15,12 @@ class CommunityController extends Controller
      */
     public function index()
     {
-        //
-    }
+        // Consultar el campo name de la tabla community, primeros 10 registros
+        $communities = Community::select('name')
+            ->take(10)
+            ->get();
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
+        return response()->json($communities, 200);
     }
 
     /**
@@ -34,29 +31,17 @@ class CommunityController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        // Validar la solicitud
+        $validated = $request->validate([
+            'name' => 'required|string|max:25',
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        // Guardar el registro
+        Community::create($validated);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
+        return response()->json([
+            'message' => '¡Listo! Tus datos se guardaron bien.'
+        ], 200);
     }
 
     /**
@@ -68,7 +53,18 @@ class CommunityController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // Validar la solicitud
+        $validated = $request->validate([
+            'name' => 'required|string|max:25',
+        ]);
+
+        // Actualizar el registro en base al segundo parámetro ($id)
+        $community = Community::findOrFail($id);
+        $community->update($validated);
+
+        return response()->json([
+            'message' => '¡Listo! Tus datos se guardaron bien.'
+        ], 200);
     }
 
     /**
@@ -79,6 +75,12 @@ class CommunityController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // Eliminar el registro en base al parámetro recibido
+        $community = Community::findOrFail($id);
+        $community->delete();
+
+        return response()->json([
+            'message' => '¡Listo! Tu dato fue eliminado bien'
+        ], 200);
     }
 }
