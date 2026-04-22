@@ -26,7 +26,8 @@ class DatabaseSeeder extends Seeder
             CreateAdministrativeRoleSeeder::class,
             CreateAdministrativeUserSeeder::class,
             CreateAdministrativeRolePagesSeeder::class,
-            SetPermissionsOnAdministrativeRolePagesSeeder::class
+            SetPermissionsOnAdministrativeRolePagesSeeder::class,
+            CreateCommunitiesSeeder::class
         ]);
     }
 }
