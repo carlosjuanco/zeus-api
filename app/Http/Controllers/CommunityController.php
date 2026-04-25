@@ -35,6 +35,9 @@ class CommunityController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:25',
         ]);
+        
+        // Registramos quién guarda el registro
+        $validated["human_id"] = $request->user()->id;
 
         // Guardar el registro
         Community::create($validated);
