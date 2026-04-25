@@ -51,15 +51,14 @@ class CommunityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Community $community)
     {
         // Validar la solicitud
         $validated = $request->validate([
             'name' => 'required|string|max:25',
         ]);
 
-        // Actualizar el registro en base al segundo parámetro ($id)
-        $community = Community::findOrFail($id);
+        // Actualizar el registro usando binding implícito
         $community->update($validated);
 
         return response()->json([
@@ -73,10 +72,9 @@ class CommunityController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Community $community)
     {
-        // Eliminar el registro en base al parámetro recibido
-        $community = Community::findOrFail($id);
+        // Eliminar el registro usando binding implícito
         $community->delete();
 
         return response()->json([
