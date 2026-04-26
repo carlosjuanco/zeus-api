@@ -21,14 +21,14 @@ Route::controller(UserController::class)
         Route::post('users', 'store');
 });
 
-Route::get('index', [CommunityController::class, 'index'])
-    ->middleware(['auth:sanctum', 'can:index,App\Models\Community']);
+Route::get('viewAny', [CommunityController::class, 'viewAny'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Community']);
 
 Route::post('store', [CommunityController::class, 'store'])
     ->middleware(['auth:sanctum', 'can:create,App\Models\Community']);
 
-Route::put('update/{community}', [CommunityController::class, 'update'])
-    ->middleware(['auth:sanctum', 'can:update,community']);
+Route::put('updateCommunity/{community}', [CommunityController::class, 'update'])
+    ->middleware(['auth:sanctum', 'can:update,App\Models\Community']);
     
 Route::delete('destroy/{community}', [CommunityController::class, 'destroy'])
-    ->middleware(['auth:sanctum', 'can:delete,community']);
+    ->middleware(['auth:sanctum', 'can:delete,App\Models\Community']);

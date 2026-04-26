@@ -11,12 +11,12 @@ class CommunityPolicy
     use HandlesAuthorization;
 
     /**
-     * Determina si un usuario puede ver algún modelo
+     * Determine whether the user can view any models.
      *
-     * @param \App\Models\User $user
-     * @return bool
+     * @param  \App\Models\User  $user
+     * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function index(User $user)
+    public function viewAny(User $user)
     {
         return $user->role->name === "Administrativo";
     }

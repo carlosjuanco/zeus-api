@@ -13,7 +13,7 @@ class CommunityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function viewAny()
     {
         // Consultar el campo name de la tabla community, primeros 10 registros
         $communities = Community::select('name')
