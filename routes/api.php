@@ -21,8 +21,9 @@ Route::controller(UserController::class)
         Route::post('users', 'store');
 });
 
-Route::get('viewAny', [CommunityController::class, 'viewAny'])
-    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Community']);
+Route::get('communities', [CommunityController::class, 'viewAny'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Community'])
+    ->name('communities.viewAny');
 
 Route::post('store', [CommunityController::class, 'store'])
     ->middleware(['auth:sanctum', 'can:create,App\Models\Community']);

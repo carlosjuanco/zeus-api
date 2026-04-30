@@ -16,9 +16,8 @@ class CommunityController extends Controller
     public function viewAny()
     {
         // Consultar el campo name de la tabla community, primeros 10 registros
-        $communities = Community::select('name')
-            ->take(10)
-            ->get();
+        $communities = Community::select('id', 'name')
+            ->paginate(10);
 
         return response()->json($communities, 200);
     }
