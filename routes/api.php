@@ -27,8 +27,10 @@ Route::get('viewAny', [CommunityController::class, 'viewAny'])
 Route::post('store', [CommunityController::class, 'store'])
     ->middleware(['auth:sanctum', 'can:create,App\Models\Community']);
 
-Route::put('updateCommunity/{community}', [CommunityController::class, 'update'])
-    ->middleware(['auth:sanctum', 'can:update,App\Models\Community']);
+Route::put('communities/{community}', [CommunityController::class, 'update'])
+    ->middleware(['auth:sanctum', 'can:update,community'])
+    ->name('communities.update');
     
-Route::delete('destroy/{community}', [CommunityController::class, 'destroy'])
-    ->middleware(['auth:sanctum', 'can:delete,App\Models\Community']);
+Route::delete('communities/{community}', [CommunityController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'can:delete,community'])
+    ->name('communities.destroy');
