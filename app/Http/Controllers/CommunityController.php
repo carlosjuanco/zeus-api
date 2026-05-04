@@ -17,6 +17,7 @@ class CommunityController extends Controller
     {
         // Consultar el campo name de la tabla community, primeros 10 registros
         $communities = Community::select('id', 'name')
+            ->orderBy('id', 'desc')
             ->paginate(10);
 
         return response()->json($communities, 200);
