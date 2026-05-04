@@ -25,8 +25,9 @@ Route::get('communities', [CommunityController::class, 'viewAny'])
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Community'])
     ->name('communities.viewAny');
 
-Route::post('store', [CommunityController::class, 'store'])
-    ->middleware(['auth:sanctum', 'can:create,App\Models\Community']);
+Route::post('communities/store', [CommunityController::class, 'store'])
+    ->middleware(['auth:sanctum', 'can:create,App\Models\Community'])
+    ->name('communities.store');
 
 Route::put('communities/{community}', [CommunityController::class, 'update'])
     ->middleware(['auth:sanctum', 'can:update,community'])
