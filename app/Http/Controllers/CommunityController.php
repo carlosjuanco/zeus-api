@@ -13,13 +13,13 @@ class CommunityController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function viewAny($search = '')
+    public function viewAny($paginate, $search = '')
     {
         // Consultar el campo name de la tabla community, primeros 10 registros
         $communities = Community::select('id', 'name')
             ->where('name', 'like', "%$search%")
             ->orderBy('id', 'desc')
-            ->paginate(10);
+            ->paginate($paginate);
 
         return response()->json($communities, 200);
     }
