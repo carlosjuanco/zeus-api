@@ -35,6 +35,9 @@ class SchoolController extends Controller
             'secondary_number' => 'nullable|integer|min:0|max:9',
         ]);
 
+        // Registramos quién guarda el registro
+        $validated["human_id"] = $request->user()->id;
+
         // Guardar el registro
         School::create($validated);
 
@@ -46,7 +49,7 @@ class SchoolController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, School $school)
     {
         // Validar la solicitud
         $validated = $request->validate([
@@ -57,8 +60,7 @@ class SchoolController extends Controller
             'secondary_number' => 'nullable|integer|min:0|max:9',
         ]);
 
-        // Actualizar el registro en base al segundo parámetro ($id)
-        $school = School::findOrFail($id);
+        // Actualizar el registro con binding implícito
         $school->update($validated);
 
         return response()->json([
@@ -69,10 +71,9 @@ class SchoolController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(School $school)
     {
-        // Eliminar el registro en base al parámetro recibido
-        $school = School::findOrFail($id);
+        // Eliminar el registro con binding implícito
         $school->delete();
 
         return response()->json([
