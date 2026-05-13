@@ -22,18 +22,22 @@ Route::controller(UserController::class)
         Route::post('users', 'store');
 });
 
+// viewAny - Listar comunidades con paginación y búsqueda opcional
 Route::get('communities/{paginate}/{search?}', [CommunityController::class, 'viewAny'])
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Community'])
     ->name('communities.viewAny');
 
+// store - Crear nueva comunidad
 Route::post('communities/store', [CommunityController::class, 'store'])
     ->middleware(['auth:sanctum', 'can:create,App\Models\Community'])
     ->name('communities.store');
 
+// update - Actualizar comunidad existente
 Route::put('communities/{community}', [CommunityController::class, 'update'])
     ->middleware(['auth:sanctum', 'can:update,community'])
     ->name('communities.update');
-    
+
+// destroy - Eliminar comunidad
 Route::delete('communities/{community}', [CommunityController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'can:delete,community'])
     ->name('communities.destroy');
