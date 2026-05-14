@@ -20,6 +20,9 @@ class AddSchoolRecordsSeeder extends Seeder
     {
         $administrativeUser = Human::where('paternal_surname', 'administrative')->first();
 
+        /*
+            Insertamos Preescolar
+        */
         $community1 = Community::where('name', 'San Juan Monte Flor')->first();
 
         $school1 = new School();
@@ -315,32 +318,32 @@ class AddSchoolRecordsSeeder extends Seeder
 
         // $community1 = Community::where('name', 'San Juan Monte Flor')->first();
 
-        $school23 = new School();
-        $school23->name = "Redención";
-        $school23->key = "20TA10124A";
-        $school23->type_of_school = "Albergues escolares";
-        $school23->community_id = $community1->id;
-        $school23->human_id = $administrativeUser->id;
-        $school23->save();
+        $school33 = new School();
+        $school33->name = "Redención";
+        $school33->key = "20TA10124A";
+        $school33->type_of_school = "Albergues escolares";
+        $school33->community_id = $community1->id;
+        $school33->human_id = $administrativeUser->id;
+        $school33->save();
 
         // $community2 = Community::where('name', 'Santa Maria Peñoles')->first();
 
-        $school24 = new School();
-        $school24->name = "Redención";
-        $school24->key = "TA10293W";
-        $school24->type_of_school = "Albergues escolares";
-        $school24->community_id = $community2->id;
-        $school24->human_id = $administrativeUser->id;
-        $school24->save();
+        $school34 = new School();
+        $school34->name = "Redención";
+        $school34->key = "TA10293W";
+        $school34->type_of_school = "Albergues escolares";
+        $school34->community_id = $community2->id;
+        $school34->human_id = $administrativeUser->id;
+        $school34->save();
 
         // $community8 = Community::where('name', 'Los Sabinos')->first();
 
-        $school25 = new School();
-        $school25->name = "Jefatura";
-        $school25->key = "951 191 2401 951 191 2407";
-        $school25->type_of_school = "Albergues escolares";
-        $school25->community_id = $community8->id;
-        $school25->human_id = $administrativeUser->id;
-        $school25->save();
+        $school35 = new School();
+        $school35->name = "Jefatura";
+        $school35->key = "951 191 2401 951 191 2407";
+        $school35->type_of_school = "Albergues escolares";
+        $school35->community_id = $community8->id;
+        $school35->human_id = $administrativeUser->id;
+        $school35->save();
     }
 }
