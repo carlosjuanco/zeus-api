@@ -16,11 +16,11 @@ return new class extends Migration
          Schema::create('schools', function (Blueprint $table) {
             $table->id();
 
-            // Nombre de la escuela, máximo 26 caracteres, obligatorio
-            $table->string('name', 26);
+            // Nombre de la escuela, máximo 26 caracteres, puede quedar vacío
+            $table->string('name', 26)->nullable();
 
-            // Clave de la escuela, máximo 10 caracteres, obligatorio
-            $table->string('key', 10);
+            // Clave de la escuela, máximo 10 caracteres, puede quedar vacío
+            $table->string('key', 10)->nullable();
 
             // Tipo de escuela, máximo 19 caracteres, obligatorio
             // Puedes usar enum para asegurar los valores permitidos
