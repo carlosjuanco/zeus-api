@@ -340,7 +340,7 @@ class AddSchoolRecordsSeeder extends Seeder
 
         $school35 = new School();
         $school35->name = "Jefatura";
-        $school35->key = "951 191 2401 951 191 2407";
+        $school35->key = "----";
         $school35->type_of_school = "Albergues escolares";
         $school35->community_id = $community8->id;
         $school35->human_id = $administrativeUser->id;

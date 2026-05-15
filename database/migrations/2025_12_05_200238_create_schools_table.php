@@ -39,7 +39,8 @@ return new class extends Migration
             $table->unsignedTinyInteger('secondary_number')->nullable();
             
             $table->foreignId('human_id')->constrained('humans')->cascadeOnDelete();
-            $table->timestamps             $table->softDeletes();
+            $table->timestamps();             
+            $table->softDeletes();
         });
     }
 
