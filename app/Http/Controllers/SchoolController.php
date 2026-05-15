@@ -28,8 +28,8 @@ class SchoolController extends Controller
     {
         // Validar la solicitud
         $validated = $request->validate([
-            'name' => 'required|string|max:26',
-            'key' => 'required|string|max:10',
+            'name' => 'nullable|string|max:26',
+            'key' => 'nullable|string|max:10',
             'type_of_school' => 'required|in:Primaria,Preescolar,Inicial,Albergues escolares',
             'community_id' => 'required|exists:communities,id',
             'secondary_number' => 'nullable|integer|min:0|max:9',
