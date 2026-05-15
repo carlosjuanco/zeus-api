@@ -220,7 +220,7 @@ class AddSchoolRecordsSeeder extends Seeder
         // $community10 = Community::where('name', 'Rio Manzanita')->first();
 
         $school21 = new School();
-        $school21->name = "Yute Ñee";
+        $school21->name = "Yuku Ñee";
         $school21->key = "20DCC2418N";
         $school21->type_of_school = "Preescolar";
         $school21->community_id = $community10->id;
