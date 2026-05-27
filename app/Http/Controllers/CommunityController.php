@@ -9,6 +9,24 @@ use App\Models\Community;
 class CommunityController extends Controller
 {
     /**
+     * Show all communities
+     * 
+     * Este método servirá para llenar elementos select.
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * -Solo los campos id y name.
+     * -Ordenado descendentemente.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllTheCommunities()
+    {
+        $communitiesForSelect = Community::pluck('name', 'id')->all();
+
+        return response()->json($communitiesForSelect, 200);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
