@@ -14,8 +14,20 @@ class SchoolController extends Controller
     public function viewAny($paginate, $search = '')
     {
         // Consultar los campos con búsqueda y paginación
-        $schools = School::select('name', 'key', 'type_of_school',
+        $schools = School::select('id', 'name', 'key', 'type_of_school',
             'community_id', 'secondary_number')
+            /**
+             * Opción 2: Usar with() con select() al hacer la consulta
+             * 
+             * Puntos importantes:
+             * Siempre incluye la llave foránea que usa la relación (generalmente id o la columna que relaciona las tablas), de lo contrario Laravel no podrá mapear la relación correctamente.
+             * Si usas select() en la relación, afectará todas las consultas donde uses community.
+             * Si solo necesitas los campos selectivos en algunos casos, es mejor usar la Opción 2.
+             */
+            ->with(['community' => function ($query) {
+                // No olvides incluir 'id' que es la FK
+                $query->select(['id', 'name']);
+            }])
             ->where('name', 'like', "%$search%")
             ->orWhere('key', 'like', "%$search%")
             ->orWhere('type_of_school', 'like', "%$search%")
