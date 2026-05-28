@@ -19,8 +19,15 @@ class School extends Model
         'human_id',
     ];
 
+    protected $appends = ['name_community']; // Para que siempre esté disponible
+
     public function community()
     {
         return $this->belongsTo(Community::class);
+    }
+
+    public function getNameCommunityAttribute()
+    {
+        return $this->community ? $this->community->name : null;
     }
 }

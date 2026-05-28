@@ -14,8 +14,15 @@ class SchoolController extends Controller
     public function viewAny($paginate, $search = '')
     {
         // Consultar los campos con búsqueda y paginación
-        $schools = School::select('name', 'key', 'type_of_school', 'community_id', 'secondary_number')
+        $schools = School::select('name', 'key', 'type_of_school',
+            'community_id', 'secondary_number')
             ->where('name', 'like', "%$search%")
+            ->orWhere('key', 'like', "%$search%")
+            ->orWhere('type_of_school', 'like', "%$search%")
+            ->orWhere('secondary_number', 'like', "%$search%")
+            ->whereHas('community', function($query) use ($search) {
+                $query->where('name', 'like', "%$search%");
+            })
             ->paginate($paginate);
 
         return response()->json($schools, 200);
