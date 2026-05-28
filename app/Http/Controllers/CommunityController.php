@@ -21,7 +21,7 @@ class CommunityController extends Controller
      */
     public function getAllTheCommunities()
     {
-        $communitiesForSelect = Community::pluck('name', 'id')->all();
+        $communitiesForSelect = Community::select('name', 'id')->get();
 
         return response()->json($communitiesForSelect, 200);
     }
