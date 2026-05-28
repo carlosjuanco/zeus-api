@@ -20,9 +20,10 @@ class SchoolController extends Controller
             ->orWhere('key', 'like', "%$search%")
             ->orWhere('type_of_school', 'like', "%$search%")
             ->orWhere('secondary_number', 'like', "%$search%")
-            ->whereHas('community', function($query) use ($search) {
+            ->orWhereHas('community', function($query) use ($search) {
                 $query->where('name', 'like', "%$search%");
             })
+            ->orderBy('id', 'desc')
             ->paginate($paginate);
 
         return response()->json($schools, 200);
