@@ -126,7 +126,7 @@ class UserTest extends TestCase
     }
 
     /**
-     * Comprobar que el campo role id no exste en la tabla roles.
+     * Comprobar que el campo role id no existe en la tabla roles.
      *
      * @return void
      */
