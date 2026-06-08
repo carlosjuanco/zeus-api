@@ -178,4 +178,20 @@ class CommunityTest extends TestCase
         //  Cerrar sesión
         $this->post('api/logout');
     }
+
+    /**
+     * Afirmar que no se puede eliminar una comunidad que no existe
+     */
+    public function test_assert_that_you_cannot_eliminate_a_community_that_does_not_exist()
+    {
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+        $nonExistentId = 999999;
+        
+        $response = $this->actingAs($userAdministrative)
+            ->deleteJson('api/communities/' . $nonExistentId);
+
+        //  El error 404 hace referencia que no encontró el registro.
+        $response->assertStatus(404);
+    }
 }
