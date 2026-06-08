@@ -80,6 +80,26 @@ class CommunityTest extends TestCase
 
         //  Cerrar sesión
         $this->post('api/logout');
+
+        /**
+         * Parte dos de la prueba
+         * 
+         * Ya que funciono la prueba ahora el registro dejarlo nuevamente como estaba 
+         */
+
+        $updatedName = 'San Pedro Cholula';
+
+        //  Ejecutar la petición
+        $response = $this->actingAs($userAdministrative)
+            ->put('api/communities/' . $communitySanPedroCholula->id, [
+                'name' => $updatedName
+            ]);
+
+        //  Verificar resultados
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => '¡Listo! Tus datos se guardaron bien.',
+            ]);
     }
 
     /**
@@ -114,5 +134,23 @@ class CommunityTest extends TestCase
 
         //  Cerrar sesión
         $this->post('api/logout');
+    }
+
+    /**
+     * Afirmar que no se puede eliminar una comunidad sin autenticación
+     */
+    public function test_assert_that_a_community_cannot_be_deleted_without_authentication()
+    {
+        $community = Community::where('name', 'Rio Cacho')->first();
+        
+        $response = $this->deleteJson('api/communities/' . $community->id);
+        
+        $response->assertStatus(401); // Unauthorized
+        
+        // Verificar que no fue eliminada
+        $this->assertDatabaseHas('communities', [
+            'id' => $community->id,
+            'deleted_at' => null
+        ]);
     }
 }
