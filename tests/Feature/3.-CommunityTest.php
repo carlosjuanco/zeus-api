@@ -153,4 +153,29 @@ class CommunityTest extends TestCase
             'deleted_at' => null
         ]);
     }
+
+    /**
+     * Afirmar que no se puede eliminar una comunidad sin permiso
+     */
+    public function test_assert_that_a_community_cannot_be_deleted_without_permission()
+    {
+        //  Consultar un usuario sin permiso de eliminación, es decir, 
+        //  que no tenga el rol "Administrativo"
+        $userWithoutPermission = User::where('role_id', '!=', 2)->first();
+        $community = Community::where('name', 'Rio Cacho')->first();
+        
+        $response = $this->actingAs($userWithoutPermission)
+            ->deleteJson('api/communities/' . $community->id);
+        
+        $response->assertStatus(403); // Forbidden - por el middleware 'can:delete,community'
+        
+        // Verificar que no fue eliminada
+        $this->assertDatabaseHas('communities', [
+            'id' => $community->id,
+            'deleted_at' => null
+        ]);
+
+        //  Cerrar sesión
+        $this->post('api/logout');
+    }
 }
