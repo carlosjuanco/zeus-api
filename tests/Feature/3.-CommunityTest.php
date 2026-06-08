@@ -81,4 +81,38 @@ class CommunityTest extends TestCase
         //  Cerrar sesión
         $this->post('api/logout');
     }
+
+    /**
+     * Afirmar que se puede eliminar una comunidad
+     * 
+     * @return boolean
+     */
+    public function test_assert_that_a_community_can_be_deleted()
+    {
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+        $this->assertNotNull($userAdministrative, 'No se encontró usuario Administrativo');
+
+        //  Consultamos la comunidad "Nueva comunidad"
+        $selectNewCommunity = Community::where('name', 'Nueva comunidad')->first();
+        $this->assertNotNull($selectNewCommunity, 'No se encontró la comunidad');
+
+        //  Ejecutar la petición
+        $response = $this->actingAs($userAdministrative)
+            ->deleteJson('api/communities/' . $selectNewCommunity->id);
+
+        //  Verificar resultados
+        $response->assertStatus(200)
+            ->assertJson([
+                'message' => '¡Listo! Tu dato fue eliminado bien',
+            ]);
+
+        //  Verificar que el campo deleted_at NO sea null (fue eliminado suavemente)
+        $this->assertSoftDeleted('communities', [
+            'id' => $selectNewCommunity->id,
+        ]);
+
+        //  Cerrar sesión
+        $this->post('api/logout');
+    }
 }
