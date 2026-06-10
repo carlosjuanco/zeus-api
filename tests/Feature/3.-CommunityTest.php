@@ -146,6 +146,58 @@ class CommunityTest extends TestCase
     }
 
     /**
+     * Afirmar que no se puede editar una comunidad sin autenticación.
+     */
+    public function test_assert_that_a_community_cannot_be_edited_without_authentication()
+    {
+        //  Consultamos la comunidad "San Pedro Cholula" y agregamos
+        //  una letra "a" demás, para comprobar que se puede editar
+        $communitySanPedroCholula = Community::where('name', 'San Pedro Cholula')->first();
+
+        $updatedName = 'San Pedro Cholula a';
+
+        //  Se utiliza putJson, para obtener una respuesta ordenada, de esta manera
+        //  se puede recuperar facilmente el estado de resultado.
+        //  Cuando sabemos que nos regresará un resultados correcto ya viene formateado
+
+        //  Ejecutar la petición
+        $response = $this->putJson('api/communities/' . $communitySanPedroCholula->id, [
+                'name' => $updatedName
+            ]);
+
+        //  Verificar resultados
+        $response->assertStatus(401); // Unauthorized        
+    }
+
+    /**
+     * Afirmar que no se puede editar una comunidad sin permiso
+     */
+    public function test_assert_that_a_community_cannot_be_edited_without_permission()
+    {
+        //  Consultar un usuario sin permiso de eliminación, es decir, 
+        //  que no tenga el rol "Administrativo"
+        $userWithoutPermission = User::where('role_id', '!=', 2)->first();
+
+        //  Consultamos la comunidad "San Pedro Cholula" y agregamos
+        //  una letra "a" demás, para comprobar que se puede editar
+        $communitySanPedroCholula = Community::where('name', 'San Pedro Cholula')->first();
+
+        $updatedName = 'San Pedro Cholula a';
+        
+        //  Ejecutar la petición
+        $response = $this->actingAs($userWithoutPermission)
+            ->put('api/communities/' . $communitySanPedroCholula->id, [
+                'name' => $updatedName
+            ]);
+
+        //  Verificar resultados
+        $response->assertStatus(403); // Unauthorized
+
+        //  Cerrar sesión
+        $this->post('api/logout');
+    }
+
+    /**
      * Afirmar que se puede eliminar una comunidad
      * 
      * @return boolean
