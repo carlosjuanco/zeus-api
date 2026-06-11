@@ -28,8 +28,7 @@ class CommunityTest extends TestCase
         $newCommunity = 'Nueva comunidad';
 
         $response = $this->actingAs($userAdministrative)->post('api/communities/store', [
-            'name' => $newCommunity,
-            'human_id' => $administrativeUser->id
+            'name' => $newCommunity
         ]);
 
         $response->assertStatus(200)
@@ -288,5 +287,77 @@ class CommunityTest extends TestCase
 
         //  El error 404 hace referencia que no encontró el registro.
         $response->assertStatus(404);
+    }
+
+    /**
+     * Afirmar que el campo "nombre" es obligatorio.
+     *
+     * @return boolean
+     */
+    public function test_assert_that_the_name_field_is_mandatory()
+    {
+        // Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        // Registramos quién guarda el registro
+        $administrativeUser = Human::where('paternal_surname', 'administrative')->first();
+
+        $response = $this->actingAs($userAdministrative)->post('api/communities/store', [
+            'human_id' => $administrativeUser->id
+        ]);
+
+        $response->assertStatus(302)
+            ->assertSessionHasErrors(['name' => 'El campo nombre es obligatorio.']);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Afirmar que el campo "nombre", no acepte mas de 15 caracteres.
+     *
+     * @return boolean
+     */
+    public function test_assert_that_the_name_field_does_not_accept_more_than_15_characters()
+    {
+        // Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        $newCommunity = 'Nueva comunidad 12345678910';
+
+        $response = $this->actingAs($userAdministrative)->post('api/communities/store', [
+            'name' => $newCommunity
+        ]);
+
+        $response->assertStatus(302)
+            ->assertSessionHasErrors(['name' => 'El campo nombre no debe ser mayor que 25 caracteres.']);
+
+        $this->post('api/logout');
+    }
+
+    /**
+     * Afirma que devuelve todas las comunidades para el elemento select.
+     *
+     * @return boolean
+     */
+    public function test_assert_that_it_returns_all_communities_for_the_select_element()
+    {
+        // Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+        
+        //  Llamar al endpoint
+        $response = $this->actingAs($userAdministrative)->getJson('api/communities');
+        
+        // Assert: Verificar respuesta
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                '*' => [ // Cada elemento debe tener:
+                    'id',
+                    'name'
+                ]
+            ]);
+
+        //  Confirmar que son mas de 12 comunidades
+        // O más elegante:
+        $this->assertGreaterThan(12, count($response->json()), 'Debe haber más de 12 comunidades');
     }
 }
