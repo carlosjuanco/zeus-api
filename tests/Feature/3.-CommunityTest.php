@@ -425,13 +425,51 @@ class CommunityTest extends TestCase
         //  Consultamos los último 3 registros de comunidades
         $dataCommunities = Community::select('id')->orderBy('id', 'desc')
             ->get()->take(3);
-        // dd($dataCommunities);
         
         //  Verificar orden descendente (de mayor a menor ID)
         $data = $response->json('data');
         $this->assertEquals($dataCommunities[0]->id, $data[0]['id']);
         $this->assertEquals($dataCommunities[1]->id, $data[1]['id']);
         $this->assertEquals($dataCommunities[2]->id, $data[2]['id']);
+    }
+
+    /**
+     * Afirmar que las comunidades son paginados correctamente por 10 registros.
+     *
+     * @return void
+     */
+    public function test_assert_that_communities_are_correctly_paginated_by_10_records()
+    {        
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Solicitar primeras 10 comunidades
+        $response = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/');
+        
+        $data = $response->json('data');
+        $this->assertEquals(10, count($data));
+    }
+
+    /**
+     * Afirmar que se consultan todas las comunidades al seleccionar todos.
+     *
+     * @return void
+     */
+    public function test_assert_that_all_communities_are_consulted_when_selecting_all()
+    {        
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Consultamos cuantos registros existen
+        $totalCommunities = Community::select('id')->count();
+
+        //  Solicitar todas las comunidades
+        $response = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/' . $totalCommunities. '/');
+        
+        $data = $response->json('data');
+        $this->assertEquals($totalCommunities, count($data));
     }
 
     /**
@@ -480,5 +518,26 @@ class CommunityTest extends TestCase
         //  Afirmar
         $responseUpper->assertStatus(200);
         $this->assertCount(1, $responseUpper->json('data'));
+    }
+
+    /**
+     * Afirmar que al buscar una comunidad que no existe, no regresa nada
+     *
+     * @return void
+     */
+    public function test_assert_that_by_searching_for_a_community_that_does_not_exist_nothing_is_returned()
+    {
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Buscar una comunidad que no existe
+        $response = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/NoExistente');
+        
+        //  Afirmar
+        $response->assertStatus(200);
+
+        $this->assertCount(0, $response->json('data'));
+        $this->assertEquals(0, $response->json('total'));
     }
 }
