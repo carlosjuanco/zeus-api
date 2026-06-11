@@ -360,4 +360,125 @@ class CommunityTest extends TestCase
         // O más elegante:
         $this->assertGreaterThan(12, count($response->json()), 'Debe haber más de 12 comunidades');
     }
+
+    /**
+     * Afirmar que al obtener comunidades tiene paginación.
+     *
+     * @return void
+     */
+    public function test_assert_that_obtaining_communities_has_pagination()
+    {
+        // Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Solicitar primeras 10 comunidades
+        $response = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/');
+        
+        //  Verificar respuesta
+        $response->assertStatus(200)
+                 ->assertJsonStructure([
+                    'current_page',
+                    'data' => [
+                        '*' => ['id', 'name']
+                    ],
+                    'first_page_url',
+                    'from',
+                    'last_page',
+                    'last_page_url',
+                    'links' => [
+                        '*' => ['url', 'label', 'active']
+                    ],
+                    'next_page_url',
+                    'path',
+                    'per_page',
+                    'prev_page_url',
+                    'to',
+                    'total'
+                 ]);
+        
+        //  Verificar que solo tiene 10 registros
+        $this->assertCount(10, $response->json('data'));
+        
+        //  Verificar que los campos son solo id y name
+        $firstCommunity = $response->json('data')[0];
+        $this->assertArrayHasKey('id', $firstCommunity);
+        $this->assertArrayHasKey('name', $firstCommunity);
+        $this->assertArrayNotHasKey('human_id', $firstCommunity);
+        $this->assertArrayNotHasKey('deleted_at', $firstCommunity);
+    }
+
+    /**
+     * Afirmar ordenamiento descendente por ID
+     *
+     * @return void
+     */
+    public function test_assert_descending_order_by_id()
+    {        
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Solicitar primeras 10 comunidades
+        $response = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/');
+
+        //  Consultamos los último 3 registros de comunidades
+        $dataCommunities = Community::select('id')->orderBy('id', 'desc')
+            ->get()->take(3);
+        // dd($dataCommunities);
+        
+        //  Verificar orden descendente (de mayor a menor ID)
+        $data = $response->json('data');
+        $this->assertEquals($dataCommunities[0]->id, $data[0]['id']);
+        $this->assertEquals($dataCommunities[1]->id, $data[1]['id']);
+        $this->assertEquals($dataCommunities[2]->id, $data[2]['id']);
+    }
+
+    /**
+     * Afirmar que la búsqueda por nombre es buena
+     *
+     * @return void
+     */
+    public function test_assert_that_searching_by_name_is_good()
+    {
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Buscar comunidades que contengan "Cholula"
+        $response = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/Cholula');
+        
+        //  Afirmar
+        $response->assertStatus(200);
+        $data = $response->json('data');
+        
+        $this->assertEquals('San Pedro Cholula', $data[0]['name']);
+    }
+
+     /**
+     * Afirmar que la búsqueda por nombre con mayusculas y minusculas es buena
+     *
+     * @return void
+     */
+    public function test_assert_that_searching_by_name_with_uppercase_and_lowercase_letters_is_good()
+    {
+        //  Consultamos el segundo usuario que tiene el rol Administrativo.
+        $userAdministrative = User::where('role_id', 2)->first();
+
+        //  Buscar en minúsculas
+        $responseLower = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/cholula');
+        
+        //  Afirmar
+        $responseLower->assertStatus(200);
+        $this->assertCount(1, $responseLower->json('data'));
+        
+        //  Buscar en mayúsculas
+        $responseUpper = $this->actingAs($userAdministrative)
+            ->getJson('api/communities/10/CHOLULA');
+        
+        //  Afirmar
+        $responseUpper->assertStatus(200);
+        $this->assertCount(1, $responseUpper->json('data'));
+    }
 }
