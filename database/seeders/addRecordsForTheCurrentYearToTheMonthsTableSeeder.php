@@ -23,14 +23,14 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesEnero = new Month();
         $mesEnero->month = "Enero";
         $mesEnero->status = $fecha->month == 1 ? "Abierto" : "Cerrado";
-        $mesEnero->anio = 2025;
+        $mesEnero->anio = 2026;
         $mesEnero->human_id = 1;
         $mesEnero->save();
 
         $mesFebrero = new Month();
         $mesFebrero->month = "Febrero";
         $mesFebrero->status = $fecha->month == 2 ? "Abierto" : "Cerrado";
-        $mesFebrero->anio = 2025;
+        $mesFebrero->anio = 2026;
         $mesFebrero->month_id = 1;
         $mesFebrero->human_id = 1;
         $mesFebrero->save();
@@ -38,7 +38,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesMarzo = new Month();
         $mesMarzo->month = "Marzo";
         $mesMarzo->status = $fecha->month == 3 ? "Abierto" : "Cerrado";
-        $mesMarzo->anio = 2025;
+        $mesMarzo->anio = 2026;
         $mesMarzo->month_id = 2;
         $mesMarzo->human_id = 1;
         $mesMarzo->save();
@@ -46,7 +46,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesAbril = new Month();
         $mesAbril->month = "Abril";
         $mesAbril->status = $fecha->month == 4 ? "Abierto" : "Cerrado";
-        $mesAbril->anio = 2025;
+        $mesAbril->anio = 2026;
         $mesAbril->month_id = 3;
         $mesAbril->human_id = 1;
         $mesAbril->save();
@@ -54,7 +54,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesMayo = new Month();
         $mesMayo->month = "Mayo";
         $mesMayo->status = $fecha->month == 5 ? "Abierto" : "Cerrado";
-        $mesMayo->anio = 2025;
+        $mesMayo->anio = 2026;
         $mesMayo->month_id = 4;
         $mesMayo->human_id = 1;
         $mesMayo->save();
@@ -62,7 +62,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesJunio = new Month();
         $mesJunio->month = "Junio";
         $mesJunio->status = $fecha->month == 6 ? "Abierto" : "Cerrado";
-        $mesJunio->anio = 2025;
+        $mesJunio->anio = 2026;
         $mesJunio->month_id = 5;
         $mesJunio->human_id = 1;
         $mesJunio->save();
@@ -70,7 +70,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesJulio = new Month();
         $mesJulio->month = "Julio";
         $mesJulio->status = $fecha->month == 7 ? "Abierto" : "Cerrado";
-        $mesJulio->anio = 2025;
+        $mesJulio->anio = 2026;
         $mesJulio->month_id = 6;
         $mesJulio->human_id = 1;
         $mesJulio->save();
@@ -78,7 +78,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesAgosto = new Month();
         $mesAgosto->month = "Agosto";
         $mesAgosto->status = $fecha->month == 8 ? "Abierto" : "Cerrado";
-        $mesAgosto->anio = 2025;
+        $mesAgosto->anio = 2026;
         $mesAgosto->month_id = 7;
         $mesAgosto->human_id = 1;
         $mesAgosto->save();
@@ -86,7 +86,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesSeptiembre = new Month();
         $mesSeptiembre->month = "Septiembre";
         $mesSeptiembre->status = $fecha->month == 9 ? "Abierto" : "Cerrado";
-        $mesSeptiembre->anio = 2025;
+        $mesSeptiembre->anio = 2026;
         $mesSeptiembre->month_id = 8;
         $mesSeptiembre->human_id = 1;
         $mesSeptiembre->save();
@@ -94,7 +94,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesOctubre = new Month();
         $mesOctubre->month = "Octubre";
         $mesOctubre->status = $fecha->month == 10 ? "Abierto" : "Cerrado";
-        $mesOctubre->anio = 2025;
+        $mesOctubre->anio = 2026;
         $mesOctubre->month_id = 9;
         $mesOctubre->human_id = 1;
         $mesOctubre->save();
@@ -102,7 +102,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesNoviembre = new Month();
         $mesNoviembre->month = "Noviembre";
         $mesNoviembre->status = $fecha->month == 11 ? "Abierto" : "Cerrado";
-        $mesNoviembre->anio = 2025;
+        $mesNoviembre->anio = 2026;
         $mesNoviembre->month_id = 10;
         $mesNoviembre->human_id = 1;
         $mesNoviembre->save();
@@ -110,7 +110,7 @@ class addRecordsForTheCurrentYearToTheMonthsTableSeeder extends Seeder
         $mesDiciembre = new Month();
         $mesDiciembre->month = "Diciembre";
         $mesDiciembre->status = $fecha->month == 12 ? "Abierto" : "Cerrado";
-        $mesDiciembre->anio = 2025;
+        $mesDiciembre->anio = 2026;
         $mesDiciembre->month_id = 11;
         $mesDiciembre->human_id = 1;
         $mesDiciembre->save();
