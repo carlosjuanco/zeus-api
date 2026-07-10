@@ -13,19 +13,6 @@ use App\Models\Community;
 
 class SchoolTest extends TestCase
 {
-    use RefreshDatabase, WithFaker;
-
-    /**
-     * Configuración inicial para todas las pruebas
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-        
-        // Ejecutar seeders necesarios
-        $this->seed();
-    }
-
     /**
      * Helper para obtener usuario administrativo
      */
@@ -442,9 +429,9 @@ class SchoolTest extends TestCase
     }
 
     /**
-     * Afirmar que el campo "secondary_number" debe ser mayor a 9 (válido: 0-9).
+     * Afirmar que el campo "secondary_number" sea menor o igual a 9 (válido: 0-9).
      */
-    public function test_assert_that_the_secondary_number_field_must_be_greater_than_9()
+    public function test_assert_that_the_secondary_number_field_must_be_less_than_or_equal_to_9()
     {
         $userAdministrative = $this->getAdministrativeUser();
         $community = $this->getTestCommunity();
@@ -506,6 +493,23 @@ class SchoolTest extends TestCase
             'key' => 'EDIT001'
         ]);
         
+        $this->post('api/logout');
+
+        // --------------------------------
+        // Regresamos los datos originales
+        // --------------------------------
+        $updatedData = [
+            'name' => $school->name,
+            'key' => $school->key,
+            'type_of_school' => $school->type_of_school,
+            'community_id' => $school->community_id,
+            'secondary_number' => $school->secondary_number
+        ];
+        $response = $this->actingAs($userAdministrative)->putJson('api/schools/' . $school->id, $updatedData);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
+
         $this->post('api/logout');
     }
 
