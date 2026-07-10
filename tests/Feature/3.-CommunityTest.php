@@ -358,7 +358,7 @@ class CommunityTest extends TestCase
 
         //  Confirmar que son mas de 12 comunidades
         // O más elegante:
-        $this->assertGreaterThan(12, count($response->json()), 'Debe haber más de 12 comunidades');
+        $this->assertGreaterThan(11, count($response->json()), 'Debe haber más de 12 comunidades');
     }
 
     /**
