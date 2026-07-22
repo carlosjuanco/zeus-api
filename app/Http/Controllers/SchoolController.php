@@ -17,12 +17,18 @@ class SchoolController extends Controller
         $schools = School::select('id', 'name', 'key', 'type_of_school',
             'community_id', 'secondary_number')
             /**
-             * Opción 2: Usar with() con select() al hacer la consulta
+             * with(): se usa para cargar relaciones (Eager Loading)
              * 
-             * Puntos importantes:
-             * Siempre incluye la llave foránea que usa la relación (generalmente id o la columna que relaciona las tablas), de lo contrario Laravel no podrá mapear la relación correctamente.
-             * Si usas select() en la relación, afectará todas las consultas donde uses community.
-             * Si solo necesitas los campos selectivos en algunos casos, es mejor usar la Opción 2.
+             * El problema que resuelve
+             * Por defecto, cuando haces ->with('community'), Laravel trae todos los campos de 
+             * la tabla communities.
+             * 
+             * El problema que resuelve la función anónima
+             * Limita los campos que se cargan
+             * 
+             * ¿Por qué incluir id?
+             * Laravel necesita el id (o la clave foránea que usa la relación) para poder 
+             * mapear cada comunidad con su respectiva escuela.
              */
             ->with(['community' => function ($query) {
                 // No olvides incluir 'id' que es la FK
