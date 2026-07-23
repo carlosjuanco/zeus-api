@@ -113,13 +113,110 @@ class TeacherController extends Controller
          * 📚 DOCUMENTACIÓN OFICIAL:
          * @see https://laravel.com/docs/9.x/validation#rule-regex
          */
+        /**
+         * VALIDACIÓN DEL CAMPO 'curp'
+         * ===========================
+         * 
+         * CURP (Clave Única de Registro de Población) - México
+         * 
+         * 📌 REGLAS APLICADAS:
+         *   - required: Obligatorio
+         *   - string: Texto
+         *   - size:18: Exactamente 18 caracteres
+         *   - regex: Patrón de estructura CURP
+         *   - uppercase: Convertir a mayúsculas
+         * 
+         * 📝 PATRÓN REGEX: /^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d$/
+         * 
+         * 🔍 DESGLOSE DEL PATRÓN:
+         *   ^                → Inicio de la cadena
+         *   [A-Z]{4}         → 4 letras mayúsculas (apellidos y nombre)
+         *   \d{6}            → 6 dígitos (fecha: AAMMDD)
+         *   [HM]             → Sexo (H=Hombre, M=Mujer)
+         *   [A-Z]{2}         → 2 letras (entidad federativa)
+         *   [A-Z0-9]{3}      → 3 caracteres alfanuméricos (homoclave)
+         *   \d               → 1 dígito (verificador)
+         *   $                → Fin de la cadena
+         * 
+         * 💡 EJEMPLOS VÁLIDOS:
+         *   ✅ "GODE561231HDFRRL09" - CURP válida
+         *   ✅ "SAZD930215HDFNRL05" - CURP válida
+         * 
+         * ❌ EJEMPLOS INVÁLIDOS:
+         *   ❌ "GODE561231HDFRRL0"  - 17 caracteres (debe ser 18)
+         *   ❌ "GODE561231XDFRRL09" - Sexo inválido (debe ser H o M)
+         *   ❌ "gode561231hdfrrl09" - Minúsculas (debe ser mayúsculas)
+         * 
+         * ⚠️ NOTA IMPORTANTE:
+         *   Esta validación SOLO verifica la estructura y formato.
+         *   NO valida el dígito verificador (requiere algoritmo adicional).
+         * 
+         * 📚 DOCUMENTACIÓN OFICIAL:
+         *   - Regla Regex: https://laravel.com/docs/9.x/validation#rule-regex
+         *   - RENAPO: https://www.gob.mx/curp/
+         * 
+         * 🛠️ RECOMENDACIÓN:
+         *   Para una validación completa, combinar con validación del
+         *   dígito verificador (algoritmo CURP).
+         */
+
+        /**
+         * VALIDACIÓN DEL CAMPO 'rfc'
+         * ===========================
+         * 
+         * RFC (Registro Federal de Contribuyentes) - Persona Física
+         * 
+         * 📌 REGLAS APLICADAS:
+         *   - required: Obligatorio
+         *   - string: Texto
+         *   - size:13: Exactamente 13 caracteres
+         *   - regex: Patrón de estructura RFC
+         *   - uppercase: Convertir a mayúsculas
+         * 
+         * 📝 PATRÓN REGEX: /^[A-Z]{4}\d{6}[A-Z0-9]{3}$/
+         * 
+         * 🔍 DESGLOSE DEL PATRÓN:
+         *   ^                → Inicio de la cadena
+         *   [A-Z]{4}         → 4 letras mayúsculas (apellidos y nombre)
+         *   \d{6}            → 6 dígitos (fecha: AAMMDD)
+         *   [A-Z0-9]{3}      → 3 caracteres alfanuméricos (homoclave)
+         *   $                → Fin de la cadena
+         * 
+         * 💡 EJEMPLOS VÁLIDOS:
+         *   ✅ "GODE561231HDF" - RFC válido
+         *   ✅ "SAZD930215HN1" - RFC válido
+         *   ✅ "PEPE850101HDF" - RFC válido
+         * 
+         * ❌ EJEMPLOS INVÁLIDOS:
+         *   ❌ "GODE561231HDF"   - 12 caracteres (debe ser 13)
+         *   ❌ "GODE561231HD"    - Faltan caracteres
+         *   ❌ "gode561231hdf"   - Minúsculas (debe ser mayúsculas)
+         *   ❌ "GODE561231HDF1"  - 14 caracteres (excede)
+         * 
+         * 📝 CONSIDERACIONES ESPECIALES:
+         *   - La homoclave puede incluir números y letras (A-Z, 0-9)
+         *   - El SAT asigna la homoclave para evitar duplicidades
+         *   - Los 4 caracteres iniciales son SIEMPRE letras
+         * 
+         * ⚠️ NOTA IMPORTANTE:
+         *   Esta validación SOLO verifica la estructura y formato.
+         *   NO valida el dígito verificador (requiere algoritmo adicional).
+         * 
+         * 📚 DOCUMENTACIÓN OFICIAL:
+         *   - Regla Regex: https://laravel.com/docs/9.x/validation#rule-regex
+         *   - SAT: https://www.sat.gob.mx/
+         * 
+         * 🛠️ RECOMENDACIÓN:
+         *   Para una validación completa, combinar con validación del
+         *   dígito verificador (algoritmo RFC).
+         */
         $validated = $request->validate([
             'name' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'maternal_surname' => 'nullable|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
-            'curp' => 'required|string|max:18',
-            'rfc' => 'required|string|max:12',
-            'gender' => 'required|in:Masculino,Femenino',
+            'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d$/|uppercase',
+            'rfc' => 'required|string|max:12|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
+            'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|numeric|digits:10',

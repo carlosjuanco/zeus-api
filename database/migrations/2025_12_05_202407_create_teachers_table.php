@@ -28,13 +28,13 @@ return new class extends Migration
             // CURP: 18 caracteres, obligatorio
             $table->string('curp', 18);
 
-            // RFC: 12 caracteres, obligatorio
-            $table->string('rfc', 12);
+            // RFC: 13 caracteres, obligatorio
+            $table->string('rfc', 13);
 
-            // Género: 9 caracteres, obligatorio
+            // Género: 6 caracteres, obligatorio
             $table->enum('gender', [
-                'Masculino',
-                'Femenino',
+                'Hombre',
+                'Mujer',
             ]);
 
             // Código presupuestal: 23 caracteres, obligatorio
