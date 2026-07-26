@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\SchoolController;
+use App\Http\Controllers\TeacherController;
 
 Route::post('login', [AuthController::class, 'login']);
 
@@ -67,3 +68,23 @@ Route::put('schools/{school}', [SchoolController::class, 'update'])
 Route::delete('schools/{school}', [SchoolController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'can:delete,school'])
     ->name('schools.destroy');
+
+// viewAny - Listar profesores con paginación y búsqueda opcional
+Route::get('teachers/{paginate}/{search?}', [TeacherController::class, 'viewAny'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
+    ->name('teachers.viewAny');
+
+// store - Crear nuevo profesor
+Route::post('teachers/store', [TeacherController::class, 'store'])
+    ->middleware(['auth:sanctum', 'can:create,App\Models\Teacher'])
+    ->name('teachers.store');
+
+// update - Actualizar profesor existente
+Route::put('teachers/{teacher}', [TeacherController::class, 'update'])
+    ->middleware(['auth:sanctum', 'can:update,teacher'])
+    ->name('teachers.update');
+    
+// destroy - Eliminar profesor
+Route::delete('teachers/{teacher}', [TeacherController::class, 'destroy'])
+    ->middleware(['auth:sanctum', 'can:delete,teacher'])
+    ->name('teachers.destroy');
