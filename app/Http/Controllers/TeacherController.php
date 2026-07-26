@@ -239,16 +239,16 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Teacher $teacher)
     {
         // Validar la solicitud
         $validated = $request->validate([
             'name' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'maternal_surname' => 'nullable|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
-            'curp' => 'required|string|max:18',
-            'rfc' => 'required|string|max:12',
-            'gender' => 'required|in:Masculino,Femenino',
+            'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d$/|uppercase',
+            'rfc' => 'required|string|max:12|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
+            'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|numeric|digits:10',
@@ -260,8 +260,7 @@ class TeacherController extends Controller
             'school_id' => 'required|exists:schools,id',
         ]);
 
-        // Actualizar el registro en base al segundo parámetro ($id)
-        $teacher = Teacher::findOrFail($id);
+        // Actualizar el registro con binding implícito
         $teacher->update($validated);
 
         return response()->json([
@@ -272,10 +271,9 @@ class TeacherController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy(Teacher $teacher)
     {
-        // Eliminar el registro en base al parámetro recibido
-        $teacher = Teacher::findOrFail($id);
+        // Eliminar el registro con binding implícito
         $teacher->delete();
 
         return response()->json([
