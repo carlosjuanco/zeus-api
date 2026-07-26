@@ -126,7 +126,7 @@ class TeacherController extends Controller
          *   - regex: Patrón de estructura CURP
          *   - uppercase: Convertir a mayúsculas
          * 
-         * 📝 PATRÓN REGEX: /^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d$/
+         * 📝 PATRÓN REGEX: /^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d{2}$/
          * 
          * 🔍 DESGLOSE DEL PATRÓN:
          *   ^                → Inicio de la cadena
@@ -214,8 +214,8 @@ class TeacherController extends Controller
             'name' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'maternal_surname' => 'nullable|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
-            'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d$/|uppercase',
-            'rfc' => 'required|string|max:12|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
+            'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d{2}$/|uppercase',
+            'rfc' => 'required|string|max:13|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
             'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
@@ -246,7 +246,7 @@ class TeacherController extends Controller
             'name' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'maternal_surname' => 'nullable|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
-            'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d$/|uppercase',
+            'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d{2}$/|uppercase',
             'rfc' => 'required|string|max:12|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
             'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
