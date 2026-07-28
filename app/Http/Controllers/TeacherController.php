@@ -212,6 +212,42 @@ class TeacherController extends Controller
          */
 
         /**
+         * VALIDACIÓN DEL CAMPO 'telefono'
+         * ================================
+         * 
+         * 📌 REGLAS APLICADAS:
+         *   - required: Obligatorio
+         *   - string: Texto
+         *   - regex: Patrón de formato telefónico
+         * 
+         * 📝 PATRÓN REGEX: /^\d{3} \d{3} \d{4}$/
+         * 
+         * 🔍 DESGLOSE DEL PATRÓN:
+         *   ^                → Inicio de la cadena
+         *   \d{3}            → 3 dígitos (código de área/lada)
+         *   [ ]              → Espacio en blanco
+         *   \d{3}            → 3 dígitos (primer bloque)
+         *   [ ]              → Espacio en blanco
+         *   \d{4}            → 4 dígitos (segundo bloque)
+         *   $                → Fin de la cadena
+         * 
+         * 💡 EJEMPLOS VÁLIDOS:
+         *   ✅ "951 213 0374" - Formato correcto
+         *   ✅ "555 123 4567" - Formato correcto
+         *   ✅ "442 987 6543" - Formato correcto
+         * 
+         * ❌ EJEMPLOS INVÁLIDOS:
+         *   ❌ "9512130374"   - Sin espacios
+         *   ❌ "951 213 037"  - Faltan dígitos (3+3+3 en lugar de 3+3+4)
+         *   ❌ "951-213-0374" - Guiones en lugar de espacios
+         *   ❌ "951 213 03745" - Dígitos de más
+         *   ❌ "abc 213 0374" - Letras en lugar de números
+         * 
+         * 📚 DOCUMENTACIÓN OFICIAL:
+         *   - Regla Regex: https://laravel.com/docs/9.x/validation#rule-regex
+         */
+
+        /**
          * VALIDACIÓN DE FECHAS: date vs date_format
          * =========================================
          *
@@ -266,7 +302,7 @@ class TeacherController extends Controller
          *   - Regla date_format: https://laravel.com/docs/9.x/validation#rule-date-format
          *   - Formatos de PHP: https://www.php.net/manual/es/datetime.format.php
          */
-        
+
         $validated = $request->validate([
             'name' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
@@ -276,7 +312,7 @@ class TeacherController extends Controller
             'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
-            'telephone' => 'required|numeric|digits:10',
+            'telephone' => 'required|string|regex:/^\d{3} \d{3} \d{4}$/',
             'reason' => 'nullable|numeric|digits:2',
             'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
@@ -308,9 +344,9 @@ class TeacherController extends Controller
             'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
-            'telephone' => 'required|numeric|digits:10',
+            'telephone' => 'required|string|regex:/^\d{3} \d{3} \d{4}$/',
             'reason' => 'nullable|numeric|digits:2',
-            'date_of_entry_into_the_sep' => 'nullable|date',
+            'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
             'language' => 'nullable|in:Mixteca,Cañada,Costa,Istmo,Papaloapan,Sierra sur,Sierra norte,Valles centrales',
             'language_variant' => 'nullable|in:Alta,Baja',
