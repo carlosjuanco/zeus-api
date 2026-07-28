@@ -22,8 +22,8 @@ return new class extends Migration
             // Apellido paterno: 20 caracteres, obligatorio
             $table->string('paternal_surname', 20);
 
-            // Apellido materno: 20 caracteres, obligatorio
-            $table->string('maternal_surname', 20);
+            // Apellido materno: 20 caracteres, puede quedar vacío
+            $table->string('maternal_surname', 20)->nullable();
 
             // CURP: 18 caracteres, obligatorio
             $table->string('curp', 18);

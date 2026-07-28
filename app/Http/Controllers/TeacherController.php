@@ -321,6 +321,9 @@ class TeacherController extends Controller
             'school_id' => 'required|exists:schools,id',
         ]);
 
+        // Registramos quién guarda el registro
+        $validated["human_id"] = $request->user()->id;
+
         // Guardar el registro
         Teacher::create($validated);
 
