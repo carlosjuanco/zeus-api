@@ -210,6 +210,63 @@ class TeacherController extends Controller
          *   Para una validación completa, combinar con validación del
          *   dígito verificador (algoritmo RFC).
          */
+
+        /**
+         * VALIDACIÓN DE FECHAS: date vs date_format
+         * =========================================
+         *
+         * 📌 REGLAS APLICADAS (CASO DE ERROR):
+         *   'date_of_entry_into_the_sep' => 'nullable|date|date_format:d/m/Y'
+         *
+         * ❌ PROBLEMA DETECTADO:
+         *   La regla 'date' se ejecuta ANTES que 'date_format'.
+         *   'date' usa strtotime() de PHP, que NO reconoce el formato 'd/m/Y'
+         *   (lo interpreta como 'm/d/Y'). Por eso, un valor como "26/07/2026"
+         *   falla antes de que 'date_format' pueda validar el formato correcto.
+         *
+         * 🔧 SOLUCIÓN APLICADA:
+         *   'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y'
+         *
+         * ✅ POR QUÉ FUNCIONA:
+         *   - 'date_format' valida POR SÍ SOLO que el string coincida
+         *     exactamente con el formato y que sea una fecha real en ese formato.
+         *   - No necesita la regla 'date' adicional.
+         *
+         * 📝 COMPORTAMIENTO DE CADA REGLA:
+         *   +----------------+--------------------------------------------------+
+         *   | Regla          | Comportamiento                                   |
+         *   +----------------+--------------------------------------------------+
+         *   | 'date'         | Valida que el valor sea una fecha REAL usando    |
+         *   |                | strtotime(). Acepta muchos formatos, pero NO     |
+         *   |                | 'd/m/Y' si el día > 12 (lo confunde con m/d/Y). |
+         *   +----------------+--------------------------------------------------+
+         *   | 'date_format'  | Valida que el string coincida EXACTAMENTE con    |
+         *   |                | el formato especificado (ej: d/m/Y) Y que sea   |
+         *   |                | una fecha válida. Es más estricto y predecible.  |
+         *   +----------------+--------------------------------------------------+
+         *
+         * 💡 EJEMPLOS PRÁCTICOS:
+         *   +------------------------------------+---------------------------+
+         *   | Validación                         | "26/07/2026"  | "2026-07-26" |
+         *   +------------------------------------+--------------+-------------+
+         *   | date                               | ❌ Falla     | ✅ Válido   |
+         *   | date_format:Y-m-d                  | ❌ Falla     | ✅ Válido   |
+         *   | date_format:d/m/Y                  | ✅ Válido    | ❌ Falla    |
+         *   | date|date_format:d/m/Y (con error) | ❌ Falla     | ✅ Válido   |
+         *   | date_format:d/m/Y (solo)           | ✅ Válido    | ❌ Falla    |
+         *   +------------------------------------+--------------+-------------+
+         *
+         * 🎯 RECOMENDACIÓN FINAL:
+         *   - Para formatos específicos (como d/m/Y), USA SOLO 'date_format'.
+         *   - Para formatos estándar (Y-m-d), PUEDES USAR 'date' o 'date_format'.
+         *   - Si usas 'date', asegúrate de que el formato sea reconocible por PHP.
+         *
+         * 📚 DOCUMENTACIÓN OFICIAL:
+         *   - Regla date: https://laravel.com/docs/9.x/validation#rule-date
+         *   - Regla date_format: https://laravel.com/docs/9.x/validation#rule-date-format
+         *   - Formatos de PHP: https://www.php.net/manual/es/datetime.format.php
+         */
+        
         $validated = $request->validate([
             'name' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
@@ -221,7 +278,7 @@ class TeacherController extends Controller
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|numeric|digits:10',
             'reason' => 'nullable|numeric|digits:2',
-            'date_of_entry_into_the_sep' => 'nullable|date',
+            'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
             'language' => 'nullable|in:Mixteca,Cañada,Costa,Istmo,Papaloapan,Sierra sur,Sierra norte,Valles centrales',
             'language_variant' => 'nullable|in:Alta,Baja',

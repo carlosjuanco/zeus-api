@@ -65,6 +65,9 @@ class DateFormatCast implements CastsAttributes
      * @param  mixed  $value
      * @param  array  $attributes
      * @return string|null
+     * 
+     * 📚 DOCUMENTACIÓN
+     * @see https://chat.deepseek.com/share/mvdlfdel0l8pt1au9l
      */
     public function set($model, string $key, $value, array $attributes): ?string
     {
