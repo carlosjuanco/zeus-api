@@ -343,7 +343,7 @@ class TeacherController extends Controller
             'paternal_surname' => 'required|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'maternal_surname' => 'nullable|string|max:20|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/',
             'curp' => 'required|string|max:18|regex:/^[A-Z]{4}\d{6}[HM][A-Z]{2}[A-Z0-9]{3}\d{2}$/|uppercase',
-            'rfc' => 'required|string|max:12|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
+            'rfc' => 'required|string|max:13|regex:/^[A-Z]{4}\d{6}[A-Z0-9]{3}$/|uppercase',
             'gender' => 'required|in:Hombre,Mujer',
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
