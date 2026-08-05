@@ -49,7 +49,7 @@ class AddSchoolRecordsSeeder extends Seeder
 
         $school3 = new School();
         $school3->name = "Francisco I. Madero";
-        $school3->key = "20DPB0453k";
+        $school3->key = "20DPB0453K";
         $school3->type_of_school = "Primaria";
         $school3->community_id = $community3->id;
         $school3->human_id = $administrativeUser->id;
@@ -292,16 +292,6 @@ class AddSchoolRecordsSeeder extends Seeder
         $school28->human_id = $administrativeUser->id;
         $school28->save();
 
-        // $community11 = Community::where('name', 'Rio Cacho')->first();
-
-        $school32 = new School();
-        $school32->name = "Preescolar El Carrizal";
-        // $school32->key = "";
-        $school32->type_of_school = "Inicial";
-        $school32->community_id = $community11->id;
-        $school32->human_id = $administrativeUser->id;
-        $school32->save();
-
         /*
             Insertamos Albergues escolares
         */
@@ -325,15 +315,5 @@ class AddSchoolRecordsSeeder extends Seeder
         $school34->community_id = $community2->id;
         $school34->human_id = $administrativeUser->id;
         $school34->save();
-
-        // $community8 = Community::where('name', 'Los Sabinos')->first();
-
-        $school35 = new School();
-        $school35->name = "Jefatura";
-        $school35->key = "----";
-        $school35->type_of_school = "Albergues escolares";
-        $school35->community_id = $community8->id;
-        $school35->human_id = $administrativeUser->id;
-        $school35->save();
     }
 }
