@@ -38,6 +38,13 @@ class CreateTeacherRecordsSeeder extends Seeder
         $recibimientoPreSchool = School::where("key", "20DCC2142Q")->first();
         $rioManzanitaPreSchool = School::where("key", "20DCC2418N")->first();
         $rioCachoPreSchool = School::where("key", "20DCC2499O")->first();
+        $sanPedroChululaearlyChildhoodSchool = School::where("key", "20DIN0156F")->first();
+        $santaCatarinaEstetlaearlyChildhoodSchool = School::where("key", "20DIN0603W")->first();
+        $corralDePiedraearlyChildhoodSchool = School::where("key", "20DIN0155G")->first();
+        $cañadaDeHieloearlyChildhoodSchool = School::where("key", "20DIN0332U")->first();
+        $elDuraznalearlyChildhoodSchool = School::where("key", "20DIN0333T")->first();
+        $sanJuanMonteFlorSchoolHostel = School::where("key", "20TA10124A")->first();
+        $santaMariaPeñolesSchoolHostel = School::where("key", "TA10293W")->first();
 
         // Datos de los 20 maestros
         $teachersData = [
@@ -358,6 +365,118 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
                 'school_index' => $rioCachoPreSchool->id
+            ],
+            [
+                'name' => 'Janeth',
+                'paternal_surname' => 'Martinez',
+                'maternal_surname' => 'Luis',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Mujer',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 693 5437',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1982',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $sanPedroChululaearlyChildhoodSchool->id
+            ],
+            [
+                'name' => 'David',
+                'paternal_surname' => 'Hernandez',
+                'maternal_surname' => 'Lopez',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Hombre',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 469 6522',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1983',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $santaCatarinaEstetlaearlyChildhoodSchool->id
+            ],
+            [
+                'name' => 'Judith',
+                'paternal_surname' => 'Cruz',
+                'maternal_surname' => 'Angel',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Mujer',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 201 6200',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1984',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $corralDePiedraearlyChildhoodSchool->id
+            ],
+            [
+                'name' => 'Nubia D.',
+                'paternal_surname' => 'Hernandez',
+                'maternal_surname' => 'Bautista',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Mujer',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 283 9580',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1985',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $cañadaDeHieloearlyChildhoodSchool->id
+            ],
+            [
+                'name' => 'Liboria',
+                'paternal_surname' => 'Martinez',
+                'maternal_surname' => 'Bautista',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Mujer',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 589 5074',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1986',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $elDuraznalearlyChildhoodSchool->id
+            ],
+            [
+                'name' => 'Casto',
+                'paternal_surname' => 'Ines',
+                'maternal_surname' => 'Sanchez',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Hombre',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 360 7369',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1987',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $sanJuanMonteFlorSchoolHostel->id
+            ],
+            [
+                'name' => 'Gustavo',
+                'paternal_surname' => 'E.',
+                'maternal_surname' => 'Rojas',
+                'curp' => 'OGOR902020HMCRNN20',
+                'rfc' => 'OGOR902020HCR',
+                'gender' => 'Hombre',
+                'budget_code' => 'BUD-2024-001-001-020-01',
+                'funcion' => 'Director',
+                'telephone' => '951 255 1042',
+                'reason' => null,
+                'date_of_entry_into_the_sep' => '10/01/1988',
+                'language' => 'Istmo',
+                'language_variant' => 'Baja',
+                'school_index' => $santaMariaPeñolesSchoolHostel->id
             ]
         ];
 
