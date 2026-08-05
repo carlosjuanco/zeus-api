@@ -29,6 +29,15 @@ class CreateTeacherRecordsSeeder extends Seeder
         $recibimientoPrimarySchool = School::where("key", "20DPB2209M")->first();
         $rioManzanitaPrimarySchool = School::where("key", "20DPB2347O")->first();
         $rioCachoPrimarySchool = School::where("key", "20DPB2426A")->first();
+        $sanJuanMonteFlorPreSchool = School::where("key", "20DCC0460P")->first();
+        $santaMariaPeñolesPreSchool = School::where("key", "20DCC0461O")->first();
+        $santaCatarinaEstetlaPreSchool = School::where("key", "20DCC0464L")->first();
+        $cañadaDeHieloPreSchool = School::where("key", "20DCC2082S")->first();
+        $elDuraznalPreSchool = School::where("key", "20DCC2324Z")->first();
+        $rioHondoPreSchool = School::where("key", "20DCC2238C")->first();
+        $recibimientoPreSchool = School::where("key", "20DCC2142Q")->first();
+        $rioManzanitaPreSchool = School::where("key", "20DCC2418N")->first();
+        $rioCachoPreSchool = School::where("key", "20DCC2499O")->first();
 
         // Datos de los 20 maestros
         $teachersData = [
@@ -209,157 +218,146 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'school_index' => $rioCachoPrimarySchool->id
             ],
             [
-                'name' => 'Fernando',
-                'paternal_surname' => 'Ramos',
-                'maternal_surname' => 'Peña',
+                'name' => 'Julia A.',
+                'paternal_surname' => 'Hernandez',
+                'maternal_surname' => 'Santiago',
                 'curp' => 'RAFE821212HMCRNN12',
                 'rfc' => 'RAFE821212HCR',
-                'gender' => 'Hombre',
+                'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-012-01',
-                'funcion' => 'Administrativo',
-                'telephone' => 9512345678,
+                'funcion' => 'Director',
+                'telephone' => '951 883 3252',
                 'reason' => null,
-                'date_of_entry_into_the_sep' => '2022-07-01',
-                'study_profile' => 'Pasante de U.P.N.',
+                'date_of_entry_into_the_sep' => '07/01/1973',
                 'language' => 'Istmo',
                 'language_variant' => null,
-                'school_index' => 11
+                'school_index' => $sanJuanMonteFlorPreSchool->id
             ],
             [
-                'name' => 'Luz',
-                'paternal_surname' => 'Vargas',
-                'maternal_surname' => 'Acosta',
+                'name' => 'Nashielly',
+                'paternal_surname' => 'Martinez',
+                'maternal_surname' => 'Velasco',
                 'curp' => 'VAAL831313HMCRNN13',
                 'rfc' => 'VAAL831313HCR',
                 'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-013-01',
-                'funcion' => 'Docente con grupo',
-                'telephone' => 9513456789,
+                'funcion' => 'Director',
+                'telephone' => '951 347 2309',
                 'reason' => 1,
-                'date_of_entry_into_the_sep' => '2018-05-20',
-                'study_profile' => 'Titulado de U.P.N.',
+                'date_of_entry_into_the_sep' => '20/05/1974',
                 'language' => 'Papaloapan',
                 'language_variant' => 'Alta',
-                'school_index' => 0
+                'school_index' => $santaMariaPeñolesPreSchool->id
             ],
             [
-                'name' => 'Alejandro',
-                'paternal_surname' => 'Mora',
-                'maternal_surname' => 'Campos',
+                'name' => 'Maricela',
+                'paternal_surname' => 'San Juan',
+                'maternal_surname' => 'A.',
                 'curp' => 'MOCA841414HMCRNN14',
                 'rfc' => 'MOCA841414HCR',
-                'gender' => 'Hombre',
+                'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-014-01',
-                'funcion' => 'Docente',
-                'telephone' => 9514567890,
+                'funcion' => 'Director',
+                'telephone' => '951 157 2232',
                 'reason' => null,
-                'date_of_entry_into_the_sep' => '2020-11-15',
-                'study_profile' => 'Pasante de normal superior',
+                'date_of_entry_into_the_sep' => '15/11/1975',
                 'language' => 'Sierra sur',
                 'language_variant' => 'Baja',
-                'school_index' => 1
+                'school_index' => $santaCatarinaEstetlaPreSchool->id
             ],
             [
-                'name' => 'Rosa',
-                'paternal_surname' => 'Paredes',
-                'maternal_surname' => 'Franco',
+                'name' => 'Domitila',
+                'paternal_surname' => 'Hernandez',
+                'maternal_surname' => 'Hernandez',
                 'curp' => 'PAFR851515HMCRNN15',
                 'rfc' => 'PAFR851515HCR',
                 'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-015-01',
-                'funcion' => 'Directora',
-                'telephone' => 9515678901,
+                'funcion' => 'Director',
+                'telephone' => '951 411 2618',
                 'reason' => 2,
-                'date_of_entry_into_the_sep' => '2016-02-10',
-                'study_profile' => 'Pasante de maestría',
+                'date_of_entry_into_the_sep' => '02/10/1976',
                 'language' => 'Sierra norte',
                 'language_variant' => 'Alta',
-                'school_index' => 2
+                'school_index' => $cañadaDeHieloPreSchool->id
             ],
             [
-                'name' => 'Manuel',
-                'paternal_surname' => 'Guerrero',
-                'maternal_surname' => 'Molina',
+                'name' => 'Beatriz',
+                'paternal_surname' => 'Santiago',
+                'maternal_surname' => 'Julian',
                 'curp' => 'GUMR861616HMCRNN16',
                 'rfc' => 'GUMR861616HCR',
-                'gender' => 'Hombre',
+                'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-016-01',
-                'funcion' => 'Docente con grupo',
-                'telephone' => 9516789012,
+                'funcion' => 'Director',
+                'telephone' => '951 258 7622',
                 'reason' => null,
-                'date_of_entry_into_the_sep' => '2021-06-01',
-                'study_profile' => 'Titulado de U.P.N.',
+                'date_of_entry_into_the_sep' => '06/01/1977',
                 'language' => 'Valles centrales',
                 'language_variant' => 'Baja',
-                'school_index' => 3
+                'school_index' => $elDuraznalPreSchool->id
             ],
             [
-                'name' => 'Teresa',
-                'paternal_surname' => 'Rivas',
-                'maternal_surname' => 'Cortés',
+                'name' => 'Ita',
+                'paternal_surname' => 'Hernandez',
                 'curp' => 'RACT871717HMCRNN17',
                 'rfc' => 'RACT871717HCR',
                 'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-017-01',
-                'funcion' => 'Docente',
-                'telephone' => 9517890123,
+                'funcion' => 'Director',
+                'telephone' => '951 657 7195',
                 'reason' => 3,
-                'date_of_entry_into_the_sep' => '2019-12-05',
-                'study_profile' => 'Pasante de normal superior',
+                'date_of_entry_into_the_sep' => '12/05/1978',
                 'language' => 'Mixteca',
                 'language_variant' => 'Alta',
-                'school_index' => 4
+                'school_index' => $rioHondoPreSchool->id
             ],
             [
-                'name' => 'Jorge',
-                'paternal_surname' => 'Navarro',
-                'maternal_surname' => 'Salazar',
+                'name' => 'Raquel',
+                'paternal_surname' => 'Aquino',
+                'maternal_surname' => 'Garcia',
                 'curp' => 'NASJ881818HMCRNN18',
                 'rfc' => 'NASJ881818HCR',
-                'gender' => 'Hombre',
+                'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-018-01',
-                'funcion' => 'Administrativo',
-                'telephone' => 9518901234,
+                'funcion' => 'Director',
+                'telephone' => '951 430 8038',
                 'reason' => null,
-                'date_of_entry_into_the_sep' => '2022-09-01',
-                'study_profile' => 'Pasante de U.P.N.',
+                'date_of_entry_into_the_sep' => '09/01/1979',
                 'language' => 'Cañada',
                 'language_variant' => null,
-                'school_index' => 5
+                'school_index' => $recibimientoPreSchool->id
             ],
             [
-                'name' => 'Monica',
-                'paternal_surname' => 'Luna',
-                'maternal_surname' => 'Ponce',
+                'name' => 'Inocente',
+                'paternal_surname' => 'Caballero',
                 'curp' => 'LUPM891919HMCRNN19',
                 'rfc' => 'LUPM891919HCR',
-                'gender' => 'Mujer',
+                'gender' => 'Hombre',
                 'budget_code' => 'BUD-2024-001-001-019-01',
-                'funcion' => 'Docente con grupo',
-                'telephone' => 9519012345,
+                'funcion' => 'Director',
+                'telephone' => '951 644 0124',
                 'reason' => 1,
-                'date_of_entry_into_the_sep' => '2017-07-15',
-                'study_profile' => 'Titulado de U.P.N.',
+                'date_of_entry_into_the_sep' => '15/07/1980',
                 'language' => 'Costa',
                 'language_variant' => 'Alta',
-                'school_index' => 6
+                'school_index' => $rioManzanitaPreSchool->id
             ],
             [
-                'name' => 'Raúl',
-                'paternal_surname' => 'Ortiz',
-                'maternal_surname' => 'Guzmán',
+                'name' => 'Ana',
+                'paternal_surname' => 'Ramirez',
+                'maternal_surname' => 'Pacheco',
                 'curp' => 'OGOR902020HMCRNN20',
                 'rfc' => 'OGOR902020HCR',
-                'gender' => 'Hombre',
+                'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-020-01',
-                'funcion' => 'Docente',
-                'telephone' => 9510123456,
+                'funcion' => 'Director',
+                'telephone' => '951 321 1179',
                 'reason' => null,
-                'date_of_entry_into_the_sep' => '2020-10-01',
-                'study_profile' => 'Pasante de normal superior',
+                'date_of_entry_into_the_sep' => '10/01/1981',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => 7
+                'school_index' => $rioCachoPreSchool->id
             ]
         ];
 
