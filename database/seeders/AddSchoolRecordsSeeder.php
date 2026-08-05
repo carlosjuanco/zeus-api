@@ -242,21 +242,11 @@ class AddSchoolRecordsSeeder extends Seeder
             Insertamos Inicial
         */
 
-        // $community1 = Community::where('name', 'San Juan Monte Flor')->first();
-
-        $school23 = new School();
-        $school23->name = "";
-        $school23->key = "20DIN";
-        $school23->type_of_school = "Inicial";
-        $school23->community_id = $community1->id;
-        $school23->human_id = $administrativeUser->id;
-        $school23->save();
-
         // $community3 = Community::where('name', 'San Pedro Cholula')->first();
 
         $school24 = new School();
         $school24->name = "Educación Inicial";
-        $school24->key = "0156F";
+        $school24->key = "20DIN0156F";
         $school24->type_of_school = "Inicial";
         $school24->community_id = $community3->id;
         $school24->human_id = $administrativeUser->id;
@@ -266,7 +256,7 @@ class AddSchoolRecordsSeeder extends Seeder
 
         $school25 = new School();
         $school25->name = "Educación Inicial";
-        $school25->key = "0603W";
+        $school25->key = "20DIN0603W";
         $school25->type_of_school = "Inicial";
         $school25->community_id = $community4->id;
         $school25->human_id = $administrativeUser->id;
@@ -276,7 +266,7 @@ class AddSchoolRecordsSeeder extends Seeder
 
         $school26 = new School();
         $school26->name = "Educación Inicial";
-        $school26->key = "0155G";
+        $school26->key = "20DIN0155G";
         $school26->type_of_school = "Inicial";
         $school26->community_id = $community5->id;
         $school26->human_id = $administrativeUser->id;
@@ -286,7 +276,7 @@ class AddSchoolRecordsSeeder extends Seeder
 
         $school27 = new School();
         $school27->name = "Educación Inicial";
-        $school27->key = "0332U";
+        $school27->key = "20DIN0332U";
         $school27->type_of_school = "Inicial";
         $school27->community_id = $community6->id;
         $school27->human_id = $administrativeUser->id;
@@ -296,7 +286,7 @@ class AddSchoolRecordsSeeder extends Seeder
 
         $school28 = new School();
         $school28->name = "Educación Inicial";
-        $school28->key = "0333T";
+        $school28->key = "20DIN0333T";
         $school28->type_of_school = "Inicial";
         $school28->community_id = $community7->id;
         $school28->human_id = $administrativeUser->id;
