@@ -62,7 +62,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '30/08/1966',
                 'language' => 'Mixteca',
                 'language_variant' => 'Alta',
-                'school_index' => $sanJuanMonteFlorPrimarySchool->id
+                'school_id' => $sanJuanMonteFlorPrimarySchool->id
             ],
             [
                 'name' => 'Eloy Rojas',
@@ -78,7 +78,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '20/01/1980',
                 'language' => 'Mixteca',
                 'language_variant' => 'Alta',
-                'school_index' => $santaMariaPeñolesPrimarySchool->id
+                'school_id' => $santaMariaPeñolesPrimarySchool->id
             ],
             [
                 'name' => 'Heriberto',
@@ -94,7 +94,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '05/04/1970',
                 'language' => 'Costa',
                 'language_variant' => null,
-                'school_index' => $sanPedroChululaPrimarySchool->id
+                'school_id' => $sanPedroChululaPrimarySchool->id
             ],
             [
                 'name' => 'Arturo',
@@ -110,7 +110,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '30/01/1970',
                 'language' => 'Istmo',
                 'language_variant' => 'Alta',
-                'school_index' => $santaCatarinaEstetlaPrimarySchool->id
+                'school_id' => $santaCatarinaEstetlaPrimarySchool->id
             ],
             [
                 'name' => 'Vilma',
@@ -120,13 +120,13 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'rfc' => 'DIFL750515HCR',
                 'gender' => 'Mujer',
                 'budget_code' => 'BUD-2024-001-001-005-01',
-                'funcion' => 'Dorector',
+                'funcion' => 'Director',
                 'telephone' => '951 115 2876',
                 'reason' => 3,
                 'date_of_entry_into_the_sep' => '20/11/1977',
                 'language' => 'Papaloapan',
                 'language_variant' => 'Baja',
-                'school_index' => $corralDePiedraPrimarySchool->id
+                'school_id' => $corralDePiedraPrimarySchool->id
             ],
             [
                 'name' => 'Anami Claudia',
@@ -142,7 +142,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '01/10/1966',
                 'language' => 'Sierra sur',
                 'language_variant' => null,
-                'school_index' => $cañadaDeHieloPrimarySchool->id
+                'school_id' => $cañadaDeHieloPrimarySchool->id
             ],
             [
                 'name' => 'Bartolo Julian',
@@ -158,7 +158,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '08/10/1968',
                 'language' => 'Sierra norte',
                 'language_variant' => 'Alta',
-                'school_index' => $elDuraznalPrimarySchool->id
+                'school_id' => $elDuraznalPrimarySchool->id
             ],
             [
                 'name' => 'Rosario',
@@ -174,7 +174,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '20/07/1969',
                 'language' => 'Valles centrales',
                 'language_variant' => 'Baja',
-                'school_index' => $losSabinosPrimarySchool->id
+                'school_id' => $losSabinosPrimarySchool->id
             ],
             [
                 'name' => 'Geronimo',
@@ -190,7 +190,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '01/05/1970',
                 'language' => 'Mixteca',
                 'language_variant' => 'Alta',
-                'school_index' => $recibimientoPrimarySchool->id
+                'school_id' => $recibimientoPrimarySchool->id
             ],
             [
                 'name' => 'Silverio',
@@ -206,7 +206,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '03/01/1971',
                 'language' => 'Cañada',
                 'language_variant' => 'Baja',
-                'school_index' => $rioManzanitaPrimarySchool->id
+                'school_id' => $rioManzanitaPrimarySchool->id
             ],
             [
                 'name' => 'Lenin J.',
@@ -222,7 +222,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '15/09/1972',
                 'language' => 'Costa',
                 'language_variant' => 'Alta',
-                'school_index' => $rioCachoPrimarySchool->id
+                'school_id' => $rioCachoPrimarySchool->id
             ],
             [
                 'name' => 'Julia A.',
@@ -238,7 +238,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '07/01/1973',
                 'language' => 'Istmo',
                 'language_variant' => null,
-                'school_index' => $sanJuanMonteFlorPreSchool->id
+                'school_id' => $sanJuanMonteFlorPreSchool->id
             ],
             [
                 'name' => 'Nashielly',
@@ -254,7 +254,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '20/05/1974',
                 'language' => 'Papaloapan',
                 'language_variant' => 'Alta',
-                'school_index' => $santaMariaPeñolesPreSchool->id
+                'school_id' => $santaMariaPeñolesPreSchool->id
             ],
             [
                 'name' => 'Maricela',
@@ -270,7 +270,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '15/11/1975',
                 'language' => 'Sierra sur',
                 'language_variant' => 'Baja',
-                'school_index' => $santaCatarinaEstetlaPreSchool->id
+                'school_id' => $santaCatarinaEstetlaPreSchool->id
             ],
             [
                 'name' => 'Domitila',
@@ -286,7 +286,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '02/10/1976',
                 'language' => 'Sierra norte',
                 'language_variant' => 'Alta',
-                'school_index' => $cañadaDeHieloPreSchool->id
+                'school_id' => $cañadaDeHieloPreSchool->id
             ],
             [
                 'name' => 'Beatriz',
@@ -302,7 +302,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '06/01/1977',
                 'language' => 'Valles centrales',
                 'language_variant' => 'Baja',
-                'school_index' => $elDuraznalPreSchool->id
+                'school_id' => $elDuraznalPreSchool->id
             ],
             [
                 'name' => 'Ita',
@@ -317,7 +317,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '12/05/1978',
                 'language' => 'Mixteca',
                 'language_variant' => 'Alta',
-                'school_index' => $rioHondoPreSchool->id
+                'school_id' => $rioHondoPreSchool->id
             ],
             [
                 'name' => 'Raquel',
@@ -333,7 +333,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '09/01/1979',
                 'language' => 'Cañada',
                 'language_variant' => null,
-                'school_index' => $recibimientoPreSchool->id
+                'school_id' => $recibimientoPreSchool->id
             ],
             [
                 'name' => 'Inocente',
@@ -348,7 +348,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '15/07/1980',
                 'language' => 'Costa',
                 'language_variant' => 'Alta',
-                'school_index' => $rioManzanitaPreSchool->id
+                'school_id' => $rioManzanitaPreSchool->id
             ],
             [
                 'name' => 'Ana',
@@ -364,7 +364,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1981',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $rioCachoPreSchool->id
+                'school_id' => $rioCachoPreSchool->id
             ],
             [
                 'name' => 'Janeth',
@@ -380,7 +380,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1982',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $sanPedroChululaearlyChildhoodSchool->id
+                'school_id' => $sanPedroChululaearlyChildhoodSchool->id
             ],
             [
                 'name' => 'David',
@@ -396,7 +396,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1983',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $santaCatarinaEstetlaearlyChildhoodSchool->id
+                'school_id' => $santaCatarinaEstetlaearlyChildhoodSchool->id
             ],
             [
                 'name' => 'Judith',
@@ -412,7 +412,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1984',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $corralDePiedraearlyChildhoodSchool->id
+                'school_id' => $corralDePiedraearlyChildhoodSchool->id
             ],
             [
                 'name' => 'Nubia D.',
@@ -428,7 +428,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1985',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $cañadaDeHieloearlyChildhoodSchool->id
+                'school_id' => $cañadaDeHieloearlyChildhoodSchool->id
             ],
             [
                 'name' => 'Liboria',
@@ -444,7 +444,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1986',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $elDuraznalearlyChildhoodSchool->id
+                'school_id' => $elDuraznalearlyChildhoodSchool->id
             ],
             [
                 'name' => 'Casto',
@@ -460,7 +460,7 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1987',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $sanJuanMonteFlorSchoolHostel->id
+                'school_id' => $sanJuanMonteFlorSchoolHostel->id
             ],
             [
                 'name' => 'Gustavo',
@@ -476,19 +476,16 @@ class CreateTeacherRecordsSeeder extends Seeder
                 'date_of_entry_into_the_sep' => '10/01/1988',
                 'language' => 'Istmo',
                 'language_variant' => 'Baja',
-                'school_index' => $santaMariaPeñolesSchoolHostel->id
+                'school_id' => $santaMariaPeñolesSchoolHostel->id
             ]
         ];
 
         // Crear los registros de maestros
         foreach ($teachersData as $data) {
-            // Obtener una escuela según el índice, usando el operador módulo para ciclar si es necesario
-            $school = $schools[$data['school_index'] % $schools->count()];
-
             $teacher = new Teacher();
             $teacher->name = $data['name'];
             $teacher->paternal_surname = $data['paternal_surname'];
-            $teacher->maternal_surname = $data['maternal_surname'];
+            $teacher->maternal_surname = array_key_exists('maternal_surname', $data) ? $data['maternal_surname'] : '';
             $teacher->curp = $data['curp'];
             $teacher->rfc = $data['rfc'];
             $teacher->gender = $data['gender'];
@@ -497,14 +494,11 @@ class CreateTeacherRecordsSeeder extends Seeder
             $teacher->telephone = $data['telephone'];
             $teacher->reason = $data['reason'];
             $teacher->date_of_entry_into_the_sep = $data['date_of_entry_into_the_sep'];
-            $teacher->study_profile = $data['study_profile'];
             $teacher->language = $data['language'];
             $teacher->language_variant = $data['language_variant'];
-            $teacher->school_id = $school->id;
-            $teacher->human_id = $human->id;
+            $teacher->school_id = $data['school_id'];
+            $teacher->human_id = $administrativeUser->id;
             $teacher->save();
         }
-
-        $this->command->info('Se han creado ' . count($teachersData) . ' maestros exitosamente.');
     }
 }
