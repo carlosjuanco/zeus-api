@@ -106,4 +106,22 @@ class SchoolController extends Controller
             'message' => '¡Listo! Tu dato fue eliminado bien'
         ], 200);
     }
+
+    /**
+     * Show all schools
+     * 
+     * Este método servirá para llenar elementos select.
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * -Solo los campos id y name.
+     * -Ordenado descendentemente.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getAllTheSchools()
+    {
+        $schoolsForSelect = School::select('name', 'id')->get();
+
+        return response()->json($schoolsForSelect, 200);
+    }
 }
