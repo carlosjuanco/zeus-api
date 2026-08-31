@@ -16,7 +16,7 @@ class TeacherController extends Controller
     public function viewAny($paginate, $search = '')
     {
         // Consultar los campos con búsqueda y paginación
-        $teachers = Teacher::select('name', 'paternal_surname', 'maternal_surname', 'curp', 'rfc', 'gender', 'budget_code', 'funcion', 'telephone', 'reason', 'date_of_entry_into_the_sep', 'study_profile', 'language', 'language_variant')
+        $teachers = Teacher::select('id', 'name', 'paternal_surname', 'maternal_surname', 'curp', 'rfc', 'gender', 'budget_code', 'funcion', 'telephone', 'reason', 'date_of_entry_into_the_sep', 'study_profile', 'language', 'language_variant')
             /**
              * with(): se usa para cargar relaciones (Eager Loading)
              * 
