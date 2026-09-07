@@ -26,9 +26,9 @@ class TelephoneCast implements CastsAttributes
             return $value;
         }
 
-        // Formatear a xxx-xxx-xxxx
-        return substr($numericValue, 0, 3) . '-' .
-               substr($numericValue, 3, 3) . '-' .
+        // Formatear a xxx xxx xxxx
+        return substr($numericValue, 0, 3) . ' ' .
+               substr($numericValue, 3, 3) . ' ' .
                substr($numericValue, 6, 4);
     }
 

@@ -52,7 +52,9 @@ return new class extends Migration
             $table->unsignedBigInteger('telephone');
 
             // Motivo: numérico, máximo 2 dígitos, puede quedar vacío
-            $table->unsignedSmallInteger('reason')->nullable();
+            // Cuando la palabra traducida en inglés es parecida a una palabra reservada de un lenguaje de programación
+            // entonces lo pongo en español. En este caso no me marca error, pero da problemas en Vue js.
+            $table->unsignedSmallInteger('motivo')->nullable();
 
             // Fecha de ingreso a la SEP: no obligatorio
             $table->date('date_of_entry_into_the_sep')->nullable();

@@ -40,7 +40,7 @@ class Teacher extends Model
     protected $casts = [
         // Cast para fecha de ingreso (formato dd/mm/YYYY al obtener, y se guarda como YYYY-mm-dd)
         'date_of_entry_into_the_sep' => DateFormatCast::class . ':d/m/Y',
-        // Cast para teléfono (formato xxx-xxx-xxxx al obtener, y al guardar como xxxxxxxxxx)
+        // Cast para teléfono (formato xxx xxx xxxx al obtener, y al guardar como xxxxxxxxxx)
         'telephone' => TelephoneCast::class,
     ];
 

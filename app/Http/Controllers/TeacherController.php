@@ -16,7 +16,7 @@ class TeacherController extends Controller
     public function viewAny($paginate, $search = '')
     {
         // Consultar los campos con búsqueda y paginación
-        $teachers = Teacher::select('id', 'name', 'paternal_surname', 'maternal_surname', 'curp', 'rfc', 'gender', 'budget_code', 'funcion', 'telephone', 'reason', 'date_of_entry_into_the_sep', 'study_profile', 'language', 'language_variant')
+        $teachers = Teacher::select('id', 'name', 'paternal_surname', 'maternal_surname', 'curp', 'rfc', 'gender', 'budget_code', 'funcion', 'telephone', 'motivo', 'date_of_entry_into_the_sep', 'study_profile', 'language', 'language_variant', 'school_id')
             /**
              * with(): se usa para cargar relaciones (Eager Loading)
              * 
@@ -46,7 +46,7 @@ class TeacherController extends Controller
             ->orWhere('budget_code', 'like', "%$search%")
             ->orWhere('funcion', 'like', "%$search%")
             ->orWhere('telephone', 'like', "%$search%")
-            ->orWhere('reason', 'like', "%$search%")
+            ->orWhere('motivo', 'like', "%$search%")
             ->orWhere('date_of_entry_into_the_sep', 'like', "%$search%")
             ->orWhere('study_profile', 'like', "%$search%")
             ->orWhere('language', 'like', "%$search%")
@@ -212,7 +212,7 @@ class TeacherController extends Controller
          */
 
         /**
-         * VALIDACIÓN DEL CAMPO 'telefono'
+         * VALIDACIÓN DEL CAMPO 'teléfono'
          * ================================
          * 
          * 📌 REGLAS APLICADAS:
@@ -313,7 +313,7 @@ class TeacherController extends Controller
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|string|regex:/^\d{3} \d{3} \d{4}$/',
-            'reason' => 'nullable|numeric|digits:2',
+            'motivo' => 'nullable|numeric|digits:2',
             'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
             'language' => 'nullable|in:Mixteca,Cañada,Costa,Istmo,Papaloapan,Sierra sur,Sierra norte,Valles centrales',
@@ -348,7 +348,7 @@ class TeacherController extends Controller
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|string|regex:/^\d{3} \d{3} \d{4}$/',
-            'reason' => 'nullable|numeric|digits:2',
+            'motivo' => 'nullable|numeric|digits:2',
             'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
             'language' => 'nullable|in:Mixteca,Cañada,Costa,Istmo,Papaloapan,Sierra sur,Sierra norte,Valles centrales',
