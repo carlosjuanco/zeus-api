@@ -23,7 +23,7 @@ class Teacher extends Model
         'budget_code',
         'funcion',
         'telephone',
-        'reason',
+        'motivo',
         'date_of_entry_into_the_sep',
         'study_profile',
         'language',
