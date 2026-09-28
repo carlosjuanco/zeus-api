@@ -44,8 +44,17 @@ class Teacher extends Model
         'telephone' => TelephoneCast::class,
     ];
 
+    // Para que siempre esté disponible
+    protected $appends = ['full_name'];
+
     public function school()
     {
         return $this->belongsTo(School::class);
+    }
+
+    public function getFullNameAttribute()
+    {
+        return $this->name ." " . $this->paternal_surname . 
+            ($this->maternal_surname ? " " . $this->maternal_surname : "");
     }
 }
