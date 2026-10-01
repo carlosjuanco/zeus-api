@@ -72,8 +72,39 @@ class TeacherTest extends TestCase
     }
 
     // ============================================================
-    // 1. PRUEBAS DE AUTENTICACIÓN Y PERMISOS
+    // 1. PRUEBAS DE CREACIÓN
     // ============================================================
+
+    /**
+     * Afirmar que se puede crear un profesor.
+     */
+    public function test_assert_that_a_teacher_can_be_created()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $administrativeHuman = $this->getAdministrativeHuman();
+        $school = $this->getTestSchool();
+
+        $teacherData = $this->getValidTeacherData($school->id);
+        $teacherData['name'] = 'ProfesorCreado';
+        $teacherData['curp'] = 'PROF800101HDFRRR99';
+        $teacherData['rfc'] = 'PROF800101HDF';
+
+        $response = $this->actingAs($userAdministrative)->postJson('api/teachers/store', $teacherData);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
+
+        // Verificar que el nuevo profesor fue creado en la base de datos
+        $this->assertDatabaseHas('teachers', [
+            'name' => 'ProfesorCreado',
+            'paternal_surname' => 'ApellidoPaterno',
+            'curp' => 'PROF800101HDFRRR99',
+            'school_id' => $school->id,
+            'human_id' => $administrativeHuman->id
+        ]);
+
+        $this->post('api/logout');
+    }
 
     /**
      * Afirmar que no se puede crear un profesor sin autenticación.
@@ -104,6 +135,80 @@ class TeacherTest extends TestCase
     }
 
     /**
+     * Afirmar que se puede crear un profesor con campos opcionales vacíos.
+     */
+    public function test_assert_that_a_teacher_can_be_created_with_optional_fields_empty()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $school = $this->getTestSchool();
+
+        $response = $this->actingAs($userAdministrative)->postJson('api/teachers/store', [
+            'name' => 'ProfesorOpcional',
+            'paternal_surname' => 'ApellidoPaterno',
+            'curp' => 'PROF800101HDFRRR98',
+            'rfc' => 'PROF800101HDF',
+            'gender' => 'Hombre',
+            'budget_code' => 'BUD-2024-TEST-002',
+            'telephone' => '951 123 4568',
+            'school_id' => $school->id
+        ]);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
+
+        $this->post('api/logout');
+    }
+
+    // ============================================================
+    // 2. PRUEBAS DE EDICIÓN
+    // ============================================================
+
+    /**
+     * Afirmar que se puede editar un profesor.
+     */
+    public function test_assert_that_a_teacher_can_be_edited()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $teacher = Teacher::first();
+        $school = $this->getTestSchool();
+
+        $originalName = $teacher->name;
+        $originalPaternalSurname = $teacher->paternal_surname;
+
+        $updatedData = $this->getValidTeacherData($school->id);
+        $updatedData['name'] = 'ProfesorEditado';
+        $updatedData['paternal_surname'] = 'ApellidoEditado';
+        $updatedData['curp'] = 'PROF800101HDFRRR88';
+        $updatedData['rfc'] = 'PROF800101HDF';
+
+        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $teacher->id, $updatedData);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
+
+        // Verificar en la base de datos
+        $this->assertDatabaseHas('teachers', [
+            'id' => $teacher->id,
+            'name' => 'ProfesorEditado',
+            'paternal_surname' => 'ApellidoEditado'
+        ]);
+
+        $this->post('api/logout');
+
+        // Restaurar los datos originales
+        $restoreData = $this->getValidTeacherData($school->id);
+        $restoreData['name'] = $originalName;
+        $restoreData['paternal_surname'] = $originalPaternalSurname;
+        $restoreData['curp'] = $teacher->curp;
+        $restoreData['rfc'] = $teacher->rfc;
+
+        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $teacher->id, $restoreData);
+        $response->assertStatus(200);
+
+        $this->post('api/logout');
+    }
+
+    /**
      * Afirmar que no se puede editar un profesor sin autenticación.
      */
     public function test_assert_that_a_teacher_cannot_be_edited_without_authentication()
@@ -130,6 +235,94 @@ class TeacherTest extends TestCase
         $response = $this->actingAs($userWithoutPermission)->putJson('api/teachers/' . $teacher->id, $teacherData);
 
         $response->assertStatus(403);
+        $this->post('api/logout');
+    }
+
+    /**
+     * Afirmar que se puede editar un profesor con campos opcionales vacíos.
+     */
+    public function test_assert_that_a_teacher_can_be_edited_with_optional_fields_empty()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $teacher = Teacher::first();
+        $school = $this->getTestSchool();
+
+        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $teacher->id, [
+            'name' => $teacher->name,
+            'paternal_surname' => $teacher->paternal_surname,
+            'curp' => $teacher->curp,
+            'rfc' => $teacher->rfc,
+            'gender' => $teacher->gender,
+            'budget_code' => $teacher->budget_code,
+            'telephone' => $teacher->telephone,
+            'school_id' => $teacher->school_id
+        ]);
+
+        $response->assertStatus(200);
+        $this->post('api/logout');
+    }
+
+    /**
+     * Afirmar que no se puede editar un profesor que no existe.
+     */
+    public function test_assert_that_a_teacher_cannot_be_edited_that_does_not_exist()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $school = $this->getTestSchool();
+        $nonExistentId = 999999;
+
+        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $nonExistentId, [
+            'name' => 'ProfesorInexistente',
+            'paternal_surname' => 'ApellidoPaterno',
+            'curp' => 'PROF800101HDFRRR01',
+            'rfc' => 'PROF800101HDF',
+            'gender' => 'Hombre',
+            'budget_code' => 'BUD-2024-TEST-001',
+            'telephone' => '951 123 4567',
+            'school_id' => $school->id
+        ]);
+
+        $response->assertStatus(404);
+        $this->post('api/logout');
+    }
+
+    // ============================================================
+    // 3. PRUEBAS DE ELIMINACIÓN
+    // ============================================================
+
+    /**
+     * Afirmar que se puede eliminar un profesor.
+     */
+    public function test_assert_that_a_teacher_can_be_deleted()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $administrativeHuman = $this->getAdministrativeHuman();
+        $school = $this->getTestSchool();
+
+        // Crear profesor para eliminar
+        $teacher = Teacher::create([
+            'name' => 'ProfesorEliminar',
+            'paternal_surname' => 'ApellidoPaterno',
+            'maternal_surname' => 'ApellidoMaterno',
+            'curp' => 'PROF800101HDFRRR77',
+            'rfc' => 'PROF800101HDF',
+            'gender' => 'Hombre',
+            'budget_code' => 'BUD-2024-DEL-001',
+            'telephone' => '951 123 4567',
+            'school_id' => $school->id,
+            'human_id' => $administrativeHuman->id
+        ]);
+
+        $response = $this->actingAs($userAdministrative)->deleteJson('api/teachers/' . $teacher->id);
+
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tu dato fue eliminado bien']);
+
+        // Verificar que el campo deleted_at NO sea null (fue eliminado suavemente)
+        $this->assertSoftDeleted('teachers', [
+            'id' => $teacher->id
+        ]);
+
         $this->post('api/logout');
     }
 
@@ -173,6 +366,24 @@ class TeacherTest extends TestCase
     }
 
     /**
+     * Afirmar que no se puede eliminar un profesor que no existe.
+     */
+    public function test_assert_that_a_teacher_cannot_be_deleted_that_does_not_exist()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+        $nonExistentId = 999999;
+
+        $response = $this->actingAs($userAdministrative)->deleteJson('api/teachers/' . $nonExistentId);
+
+        $response->assertStatus(404);
+        $this->post('api/logout');
+    }
+
+    // ============================================================
+    // 3. PRUEBAS DE VER
+    // ============================================================
+
+    /**
      * Afirmar que no se puede visualizar un profesor sin autenticación.
      */
     public function test_assert_that_a_teacher_cannot_be_viewed_without_authentication()
@@ -196,64 +407,8 @@ class TeacherTest extends TestCase
     }
 
     // ============================================================
-    // 2. PRUEBAS DE CREACIÓN
+    // 5. PRUEBAS DE REGLAS DE NEGOCIO QUE SE DEFINIERON EN EL MANUAL DE REQUERIMIENTOS
     // ============================================================
-
-    /**
-     * Afirmar que se puede crear un profesor.
-     */
-    public function test_assert_that_a_teacher_can_be_created()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $administrativeHuman = $this->getAdministrativeHuman();
-        $school = $this->getTestSchool();
-
-        $teacherData = $this->getValidTeacherData($school->id);
-        $teacherData['name'] = 'ProfesorCreado';
-        $teacherData['curp'] = 'PROF800101HDFRRR99';
-        $teacherData['rfc'] = 'PROF800101HDF';
-
-        $response = $this->actingAs($userAdministrative)->postJson('api/teachers/store', $teacherData);
-
-        $response->assertStatus(200)
-            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
-
-        // Verificar que el nuevo profesor fue creado en la base de datos
-        $this->assertDatabaseHas('teachers', [
-            'name' => 'ProfesorCreado',
-            'paternal_surname' => 'ApellidoPaterno',
-            'curp' => 'PROF800101HDFRRR99',
-            'school_id' => $school->id,
-            'human_id' => $administrativeHuman->id
-        ]);
-
-        $this->post('api/logout');
-    }
-
-    /**
-     * Afirmar que se puede crear un profesor con campos opcionales vacíos.
-     */
-    public function test_assert_that_a_teacher_can_be_created_with_optional_fields_empty()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $school = $this->getTestSchool();
-
-        $response = $this->actingAs($userAdministrative)->postJson('api/teachers/store', [
-            'name' => 'ProfesorOpcional',
-            'paternal_surname' => 'ApellidoPaterno',
-            'curp' => 'PROF800101HDFRRR98',
-            'rfc' => 'PROF800101HDF',
-            'gender' => 'Hombre',
-            'budget_code' => 'BUD-2024-TEST-002',
-            'telephone' => '951 123 4568',
-            'school_id' => $school->id
-        ]);
-
-        $response->assertStatus(200)
-            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
-
-        $this->post('api/logout');
-    }
 
     /**
      * Afirmar que el campo "name" es obligatorio.
@@ -477,7 +632,8 @@ class TeacherTest extends TestCase
             'school_id' => $school->id
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
         $this->post('api/logout');
     }
 
@@ -798,7 +954,8 @@ class TeacherTest extends TestCase
             'school_id' => $school->id
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
         $this->post('api/logout');
     }
 
@@ -968,7 +1125,8 @@ class TeacherTest extends TestCase
             'school_id' => $school->id
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
         $this->post('api/logout');
     }
 
@@ -1019,7 +1177,8 @@ class TeacherTest extends TestCase
             'school_id' => $school->id
         ]);
 
-        $response->assertStatus(200);
+        $response->assertStatus(200)
+            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
 
         // Probar número inválido (mayor a 99)
         $response = $this->actingAs($userAdministrative)->postJson('api/teachers/store', [
@@ -1261,158 +1420,7 @@ class TeacherTest extends TestCase
     }
 
     // ============================================================
-    // 3. PRUEBAS DE EDICIÓN
-    // ============================================================
-
-    /**
-     * Afirmar que se puede editar un profesor.
-     */
-    public function test_assert_that_a_teacher_can_be_edited()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $teacher = Teacher::first();
-        $school = $this->getTestSchool();
-
-        $originalName = $teacher->name;
-        $originalPaternalSurname = $teacher->paternal_surname;
-
-        $updatedData = $this->getValidTeacherData($school->id);
-        $updatedData['name'] = 'ProfesorEditado';
-        $updatedData['paternal_surname'] = 'ApellidoEditado';
-        $updatedData['curp'] = 'PROF800101HDFRRR88';
-        $updatedData['rfc'] = 'PROF800101HDF';
-
-        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $teacher->id, $updatedData);
-
-        $response->assertStatus(200)
-            ->assertJson(['message' => '¡Listo! Tus datos se guardaron bien.']);
-
-        // Verificar en la base de datos
-        $this->assertDatabaseHas('teachers', [
-            'id' => $teacher->id,
-            'name' => 'ProfesorEditado',
-            'paternal_surname' => 'ApellidoEditado'
-        ]);
-
-        $this->post('api/logout');
-
-        // Restaurar los datos originales
-        $restoreData = $this->getValidTeacherData($school->id);
-        $restoreData['name'] = $originalName;
-        $restoreData['paternal_surname'] = $originalPaternalSurname;
-        $restoreData['curp'] = $teacher->curp;
-        $restoreData['rfc'] = $teacher->rfc;
-
-        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $teacher->id, $restoreData);
-        $response->assertStatus(200);
-
-        $this->post('api/logout');
-    }
-
-    /**
-     * Afirmar que se puede editar un profesor con campos opcionales vacíos.
-     */
-    public function test_assert_that_a_teacher_can_be_edited_with_optional_fields_empty()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $teacher = Teacher::first();
-        $school = $this->getTestSchool();
-
-        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $teacher->id, [
-            'name' => $teacher->name,
-            'paternal_surname' => $teacher->paternal_surname,
-            'curp' => $teacher->curp,
-            'rfc' => $teacher->rfc,
-            'gender' => $teacher->gender,
-            'budget_code' => $teacher->budget_code,
-            'telephone' => $teacher->telephone,
-            'school_id' => $teacher->school_id
-        ]);
-
-        $response->assertStatus(200);
-        $this->post('api/logout');
-    }
-
-    /**
-     * Afirmar que no se puede editar un profesor que no existe.
-     */
-    public function test_assert_that_a_teacher_cannot_be_edited_that_does_not_exist()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $school = $this->getTestSchool();
-        $nonExistentId = 999999;
-
-        $response = $this->actingAs($userAdministrative)->putJson('api/teachers/' . $nonExistentId, [
-            'name' => 'ProfesorInexistente',
-            'paternal_surname' => 'ApellidoPaterno',
-            'curp' => 'PROF800101HDFRRR01',
-            'rfc' => 'PROF800101HDF',
-            'gender' => 'Hombre',
-            'budget_code' => 'BUD-2024-TEST-001',
-            'telephone' => '951 123 4567',
-            'school_id' => $school->id
-        ]);
-
-        $response->assertStatus(404);
-        $this->post('api/logout');
-    }
-
-    // ============================================================
-    // 4. PRUEBAS DE ELIMINACIÓN
-    // ============================================================
-
-    /**
-     * Afirmar que se puede eliminar un profesor.
-     */
-    public function test_assert_that_a_teacher_can_be_deleted()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $administrativeHuman = $this->getAdministrativeHuman();
-        $school = $this->getTestSchool();
-
-        // Crear profesor para eliminar
-        $teacher = Teacher::create([
-            'name' => 'ProfesorEliminar',
-            'paternal_surname' => 'ApellidoPaterno',
-            'maternal_surname' => 'ApellidoMaterno',
-            'curp' => 'PROF800101HDFRRR77',
-            'rfc' => 'PROF800101HDF',
-            'gender' => 'Hombre',
-            'budget_code' => 'BUD-2024-DEL-001',
-            'telephone' => '951 123 4567',
-            'school_id' => $school->id,
-            'human_id' => $administrativeHuman->id
-        ]);
-
-        $response = $this->actingAs($userAdministrative)->deleteJson('api/teachers/' . $teacher->id);
-
-        $response->assertStatus(200)
-            ->assertJson(['message' => '¡Listo! Tu dato fue eliminado bien']);
-
-        // Verificar que el campo deleted_at NO sea null (fue eliminado suavemente)
-        $this->assertSoftDeleted('teachers', [
-            'id' => $teacher->id
-        ]);
-
-        $this->post('api/logout');
-    }
-
-    /**
-     * Afirmar que no se puede eliminar un profesor que no existe.
-     */
-    public function test_assert_that_a_teacher_cannot_be_deleted_that_does_not_exist()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-        $nonExistentId = 999999;
-
-        $response = $this->actingAs($userAdministrative)->deleteJson('api/teachers/' . $nonExistentId);
-
-        $response->assertStatus(404);
-        $this->post('api/logout');
-    }
-
-    // ============================================================
-    // 5. PRUEBAS DE LISTADO Y PAGINACIÓN
+    // 6. PRUEBAS DE LISTADO Y PAGINACIÓN
     // ============================================================
 
     /**
