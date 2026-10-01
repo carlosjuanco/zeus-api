@@ -37,7 +37,7 @@ return new class extends Migration
                 'Mujer',
             ]);
 
-            // Código presupuestal: 23 caracteres, obligatorio
+            // Clave presupuestal: 23 caracteres, obligatorio
             $table->string('budget_code', 23);
 
             // Función: no obligatoria, máximo 17 caracteres, con valores específicos
