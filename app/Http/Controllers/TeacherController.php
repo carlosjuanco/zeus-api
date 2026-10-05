@@ -11,6 +11,18 @@ class TeacherController extends Controller
     /**
      * Display a listing of the resource.
      * 
+     * Debilidades identificadas
+     * 
+     * Si en el futuro se requiere enviar más parámetros de búsqueda siguiendo las buenas prácticas de Laravel (p. ej. parametro3/parametro4), se debe considerar que la búsqueda por fecha utiliza el formato dd/mm/yyyy.
+     * 
+     * Una solución viable es definir la variable $search como el tercer parámetro. El segundo parámetro sería una variable de texto que especifique el campo de la tabla teachers sobre el cual filtrar. De esta forma, se evitan conflictos con los términos de búsqueda ingresados en $search.
+     * 
+     * Planteo este escenario con base en la experiencia en proyectos reales, donde es frecuente que los clientes requieran filtros combinados debido al alto volumen de registros coincidentes.
+     * 
+     * Fuente youtrack: SS0-55 Pruebas unitarias del componente "Profesores"
+     * Fuente mejorar la redacción:https://share.gemini.google/ASuWcN3aV7xd
+     * 
+     * 
      * @return \Illuminate\Http\Response
      */
     public function viewAny($paginate, $search = '')
