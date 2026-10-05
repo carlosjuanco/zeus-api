@@ -2229,7 +2229,7 @@ class TeacherTest extends TestCase
     }
 
     // ============================================================
-    // 7. PRUEBAS DE RELACIONES
+    // 8. PRUEBAS DE RELACIONES
     // ============================================================
 
     /**
@@ -2278,7 +2278,7 @@ class TeacherTest extends TestCase
     }
 
     // ============================================================
-    // 8. PRUEBAS DE ESTRUCTURA DE RESPUESTA
+    // 9. PRUEBAS DE ESTRUCTURA DE RESPUESTA
     // ============================================================
 
     /**
