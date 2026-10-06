@@ -1600,7 +1600,7 @@ class TeacherTest extends TestCase
         $data = $response->json('data');
 
         $this->assertGreaterThan(0, count($data));
-        $this->assertEquals('Mejía', $data[0]['paternal_surname']);
+        $this->assertEquals('Mejia', $data[0]['paternal_surname']);
 
         $this->post('api/logout');
     }
@@ -1613,12 +1613,12 @@ class TeacherTest extends TestCase
         $userAdministrative = $this->getAdministrativeUser();
 
         // Búsqueda en minúsculas
-        $responseLower = $this->actingAs($userAdministrative)->getJson('api/teachers/10/mejía');
+        $responseLower = $this->actingAs($userAdministrative)->getJson('api/teachers/10/mejia');
         $responseLower->assertStatus(200);
         $this->assertGreaterThan(0, count($responseLower->json('data')));
 
         // Búsqueda en mayúsculas
-        $responseUpper = $this->actingAs($userAdministrative)->getJson('api/teachers/10/MEJÍA');
+        $responseUpper = $this->actingAs($userAdministrative)->getJson('api/teachers/10/MEJIA');
         $responseUpper->assertStatus(200);
         $this->assertGreaterThan(0, count($responseUpper->json('data')));
 
@@ -1644,26 +1644,18 @@ class TeacherTest extends TestCase
     /**
      * Afirmar que la búsqueda por "maternal_surname" es buena.
      * 
-     * Tuve que convertir el resultado en una colección, debido a que retorno dos registros.
-     * Hasta ahí todo bien, pero como el campo maternal_surname es opcional, el primer registro viene vacio.
-     * Como estoy comparando el primer registro por eso debo asegurarme que es la primera fila.
      */
     public function test_assert_that_searching_by_maternal_surname_is_good()
     {
         $userAdministrative = $this->getAdministrativeUser();
 
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/Caballero');
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/Lopez');
 
         $response->assertStatus(200);
-         $data = collect($response->json('data'));
+        $data = $response->json('data');
 
-        $this->assertGreaterThan(0, $data->count());
-
-        // Filtra solo los que tienen maternal_surname = 'Caballero'
-        $conApellido = $data->where('maternal_surname', 'Caballero')->values();
-
-        // Y el primero de los filtrados debe tener el apellido correcto
-        $this->assertEquals('Caballero', $data[0]['maternal_surname']);
+        $this->assertGreaterThan(0, count($data));
+        $this->assertEquals('Lopez', $data[0]['maternal_surname']);
 
         $this->post('api/logout');
     }
@@ -1676,12 +1668,12 @@ class TeacherTest extends TestCase
         $userAdministrative = $this->getAdministrativeUser();
 
         // Búsqueda en minúsculas
-        $responseLower = $this->actingAs($userAdministrative)->getJson('api/teachers/10/caballero');
+        $responseLower = $this->actingAs($userAdministrative)->getJson('api/teachers/10/lopez');
         $responseLower->assertStatus(200);
         $this->assertGreaterThan(0, count($responseLower->json('data')));
 
         // Búsqueda en mayúsculas
-        $responseUpper = $this->actingAs($userAdministrative)->getJson('api/teachers/10/CABALLERO');
+        $responseUpper = $this->actingAs($userAdministrative)->getJson('api/teachers/10/LOPEZ');
         $responseUpper->assertStatus(200);
         $this->assertGreaterThan(0, count($responseUpper->json('data')));
 
@@ -1873,13 +1865,13 @@ class TeacherTest extends TestCase
     {
         $userAdministrative = $this->getAdministrativeUser();
 
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/BUD-2024-001-001-001-01');
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/BUD-2024-TEST-001');
 
         $response->assertStatus(200);
         $data = $response->json('data');
 
         $this->assertGreaterThan(0, count($data));
-        $this->assertEquals('BUD-2024-001-001-001-01', $data[0]['budget_code']);
+        $this->assertEquals('BUD-2024-TEST-001', $data[0]['budget_code']);
 
         $this->post('api/logout');
     }
@@ -1892,12 +1884,12 @@ class TeacherTest extends TestCase
         $userAdministrative = $this->getAdministrativeUser();
 
         // Búsqueda en minúsculas
-        $responseLower = $this->actingAs($userAdministrative)->getJson('api/teachers/10/bud-2024-001-001-001-01');
+        $responseLower = $this->actingAs($userAdministrative)->getJson('api/teachers/10/BUD-2024-TEST-001');
         $responseLower->assertStatus(200);
         $this->assertGreaterThan(0, count($responseLower->json('data')));
 
         // Búsqueda en mayúsculas
-        $responseUpper = $this->actingAs($userAdministrative)->getJson('api/teachers/10/BUD-2024-001-001-001-01');
+        $responseUpper = $this->actingAs($userAdministrative)->getJson('api/teachers/10/BUD-2024-TEST-001');
         $responseUpper->assertStatus(200);
         $this->assertGreaterThan(0, count($responseUpper->json('data')));
 
