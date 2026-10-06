@@ -22,6 +22,19 @@ class TeacherController extends Controller
      * Fuente youtrack: SS0-55 Pruebas unitarias del componente "Profesores"
      * Fuente mejorar la redacción:https://share.gemini.google/ASuWcN3aV7xd
      * 
+     * Fortalezas
+     * 
+     * Agrupar todos los orWhere en un paréntesis SQL.
+     * Esto es muy importante: sin agrupar, si luego agregas otro ->where(...) externo (ej. un filtro por school_id), tus orWhere podrían romper la lógica del query.
+     * 
+     * Sin agrupar se generaría algo como:
+     * WHERE school_id = 5 AND name LIKE '%x%' OR telephone LIKE '%x%'
+     * 
+     * Agrupandolo se generaría algo como:
+     * WHERE (name LIKE '%x%' OR telephone LIKE '%x%') AND school_id = 5
+     * 
+     * Esto lo digo por experiencia propia: recuerdo que al añadir un WHERE los resultados cambiaban por completo, y terminaba teniendo que corregir todo de prisa en producción
+     * 
      * 
      * @return \Illuminate\Http\Response
      */
@@ -49,22 +62,24 @@ class TeacherController extends Controller
                 // No olvides incluir 'id' que es la FK
                 $query->select(['id', 'name']);
             }])
-            ->where('name', 'like', "%$search%")
-            ->orWhere('paternal_surname', 'like', "%$search%")
-            ->orWhere('maternal_surname', 'like', "%$search%")
-            ->orWhere('curp', 'like', "%$search%")
-            ->orWhere('rfc', 'like', "%$search%")
-            ->orWhere('gender', 'like', "%$search%")
-            ->orWhere('budget_code', 'like', "%$search%")
-            ->orWhere('funcion', 'like', "%$search%")
-            ->orWhere('telephone', 'like', "%$search%")
-            ->orWhere('motivo', 'like', "%$search%")
-            ->orWhere('date_of_entry_into_the_sep', 'like', "%$search%")
-            ->orWhere('study_profile', 'like', "%$search%")
-            ->orWhere('language', 'like', "%$search%")
-            ->orWhere('language_variant', 'like', "%$search%")
-            ->orWhereHas('school', function($query) use ($search) {
-                $query->where('name', 'like', "%$search%");
+            ->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%$search%")
+                ->orWhere('paternal_surname', 'like', "%$search%")
+                ->orWhere('maternal_surname', 'like', "%$search%")
+                ->orWhere('curp', 'like', "%$search%")
+                ->orWhere('rfc', 'like', "%$search%")
+                ->orWhere('gender', 'like', "%$search%")
+                ->orWhere('budget_code', 'like', "%$search%")
+                ->orWhere('funcion', 'like', "%$search%")
+                ->orWhere('telephone', 'like', "%$search%")
+                ->orWhere('motivo', 'like', "%$search%")
+                ->orWhere('date_of_entry_into_the_sep', 'like', "%$search%")
+                ->orWhere('study_profile', 'like', "%$search%")
+                ->orWhere('language', 'like', "%$search%")
+                ->orWhere('language_variant', 'like', "%$search%")
+                ->orWhereHas('school', function($query) use ($search) {
+                    $query->where('name', 'like', "%$search%");
+                });
             })
             ->orderBy('id', 'desc')
             ->paginate($paginate);
@@ -325,7 +340,7 @@ class TeacherController extends Controller
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|string|regex:/^\d{3} \d{3} \d{4}$/',
-            'motivo' => 'nullable|numeric|digits:2',
+            'motivo' => 'nullable|integer|between:1,99',
             'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
             'language' => 'nullable|in:Mixteca,Cañada,Costa,Istmo,Papaloapan,Sierra sur,Sierra norte,Valles centrales',
@@ -360,7 +375,7 @@ class TeacherController extends Controller
             'budget_code' => 'required|string|max:23',
             'funcion' => 'nullable|in:Docente,Administrativo,Docente con grupo,Director',
             'telephone' => 'required|string|regex:/^\d{3} \d{3} \d{4}$/',
-            'motivo' => 'nullable|numeric|digits:2',
+            'motivo' => 'nullable|integer|between:1,99',
             'date_of_entry_into_the_sep' => 'nullable|date_format:d/m/Y',
             'study_profile' => 'nullable|in:Titulado de U.P.N.,Pasante de normal superior,Pasante de maestría,Pasante de U.P.N.',
             'language' => 'nullable|in:Mixteca,Cañada,Costa,Istmo,Papaloapan,Sierra sur,Sierra norte,Valles centrales',
