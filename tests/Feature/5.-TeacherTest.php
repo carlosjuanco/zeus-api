@@ -2349,4 +2349,29 @@ class TeacherTest extends TestCase
 
         $this->post('api/logout');
     }
+
+    // ============================================================
+    // 10. PRUEBAS CON LA TILDE
+    // ============================================================
+
+    /**
+     * Afirmar que la búsqueda por "apellido paterno" maneja el acento
+     */
+    public function test_assert_that_searching_by_paternal_surname_handles_accent()
+    {
+        $userAdministrative = $this->getAdministrativeUser();
+
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/Mejía');
+
+        $response->assertStatus(200);
+        $data = collect($response->json('data'));
+
+        $this->assertGreaterThan(0, $data->count());
+
+        $mejiaConAcento = $data->where('paternal_surname', 'Mejía')->values();
+        
+        $this->assertEquals('Mejía', $mejiaConAcento[0]['paternal_surname']);
+
+        $this->post('api/logout');
+    }
 }
