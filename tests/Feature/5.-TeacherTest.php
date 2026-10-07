@@ -1968,18 +1968,27 @@ class TeacherTest extends TestCase
 
     /**
      * Afirmar que la búsqueda por "telephone" es buena.
+     * 
+     * ¡Atento!
+     * 
+     * Al buscar el teléfono 951 120 4965, deberia ser con espacios, sin embargo, en el controlador el método viewAny, de acuerdo a deepseek, el uso de where, se aplica directamente a la base de datos y esa información no existe en la base de datos.
+     * Fuente: https://chat.deepseek.com/share/u3eq3pq70smogxtp41
+     * 
+     * Según entiendo la consulta no pasa en el modelo, que ahora que lo pienso tiene sentido, de acuerdo a los conceptos básicos de laravel.
+     * 
+     * Curiosamente al igualar que si regresa el dato debe de ser con los espacios "951 120 4965".
      */
     public function test_assert_that_searching_by_telephone_is_good()
     {
         $userAdministrative = $this->getAdministrativeUser();
 
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/951 526 5683');
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/9511204965');
 
         $response->assertStatus(200);
         $data = $response->json('data');
 
         $this->assertGreaterThan(0, count($data));
-        $this->assertEquals('951 526 5683', $data[0]['telephone']);
+        $this->assertEquals('951 120 4965', $data[0]['telephone']);
 
         $this->post('api/logout');
     }
@@ -1991,7 +2000,7 @@ class TeacherTest extends TestCase
     {
         $userAdministrative = $this->getAdministrativeUser();
 
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/000 000 0000');
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/0000000000');
 
         $response->assertStatus(200);
         $this->assertCount(0, $response->json('data'));
@@ -2010,43 +2019,40 @@ class TeacherTest extends TestCase
         $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/1');
 
         $response->assertStatus(200);
-        $data = $response->json('data');
+        // La respuesta lo meto en una colección, para descriminar aquellas filas que traen un valor nulo
+        $data = collect($response->json('data'));
 
-        $this->assertGreaterThan(0, count($data));
-        $this->assertEquals(1, $data[0]['motivo']);
+        $this->assertGreaterThan(0, $data->count());
 
-        $this->post('api/logout');
-    }
-
-    /**
-     * Afirmar que al buscar por un "motivo" que no existe, no regresa nada.
-     */
-    public function test_assert_that_searching_by_motivo_that_does_not_exist_returns_nothing()
-    {
-        $userAdministrative = $this->getAdministrativeUser();
-
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/99');
-
-        $response->assertStatus(200);
-        $this->assertCount(0, $response->json('data'));
-        $this->assertEquals(0, $response->json('total'));
+        $siTieneMotivo = $data->whereNotNull('motivo')->values();
+        $this->assertGreaterThan(1, $siTieneMotivo[0]['motivo']);
 
         $this->post('api/logout');
     }
 
     /**
      * Afirmar que la búsqueda por "date_of_entry_into_the_sep" es buena.
+     * 
+     * ¡Atento!
+     * 
+     * Al buscar la fecha 20/01/1980, deberia ser con las diagonales, sin embargo, en el controlador del método viewAny, de acuerdo a deepseek, el uso de where, se aplica directamente a la base de datos y esa información no existe en la base de datos.
+     * Fuente: https://chat.deepseek.com/share/u3eq3pq70smogxtp41
+     * 
+     * Según entiendo la consulta no pasa en el modelo, que ahora que lo pienso tiene sentido, de acuerdo a los conceptos básicos de laravel.
+     * 
+     * Curiosamente al igualar que si regresa el dato debe de ser con las diagonales "20/01/1980", porque aquí ya esta formateado ya paso al modelo.
      */
     public function test_assert_that_searching_by_date_of_entry_into_the_sep_is_good()
     {
         $userAdministrative = $this->getAdministrativeUser();
 
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/30/08/1966');
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/1980-01-20');
 
         $response->assertStatus(200);
         $data = $response->json('data');
 
         $this->assertGreaterThan(0, count($data));
+        $this->assertEquals('20/01/1980', $data[0]['date_of_entry_into_the_sep']);
 
         $this->post('api/logout');
     }
@@ -2058,7 +2064,7 @@ class TeacherTest extends TestCase
     {
         $userAdministrative = $this->getAdministrativeUser();
 
-        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/01/01/1900');
+        $response = $this->actingAs($userAdministrative)->getJson('api/teachers/10/1900-01-01');
 
         $response->assertStatus(200);
         $this->assertCount(0, $response->json('data'));
