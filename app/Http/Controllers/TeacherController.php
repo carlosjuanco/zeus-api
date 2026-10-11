@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Teacher;
 
@@ -402,5 +403,60 @@ class TeacherController extends Controller
         return response()->json([
             'message' => '¡Listo! Tu dato fue eliminado bien'
         ], 200);
+    }
+
+    /**
+     * Obtener reporte por comunidad
+     * 
+     * Realizar una consulta para mostrarlo en el componente "reporte por comunidad"
+     * que es igual a la "Imágen 1" del documento "Manual de requerimiento".
+     * 
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getReportByCommunity()
+    {
+        /**
+         * groupBy después de get()
+         * ===========================
+         * 
+         * COMPORTAMIENTO: Después de obtener todos los registros, al aplicar group by, 
+         * ya no es directo a la base de datos, si no ya es aplicado a una collection, 
+         * esto hace que devuelva
+         *  
+         *  Illuminate\Support\Collection {#1315 // app/Http/Controllers/TeacherController.php:477
+         *     #items: array:4 [
+         *       "Primaria" => Illuminate\Support\Collection 
+         *       ]
+         *
+         *   Es decir agrupa por el tipo de escuela en la collection
+         * 
+         * @see: https://chat.deepseek.com/share/22xc37y8kk8q3lqe9r
+         */
+
+        $resultados = DB::table('teachers as t')
+            ->join('schools as s', 't.school_id', '=', 's.id')
+            ->join('communities as c', 's.community_id', '=', 'c.id')
+            ->whereIn('s.type_of_school', ['Primaria', 'Preescolar', 'Inicial', 'Albergues escolares'])
+            ->select([
+                's.type_of_school',
+                'c.name as nombreComunidad',
+                's.name as nombreEscuela',
+                's.secondary_number',
+            ])
+            ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as nombreProfesor")
+            ->orderBy('s.type_of_school')
+            ->get()
+            ->groupBy('type_of_school');
+
+        // Accesos directos ya agrupados y ordenados
+        $primarias = $resultados->get('Primaria', collect());
+        $preescolar = $resultados->get('Preescolar', collect());
+        $inicial = $resultados->get('Inicial', collect());
+        $alberguesEscolares = $resultados->get('Albergues escolares', collect());
+        dd($primarias);
+
+        // return response()->json($schoolsForSelect, 200);
     }
 }
