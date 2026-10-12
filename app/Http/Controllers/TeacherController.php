@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 use App\Models\Teacher;
+use App\Models\Community;
 
 class TeacherController extends Controller
 {
@@ -435,6 +436,20 @@ class TeacherController extends Controller
          * @see: https://chat.deepseek.com/share/22xc37y8kk8q3lqe9r
          */
 
+        /**
+         * inner join en vez de ORM puro
+         * ===========================
+         * 
+         * COMPORTAMIENTO: De acuerdo a lo recomendado por deepseek, es mejor utilizarlo
+         * proque actua sobre la base de datos, en cambio ORM, actua después de haber obtenido
+         * todos los registros y los tiene en memoria.
+         * Al ocupar 
+         *
+         *   Es decir agrupa por el tipo de escuela en la collection
+         * 
+         * @see: https://chat.deepseek.com/share/22xc37y8kk8q3lqe9r
+         */
+
         $resultados = DB::table('teachers as t')
             ->join('schools as s', 't.school_id', '=', 's.id')
             ->join('communities as c', 's.community_id', '=', 'c.id')
@@ -452,11 +467,34 @@ class TeacherController extends Controller
 
         // Accesos directos ya agrupados y ordenados
         $primarias = $resultados->get('Primaria', collect());
-        $preescolar = $resultados->get('Preescolar', collect());
-        $inicial = $resultados->get('Inicial', collect());
+        $preescolares = $resultados->get('Preescolar', collect());
+        $iniciales = $resultados->get('Inicial', collect());
         $alberguesEscolares = $resultados->get('Albergues escolares', collect());
-        dd($primarias);
 
-        // return response()->json($schoolsForSelect, 200);
+        $allCommunities = Community::all();
+
+        $coleccionFinal = $allCommunities->map(function ($community) 
+            use ($primarias, $preescolares, $iniciales, $alberguesEscolares) {
+            // La primera coincidencia
+            $primaria = $primarias->where('nombreComunidad', $community->name)->first();
+            $preescolar = $preescolares->where('nombreComunidad', $community->name)->first();
+            $inicial = $iniciales->where('nombreComunidad', $community->name)->first();
+            $albergueEscolar = $alberguesEscolares->where('nombreComunidad', $community->name)->first();
+            return [
+                'nombreComunidad' => $community->name,
+                'primaria'   => $primaria ? $primaria->nombreEscuela : '',
+                'directivoPrimaria'  => $primaria ? $primaria->nombreProfesor : '',
+                'numeroProgresivoPrimaria'=> $primaria ? $primaria->secondary_number : '',
+                'preescolar'=> $preescolar ? $preescolar->nombreEscuela : '',
+                'directivoPreescolar'=> $preescolar ? $preescolar->nombreProfesor : '',
+                'numeroProgresivoPreescolar'=> $preescolar ? $preescolar->secondary_number : '',
+                'inicial'=> $inicial ? $inicial->nombreEscuela : '',
+                'directivoInicial'=> $inicial ? $inicial->nombreProfesor : '',
+                'albergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreEscuela : '',
+                'directivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreProfesor : '',
+            ];
+        });
+
+        return response()->json($coleccionFinal->toArray(), 200);
     }
 }
