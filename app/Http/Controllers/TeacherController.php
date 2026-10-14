@@ -423,7 +423,7 @@ class TeacherController extends Controller
          * ===========================
          * 
          * COMPORTAMIENTO: Después de obtener todos los registros, al aplicar group by, 
-         * ya no es directo a la base de datos, si no ya es aplicado a una collection, 
+         * ya no es directo a la base de datos, si no que ya es aplicado a una collection, 
          * esto hace que devuelva
          *  
          *  Illuminate\Support\Collection {#1315 // app/Http/Controllers/TeacherController.php:477
@@ -440,12 +440,9 @@ class TeacherController extends Controller
          * inner join en vez de ORM puro
          * ===========================
          * 
-         * COMPORTAMIENTO: De acuerdo a lo recomendado por deepseek, es mejor utilizarlo
-         * proque actua sobre la base de datos, en cambio ORM, actua después de haber obtenido
-         * todos los registros y los tiene en memoria.
-         * Al ocupar 
-         *
-         *   Es decir agrupa por el tipo de escuela en la collection
+         * COMPORTAMIENTO: Tal como recomienda DeepSeek, conviene utilizar esta opción porque
+         * actúa directamente sobre la base de datos; en cambio, el ORM opera una vez que ya
+         * ha obtenido todos los registros y los procesa en memoria.
          * 
          * @see: https://chat.deepseek.com/share/22xc37y8kk8q3lqe9r
          */
@@ -459,8 +456,10 @@ class TeacherController extends Controller
                 'c.name as nombreComunidad',
                 's.name as nombreEscuela',
                 's.secondary_number',
+                't.telephone',
             ])
             ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as nombreProfesor")
+            ->selectRaw("if(s.type_of_school != 'Albergues escolares', SUBSTRING(s.key, 6), s.key) as claveEscuela")
             ->orderBy('s.type_of_school')
             ->get()
             ->groupBy('type_of_school');
@@ -483,15 +482,26 @@ class TeacherController extends Controller
             return [
                 'nombreComunidad' => $community->name,
                 'primaria'   => $primaria ? $primaria->nombreEscuela : '',
+                'claveEscuelaPrimaria'   => $primaria ? $primaria->claveEscuela : '',
                 'directivoPrimaria'  => $primaria ? $primaria->nombreProfesor : '',
+                'telefonoDelProfesorDeLaPrimaria'  => $primaria ? $primaria->telephone : '',
                 'numeroProgresivoPrimaria'=> $primaria ? $primaria->secondary_number : '',
+
                 'preescolar'=> $preescolar ? $preescolar->nombreEscuela : '',
+                'claveEscuelaPreescolar'   => $preescolar ? $preescolar->claveEscuela : '',
                 'directivoPreescolar'=> $preescolar ? $preescolar->nombreProfesor : '',
+                'telefonoDelProfesorDePreescolar'  => $preescolar ? $preescolar->telephone : '',
                 'numeroProgresivoPreescolar'=> $preescolar ? $preescolar->secondary_number : '',
+
                 'inicial'=> $inicial ? $inicial->nombreEscuela : '',
+                'claveEscuelaInicial'   => $inicial ? $inicial->claveEscuela : '',
                 'directivoInicial'=> $inicial ? $inicial->nombreProfesor : '',
+                'telefonoDelProfesorDeInicial'  => $inicial ? $inicial->telephone : '',
+
                 'albergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreEscuela : '',
+                'claveEscuelaAlbergueEscolar'   => $albergueEscolar ? $albergueEscolar->claveEscuela : '',
                 'directivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreProfesor : '',
+                'telefonoDelProfesorDelAlbergueEscolar'  => $albergueEscolar ? $albergueEscolar->telephone : '',
             ];
         });
 
