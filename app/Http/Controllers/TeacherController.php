@@ -511,4 +511,53 @@ class TeacherController extends Controller
 
         return response()->json($coleccionFinal->toArray(), 200);
     }
+
+    /**
+     * Obtener información del profesor
+     * 
+     * Realizar una consulta donde obtegamos los datos completos de un profesor, 
+     * para mostrarlo en el componente "ProfesorInformacion", que tiene funcionamiento 
+     * en dos módulos "Profesores" y "reporte por comunidad"
+     * 
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getInformationFromTheTeacher($id)
+    {
+        $teacher = DB::table('teachers as t')
+            ->select([
+                't.id',
+                't.name',
+                't.paternal_surname',
+                't.maternal_surname',
+                't.curp',
+                't.rfc',
+                't.gender',
+                't.budget_code',
+                't.funcion',
+                't.telephone',
+                't.motivo',
+                't.date_of_entry_into_the_sep',
+                't.study_profile',
+                't.language',
+                't.language_variant',
+                't.school_id'
+            ])
+            ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as full_name")
+            ->get();
+
+        $school = DB::table('schools as c')
+            ->select([
+                'c.id',
+                'c.name',
+            ])
+            ->where('id', $teacher[0]['school_id'])
+            ->get();
+
+        
+        $coleccionFinal = 
+
+        return response()->json($coleccionFinal->toArray(), 200);
+    }
 }

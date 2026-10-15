@@ -99,3 +99,8 @@ Route::delete('teachers/{teacher}', [TeacherController::class, 'destroy'])
 Route::get('teachers', [TeacherController::class, 'getReportByCommunity'])
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
     ->name('teachers.getReportByCommunity');
+
+// getReportByCommunity - Listar por tipo de escuela para mostrar en el reporte por comunidad
+// Route::get('teachers', [TeacherController::class, 'getReportByCommunity'])
+//     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
+//     ->name('teachers.getReportByCommunity');
