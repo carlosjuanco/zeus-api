@@ -457,6 +457,7 @@ class TeacherController extends Controller
                 's.name as nombreEscuela',
                 's.secondary_number',
                 't.telephone',
+                's.key as claveEscuelaCompleta',
             ])
             ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as nombreProfesor")
             ->selectRaw("if(s.type_of_school != 'Albergues escolares', SUBSTRING(s.key, 6), s.key) as claveEscuela")
@@ -481,24 +482,27 @@ class TeacherController extends Controller
             $albergueEscolar = $alberguesEscolares->where('nombreComunidad', $community->name)->first();
             return [
                 'nombreComunidad' => $community->name,
-                'primaria'   => $primaria ? $primaria->nombreEscuela : '',
-                'claveEscuelaPrimaria'   => $primaria ? $primaria->claveEscuela : '',
-                'directivoPrimaria'  => $primaria ? $primaria->nombreProfesor : '',
-                'telefonoDelProfesorDeLaPrimaria'  => $primaria ? $primaria->telephone : '',
+                'primaria' => $primaria ? $primaria->nombreEscuela : '',
+                'claveEscuelaPrimaria' => $primaria ? $primaria->claveEscuela : '',
+                'claveEscuelaPrimariaCompleta' => $primaria ? $primaria->claveEscuelaCompleta : '',
+                'directivoPrimaria' => $primaria ? $primaria->nombreProfesor : '',
+                'telefonoDelProfesorDeLaPrimaria' => $primaria ? $primaria->telephone : '',
                 'numeroProgresivoPrimaria'=> $primaria ? $primaria->secondary_number : '',
 
-                'preescolar'=> $preescolar ? $preescolar->nombreEscuela : '',
-                'claveEscuelaPreescolar'   => $preescolar ? $preescolar->claveEscuela : '',
-                'directivoPreescolar'=> $preescolar ? $preescolar->nombreProfesor : '',
-                'telefonoDelProfesorDePreescolar'  => $preescolar ? $preescolar->telephone : '',
-                'numeroProgresivoPreescolar'=> $preescolar ? $preescolar->secondary_number : '',
+                'preescolar' => $preescolar ? $preescolar->nombreEscuela : '',
+                'claveEscuelaPreescolar' => $preescolar ? $preescolar->claveEscuela : '',
+                'claveEscuelaPreescolarCompleta' => $preescolar ? $preescolar->claveEscuelaCompleta : '',
+                'directivoPreescolar' => $preescolar ? $preescolar->nombreProfesor : '',
+                'telefonoDelProfesorDePreescolar' => $preescolar ? $preescolar->telephone : '',
+                'numeroProgresivoPreescolar' => $preescolar ? $preescolar->secondary_number : '',
 
-                'inicial'=> $inicial ? $inicial->nombreEscuela : '',
+                'inicial' => $inicial ? $inicial->nombreEscuela : '',
                 'claveEscuelaInicial'   => $inicial ? $inicial->claveEscuela : '',
+                'claveEscuelaInicialCompleta' => $inicial ? $inicial->claveEscuelaCompleta : '',
                 'directivoInicial'=> $inicial ? $inicial->nombreProfesor : '',
                 'telefonoDelProfesorDeInicial'  => $inicial ? $inicial->telephone : '',
 
-                'albergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreEscuela : '',
+                'albergueEscolar' => $albergueEscolar ? $albergueEscolar->nombreEscuela : '',
                 'claveEscuelaAlbergueEscolar'   => $albergueEscolar ? $albergueEscolar->claveEscuela : '',
                 'directivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreProfesor : '',
                 'telefonoDelProfesorDelAlbergueEscolar'  => $albergueEscolar ? $albergueEscolar->telephone : '',
