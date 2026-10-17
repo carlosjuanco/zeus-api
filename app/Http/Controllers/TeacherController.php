@@ -545,19 +545,20 @@ class TeacherController extends Controller
                 't.school_id'
             ])
             ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as full_name")
-            ->get();
+            ->where('id', $id)
+            ->first();
 
         $school = DB::table('schools as c')
             ->select([
                 'c.id',
                 'c.name',
             ])
-            ->where('id', $teacher[0]['school_id'])
-            ->get();
+            ->where('id', $teacher->school_id)
+            ->first();
 
-        
-        $coleccionFinal = 
+        // 👇 aquí asigno la escuela como propiedad
+        $teacher->school = $school;
 
-        return response()->json($coleccionFinal->toArray(), 200);
+        return response()->json($teacher, 200);
     }
 }
