@@ -104,3 +104,8 @@ Route::get('teachers', [TeacherController::class, 'getReportByCommunity'])
 Route::get('teacher/{id}', [TeacherController::class, 'getInformationFromTheTeacher'])
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
     ->name('teachers.getInformationFromTheTeacher');
+    
+// getTheStaffForACommunity - Listar los profesores de una comunidad
+Route::get('thestaffforacommunity/{community_id}', [TeacherController::class, 'getTheStaffForACommunity'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
+    ->name('teachers.getTheStaffForACommunity');

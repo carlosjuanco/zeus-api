@@ -451,6 +451,7 @@ class TeacherController extends Controller
             ->join('schools as s', 't.school_id', '=', 's.id')
             ->join('communities as c', 's.community_id', '=', 'c.id')
             ->whereIn('s.type_of_school', ['Primaria', 'Preescolar', 'Inicial', 'Albergues escolares'])
+            ->where('t.funcion','=', 'Director')
             ->select([
                 's.type_of_school',
                 'c.name as nombreComunidad',
@@ -565,5 +566,33 @@ class TeacherController extends Controller
         $teacher->school = $school;
 
         return response()->json($teacher, 200);
+    }
+
+    /**
+     * Obtener el personal de una comunidad, menos el director
+     * 
+     * Realizar una consulta donde obtegamos los profesores asignamos en una comunidad,
+     * menos el director. 
+     * 
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getTheStaffForACommunity($community_id)
+    {
+        $teachers = DB::table('teachers as t')
+            ->join('schools as s', 't.school_id', '=', 's.id')
+            ->join('communities as c', 's.community_id', '=', 'c.id')
+            ->select([
+                't.id',
+                't.telephone',
+                't.funcion',
+            ])
+            ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as full_name")
+            ->where('c.id', $community_id)
+            ->where('t.funcion','!=', 'Director')
+            ->get();
+
+        return response()->json($teachers->toArray(), 200);
     }
 }
