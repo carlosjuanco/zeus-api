@@ -457,6 +457,7 @@ class TeacherController extends Controller
                 's.name as nombreEscuela',
                 's.secondary_number',
                 't.telephone',
+                't.id',
                 's.key as claveEscuelaCompleta',
             ])
             ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as nombreProfesor")
@@ -486,6 +487,7 @@ class TeacherController extends Controller
                 'claveEscuelaPrimaria' => $primaria ? $primaria->claveEscuela : '',
                 'claveEscuelaPrimariaCompleta' => $primaria ? $primaria->claveEscuelaCompleta : '',
                 'directivoPrimaria' => $primaria ? $primaria->nombreProfesor : '',
+                'idDirectivoPrimaria' => $primaria ? $primaria->id : '',
                 'telefonoDelProfesorDeLaPrimaria' => $primaria ? $primaria->telephone : '',
                 'numeroProgresivoPrimaria'=> $primaria ? $primaria->secondary_number : '',
 
@@ -493,6 +495,7 @@ class TeacherController extends Controller
                 'claveEscuelaPreescolar' => $preescolar ? $preescolar->claveEscuela : '',
                 'claveEscuelaPreescolarCompleta' => $preescolar ? $preescolar->claveEscuelaCompleta : '',
                 'directivoPreescolar' => $preescolar ? $preescolar->nombreProfesor : '',
+                'idDirectivoPreescolar' => $preescolar ? $preescolar->id : '',
                 'telefonoDelProfesorDePreescolar' => $preescolar ? $preescolar->telephone : '',
                 'numeroProgresivoPreescolar' => $preescolar ? $preescolar->secondary_number : '',
 
@@ -500,11 +503,13 @@ class TeacherController extends Controller
                 'claveEscuelaInicial'   => $inicial ? $inicial->claveEscuela : '',
                 'claveEscuelaInicialCompleta' => $inicial ? $inicial->claveEscuelaCompleta : '',
                 'directivoInicial'=> $inicial ? $inicial->nombreProfesor : '',
+                'idDirectivoInicial'=> $inicial ? $inicial->id : '',
                 'telefonoDelProfesorDeInicial'  => $inicial ? $inicial->telephone : '',
 
                 'albergueEscolar' => $albergueEscolar ? $albergueEscolar->nombreEscuela : '',
                 'claveEscuelaAlbergueEscolar'   => $albergueEscolar ? $albergueEscolar->claveEscuela : '',
                 'directivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreProfesor : '',
+                'idDirectivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->id : '',
                 'telefonoDelProfesorDelAlbergueEscolar'  => $albergueEscolar ? $albergueEscolar->telephone : '',
             ];
         });
