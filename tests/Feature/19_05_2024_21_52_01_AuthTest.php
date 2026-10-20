@@ -53,4 +53,24 @@ class AuthTest extends TestCase
 
         $this->post('api/logout');
     }
+
+    /**
+     * Comprobar que la estructura del correo sea valido.
+     *
+     * @return void
+     */
+    public function test_check_that_the_email_structure_is_valid()
+    {
+        $response = $this->post('api/login',[
+            'email' => 'carlosjuancho328',
+            'password' => '123444',
+        ]);
+
+        // dd($response);
+
+        $response->assertStatus(302)
+        ->assertSessionHasErrors(['email' => 'La estructura del correo no es válido.']);
+
+        $this->post('api/logout');
+    }
 }
