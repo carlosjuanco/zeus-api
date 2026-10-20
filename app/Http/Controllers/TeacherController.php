@@ -483,6 +483,7 @@ class TeacherController extends Controller
             $inicial = $iniciales->where('nombreComunidad', $community->name)->first();
             $albergueEscolar = $alberguesEscolares->where('nombreComunidad', $community->name)->first();
             return [
+                'idComunidad' => $community->id,
                 'nombreComunidad' => $community->name,
                 'primaria' => $primaria ? $primaria->nombreEscuela : '',
                 'claveEscuelaPrimaria' => $primaria ? $primaria->claveEscuela : '',
@@ -586,11 +587,12 @@ class TeacherController extends Controller
             ->select([
                 't.id',
                 't.telephone',
-                't.funcion',
+                's.type_of_school',
             ])
             ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as full_name")
             ->where('c.id', $community_id)
             ->where('t.funcion','!=', 'Director')
+            ->orderBy('s.type_of_school')
             ->get();
 
         return response()->json($teachers->toArray(), 200);
