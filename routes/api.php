@@ -94,3 +94,18 @@ Route::put('teachers/{teacher}', [TeacherController::class, 'update'])
 Route::delete('teachers/{teacher}', [TeacherController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'can:delete,teacher'])
     ->name('teachers.destroy');
+
+// getReportByCommunity - Listar por tipo de escuela para mostrar en el reporte por comunidad
+Route::get('teachers', [TeacherController::class, 'getReportByCommunity'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
+    ->name('teachers.getReportByCommunity');
+
+// getInformationFromTheTeacher - Listar la información de un profesor
+Route::get('teacher/{id}', [TeacherController::class, 'getInformationFromTheTeacher'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
+    ->name('teachers.getInformationFromTheTeacher');
+    
+// getTheStaffForACommunity - Listar los profesores de una comunidad
+Route::get('thestaffforacommunity/{community_id}', [TeacherController::class, 'getTheStaffForACommunity'])
+    ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Teacher'])
+    ->name('teachers.getTheStaffForACommunity');

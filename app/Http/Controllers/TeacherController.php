@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\Teacher;
+use App\Models\Community;
 
 class TeacherController extends Controller
 {
@@ -402,5 +404,197 @@ class TeacherController extends Controller
         return response()->json([
             'message' => '¡Listo! Tu dato fue eliminado bien'
         ], 200);
+    }
+
+    /**
+     * Obtener reporte por comunidad
+     * 
+     * Realizar una consulta para mostrarlo en el componente "reporte por comunidad"
+     * que es igual a la "Imágen 1" del documento "Manual de requerimiento".
+     * 
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getReportByCommunity()
+    {
+        /**
+         * groupBy después de get()
+         * ===========================
+         * 
+         * COMPORTAMIENTO: Después de obtener todos los registros, al aplicar group by, 
+         * ya no es directo a la base de datos, si no que ya es aplicado a una collection, 
+         * esto hace que devuelva
+         *  
+         *  Illuminate\Support\Collection {#1315 // app/Http/Controllers/TeacherController.php:477
+         *     #items: array:4 [
+         *       "Primaria" => Illuminate\Support\Collection 
+         *       ]
+         *
+         *   Es decir agrupa por el tipo de escuela en la collection
+         * 
+         * @see: https://chat.deepseek.com/share/22xc37y8kk8q3lqe9r
+         */
+
+        /**
+         * inner join en vez de ORM puro
+         * ===========================
+         * 
+         * COMPORTAMIENTO: Tal como recomienda DeepSeek, conviene utilizar esta opción porque
+         * actúa directamente sobre la base de datos; en cambio, el ORM opera una vez que ya
+         * ha obtenido todos los registros y los procesa en memoria.
+         * 
+         * @see: https://chat.deepseek.com/share/22xc37y8kk8q3lqe9r
+         */
+
+        $resultados = DB::table('teachers as t')
+            ->join('schools as s', 't.school_id', '=', 's.id')
+            ->join('communities as c', 's.community_id', '=', 'c.id')
+            ->whereIn('s.type_of_school', ['Primaria', 'Preescolar', 'Inicial', 'Albergues escolares'])
+            ->where('t.funcion','=', 'Director')
+            ->select([
+                's.type_of_school',
+                'c.name as nombreComunidad',
+                's.name as nombreEscuela',
+                's.secondary_number',
+                't.telephone',
+                't.id',
+                's.key as claveEscuelaCompleta',
+            ])
+            ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as nombreProfesor")
+            ->selectRaw("if(s.type_of_school != 'Albergues escolares', SUBSTRING(s.key, 6), s.key) as claveEscuela")
+            ->orderBy('s.type_of_school')
+            ->get()
+            ->groupBy('type_of_school');
+
+        // Accesos directos ya agrupados y ordenados
+        $primarias = $resultados->get('Primaria', collect());
+        $preescolares = $resultados->get('Preescolar', collect());
+        $iniciales = $resultados->get('Inicial', collect());
+        $alberguesEscolares = $resultados->get('Albergues escolares', collect());
+
+        $allCommunities = Community::all();
+
+        $coleccionFinal = $allCommunities->map(function ($community) 
+            use ($primarias, $preescolares, $iniciales, $alberguesEscolares) {
+            // La primera coincidencia
+            $primaria = $primarias->where('nombreComunidad', $community->name)->first();
+            $preescolar = $preescolares->where('nombreComunidad', $community->name)->first();
+            $inicial = $iniciales->where('nombreComunidad', $community->name)->first();
+            $albergueEscolar = $alberguesEscolares->where('nombreComunidad', $community->name)->first();
+            return [
+                'idComunidad' => $community->id,
+                'nombreComunidad' => $community->name,
+                'primaria' => $primaria ? $primaria->nombreEscuela : '',
+                'claveEscuelaPrimaria' => $primaria ? $primaria->claveEscuela : '',
+                'claveEscuelaPrimariaCompleta' => $primaria ? $primaria->claveEscuelaCompleta : '',
+                'directivoPrimaria' => $primaria ? $primaria->nombreProfesor : '',
+                'idDirectivoPrimaria' => $primaria ? $primaria->id : '',
+                'telefonoDelProfesorDeLaPrimaria' => $primaria ? $primaria->telephone : '',
+                'numeroProgresivoPrimaria'=> $primaria ? $primaria->secondary_number : '',
+
+                'preescolar' => $preescolar ? $preescolar->nombreEscuela : '',
+                'claveEscuelaPreescolar' => $preescolar ? $preescolar->claveEscuela : '',
+                'claveEscuelaPreescolarCompleta' => $preescolar ? $preescolar->claveEscuelaCompleta : '',
+                'directivoPreescolar' => $preescolar ? $preescolar->nombreProfesor : '',
+                'idDirectivoPreescolar' => $preescolar ? $preescolar->id : '',
+                'telefonoDelProfesorDePreescolar' => $preescolar ? $preescolar->telephone : '',
+                'numeroProgresivoPreescolar' => $preescolar ? $preescolar->secondary_number : '',
+
+                'inicial' => $inicial ? $inicial->nombreEscuela : '',
+                'claveEscuelaInicial'   => $inicial ? $inicial->claveEscuela : '',
+                'claveEscuelaInicialCompleta' => $inicial ? $inicial->claveEscuelaCompleta : '',
+                'directivoInicial'=> $inicial ? $inicial->nombreProfesor : '',
+                'idDirectivoInicial'=> $inicial ? $inicial->id : '',
+                'telefonoDelProfesorDeInicial'  => $inicial ? $inicial->telephone : '',
+
+                'albergueEscolar' => $albergueEscolar ? $albergueEscolar->nombreEscuela : '',
+                'claveEscuelaAlbergueEscolar'   => $albergueEscolar ? $albergueEscolar->claveEscuela : '',
+                'directivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->nombreProfesor : '',
+                'idDirectivoAlbergueEscolar'=> $albergueEscolar ? $albergueEscolar->id : '',
+                'telefonoDelProfesorDelAlbergueEscolar'  => $albergueEscolar ? $albergueEscolar->telephone : '',
+            ];
+        });
+
+        return response()->json($coleccionFinal->toArray(), 200);
+    }
+
+    /**
+     * Obtener información del profesor
+     * 
+     * Realizar una consulta donde obtegamos los datos completos de un profesor, 
+     * para mostrarlo en el componente "ProfesorInformacion", que tiene funcionamiento 
+     * en dos módulos "Profesores" y "reporte por comunidad"
+     * 
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getInformationFromTheTeacher($id)
+    {
+        $teacher = DB::table('teachers as t')
+            ->select([
+                't.id',
+                't.name',
+                't.paternal_surname',
+                't.maternal_surname',
+                't.curp',
+                't.rfc',
+                't.gender',
+                't.budget_code',
+                't.funcion',
+                't.telephone',
+                't.motivo',
+                't.date_of_entry_into_the_sep',
+                't.study_profile',
+                't.language',
+                't.language_variant',
+                't.school_id'
+            ])
+            ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as full_name")
+            ->where('id', $id)
+            ->first();
+
+        $school = DB::table('schools as c')
+            ->select([
+                'c.id',
+                'c.name',
+            ])
+            ->where('id', $teacher->school_id)
+            ->first();
+
+        // 👇 aquí asigno la escuela como propiedad
+        $teacher->school = $school;
+
+        return response()->json($teacher, 200);
+    }
+
+    /**
+     * Obtener el personal de una comunidad, menos el director
+     * 
+     * Realizar una consulta donde obtegamos los profesores asignamos en una comunidad,
+     * menos el director. 
+     * 
+     * Este método ya no forma parte de los básicos para un CRUD.
+     * 
+     * @return \Illuminate\Http\Response
+     */
+    public function getTheStaffForACommunity($community_id)
+    {
+        $teachers = DB::table('teachers as t')
+            ->join('schools as s', 't.school_id', '=', 's.id')
+            ->join('communities as c', 's.community_id', '=', 'c.id')
+            ->select([
+                't.id',
+                't.telephone',
+                's.type_of_school',
+            ])
+            ->selectRaw("CONCAT(t.name, ' ', t.paternal_surname, ' ', t.maternal_surname) as full_name")
+            ->where('c.id', $community_id)
+            ->where('t.funcion','!=', 'Director')
+            ->orderBy('s.type_of_school')
+            ->get();
+
+        return response()->json($teachers->toArray(), 200);
     }
 }
