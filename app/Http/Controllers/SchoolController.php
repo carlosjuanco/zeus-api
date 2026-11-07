@@ -108,7 +108,7 @@ class SchoolController extends Controller
     }
 
     /**
-     * Show all schools
+     * Show all schools that belong to a community
      * 
      * Este método servirá para llenar elementos select.
      * Este método ya no forma parte de los básicos para un CRUD.
@@ -118,9 +118,11 @@ class SchoolController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getAllTheSchools()
+    public function getAllSchoolsThatBelongToACommunity($community_id)
     {
-        $schoolsForSelect = School::select('name', 'id')->get();
+        $schoolsForSelect = School::select('name', 'id')
+            ->where('community_id', $community_id)
+            ->get();
 
         return response()->json($schoolsForSelect, 200);
     }

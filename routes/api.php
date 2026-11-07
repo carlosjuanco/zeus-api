@@ -69,11 +69,11 @@ Route::delete('schools/{school}', [SchoolController::class, 'destroy'])
     ->middleware(['auth:sanctum', 'can:delete,school'])
     ->name('schools.destroy');
 
-// getAllTheSchools - Listar todas las escuelas para llenar elementos select
+// getAllSchoolsThatBelongToACommunity - Listar todas las escuelas para llenar elementos select
 // Por el momento puedo ocupar el mismo permiso de viewAny.
-Route::get('schools', [SchoolController::class, 'getAllTheSchools'])
+Route::get('allSchoolsThatBelongToACommunity/{community_id}', [SchoolController::class, 'getAllSchoolsThatBelongToACommunity'])
     ->middleware(['auth:sanctum', 'can:viewAny,App\Models\Community'])
-    ->name('schools.getAllTheSchools');
+    ->name('schools.getAllSchoolsThatBelongToACommunity');
 
 // viewAny - Listar profesores con paginación y búsqueda opcional
 Route::get('teachers/{paginate}/{search?}', [TeacherController::class, 'viewAny'])
